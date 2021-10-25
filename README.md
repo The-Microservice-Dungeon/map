@@ -10,6 +10,13 @@ The Map API for The Microservice Dungeon project
 
 ## Setup Dev Environment
 
+**With docker**
+
+- Clone the repo
+- Run `docker compose up --build`
+
+**Without docker**
+
 - Clone the repo
 - Make sure you have Ruby 3.0.2 installed by running `ruby -v`
 - Make sure you have Rails 6.1+ installed by running `rails -v`
