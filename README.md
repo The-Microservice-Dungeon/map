@@ -1,13 +1,24 @@
-# map
+# README
 
-This README file should be adapted to include the following information:
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-(1) How can the service be started, regardless of the platform? A short, precise instruction is sufficient. Existence/familiarity with tools like maven can be assumed.
+Things you may want to cover:
 
-(2) What other prerequisites must be in place for the service to run? For example, linking to further documentation of required infrastructure such as Kafka from the DevOps team.
+* Ruby version
 
-(3) Are there decisions from the decision log that should be further elaborated (like domain model)? Depending on the level of detail, describe in more detail here or in the wiki.
+* System dependencies
 
-(4) Are there further links that promote navigation or understanding? For example, link to API documentation or important decisions in the decision log.
+* Configuration
 
-_Note_: The design of the task planning and review is up to the team. One possible option is to use a Kanban board directly via GitHub.
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
