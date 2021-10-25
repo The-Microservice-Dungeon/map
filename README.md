@@ -8,6 +8,12 @@ The Map API for the Microservice Dungeon projects
 - Rails 6.1+
 - Postgresql 9.3+
 
+## Docker for Postgres
+
+- Setup Docker for your system
+- Edit line 'volumes' (10) in docker-compose.yaml, insert your preferred db folder there
+- Run `docker-compos up -d` to start docker container
+
 ## Setup Dev Environment
 
 - Run `bundle install` to install the dependencies
