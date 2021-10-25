@@ -1,0 +1,15 @@
+version: '3'
+services:
+  db:
+    image: postgres:12
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - '5432:5432'
+    volumes:
+      - "PROJECTPATH:/db"
+  redis:
+    image: redis:alpine
+    command: redis-server
+    ports:
+      - '5432:5432'
