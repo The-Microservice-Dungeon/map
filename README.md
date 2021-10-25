@@ -1,16 +1,20 @@
 # Map Service
 
-The Map API for the Microservice Dungeon projects
+The Map API for The Microservice Dungeon project
 
 ## Requirements
 
-- Ruby 3.0+
-- Rails 6.1+
-- Postgresql 9.3+
+- Install Ruby 3.0.2 [Installation Guide](https://www.ruby-lang.org/de/documentation/installation/)
+- Install Rails 6.1+ [Installation Guide](https://guides.rubyonrails.org/v5.0/getting_started.html#installing-rails)
+- Install Postgresql 9.3+ [Postgres.app (MacOS)](https://postgresapp.com/)
 
 ## Setup Dev Environment
 
-- Run `bundle install` to install the dependencies
+- Clone the repo
+- Make sure you have Ruby 3.0.2 installed by running `ruby -v`
+- Make sure you have Rails 6.1+ installed by running `rails -v`
+- Run `bundle install` to install all dependencies
+- Start your postgresql service
 - Run `rails db:setup` to setup the postgresql database
 - Run `rails s` to start the server
 
