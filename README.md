@@ -1,24 +1,19 @@
-# README
+# Map Service
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Map API for the Microservice Dungeon projects
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+- Ruby 3.0+
+- Rails 6.1+
+- Postgresql 9.3+
 
-* System dependencies
+## Setup Dev Environment
 
-* Configuration
+- Run `bundle install` to install the dependencies
+- Run `rails db:setup` to setup the postgresql database
+- Run `rails s` to start the server
 
-* Database creation
+## Running tests
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Run `bundle exec rspec` to run all spec files
