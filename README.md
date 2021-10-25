@@ -16,6 +16,7 @@ The Map API for The Microservice Dungeon project
 - Run `bundle install` to install all dependencies
 - Start your postgresql service
 - Run `rails db:setup` to setup the postgresql database
+- Run `rails db:migrate` to run all database migrations
 - Run `rails s` to start the server
 
 ## Running tests
