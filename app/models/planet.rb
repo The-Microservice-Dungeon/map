@@ -12,6 +12,6 @@ class Planet < ApplicationRecord
 
   def add_neighbour(neighbour)
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self
-    neighbour.neighbours << self unless neighbour.neighbours.include?(self)
+    neighbour.neighbours << self unless neighbour.neighbours.include?(self) || self == neighbour
   end
 end
