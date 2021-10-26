@@ -14,4 +14,19 @@ class Planet < ApplicationRecord
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self
     neighbour.neighbours << self unless neighbour.neighbours.include?(self) || self == neighbour
   end
+
+  def taken!
+    self.taken_at = DateTime.current
+  end
+
+  def taken?
+    !taken_at.nil?
+  end
+
+  def as_json(options = {})
+    hash = super(options)
+    hash.delete('x')
+    hash.delete('y')
+    hash
+  end
 end
