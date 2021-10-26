@@ -1,5 +1,5 @@
 ResourceType.create([
-                      { name: 'iron', difficulty: 0 },
+                      { name: 'coal', difficulty: 0 },
                       { name: 'iron', difficulty: 1 },
                       { name: 'gem', difficulty: 2 },
                       { name: 'gold', difficulty: 3 },
