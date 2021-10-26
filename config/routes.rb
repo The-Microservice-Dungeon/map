@@ -9,5 +9,7 @@ Rails.application.routes.draw do
   get '/planets/:id/neighbours', to: 'neighbours#index', as: 'neighbours'
   get '/planets/:id/neighbours/:neighbour_id', to: 'neighbours#show', as: 'neighbour'
 
+  get '/resource_types', to: 'resource_types#index'
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
