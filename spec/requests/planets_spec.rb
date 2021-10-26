@@ -17,11 +17,14 @@ RSpec.describe '/planets', type: :request do
   # Planet. As you add validations to Planet, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    gameworld = create(:gameworld)
+    { 'movement_difficulty' => 0, 'recharge_multiplicator' => 0, 'planet_type' => 'default', 'x' => 0, 'y' => 0,
+      'gameworld_id' => gameworld.id }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { 'movement_difficulty' => 0, 'recharge_multiplicator' => 0, 'planet_type' => 'default', 'x' => 0, 'y' => 0,
+      'gameworld_id' => nil }
   end
 
   # This should return the minimal set of values that should be in the headers
@@ -77,7 +80,7 @@ RSpec.describe '/planets', type: :request do
         post planets_url,
              params: { planet: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
   end
@@ -85,7 +88,9 @@ RSpec.describe '/planets', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        gameworld = create(:gameworld)
+        { 'movement_difficulty' => 0, 'recharge_multiplicator' => 0, 'planet_type' => 'spawn', 'x' => 0, 'y' => 0,
+          'gameworld_id' => gameworld.id }
       end
 
       it 'updates the requested planet' do
@@ -93,7 +98,7 @@ RSpec.describe '/planets', type: :request do
         patch planet_url(planet),
               params: { planet: new_attributes }, headers: valid_headers, as: :json
         planet.reload
-        skip('Add assertions for updated state')
+        expect(planet.planet_type).to eq('spawn')
       end
 
       it 'renders a JSON response with the planet' do
@@ -111,7 +116,7 @@ RSpec.describe '/planets', type: :request do
         patch planet_url(planet),
               params: { planet: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
   end

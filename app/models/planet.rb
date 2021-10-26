@@ -1,5 +1,5 @@
 class Planet < ApplicationRecord
-  enum planet_type: %i[default spawnstation spacestation], _default: :default
+  enum planet_type: %i[default spawn spacestation], _default: :default, _suffix: true
   validates :planet_type, inclusion: { in: planet_types.keys }
 
   belongs_to :gameworld

@@ -2,24 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Planet, type: :model do
   it 'creates a new planet' do
-    gameworld = Gameworld.new
-    gameworld.save
-
-    planet = Planet.new(gameworld_id: gameworld.id)
-    planet.save
+    planet = create(:planet)
 
     expect(planet.planet_type).to eq('default')
   end
 
   it 'adds a neighbouring planet' do
-    gameworld = Gameworld.new
-    gameworld.save
-
-    planet = Planet.new(gameworld_id: gameworld.id)
-    planet.save
-
-    neighbour = Planet.new(gameworld_id: gameworld.id)
-    neighbour.save
+    planet = create(:planet)
+    neighbour = create(:planet)
 
     planet.add_neighbour(neighbour)
 
