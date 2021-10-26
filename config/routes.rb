@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :planets
   # resources :gameworlds
   get '/gameworlds', to: 'gameworlds#index'
   get '/gameworlds/:id', to: 'gameworlds#show', as: 'gameworld'

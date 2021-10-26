@@ -10,16 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_124405) do
+ActiveRecord::Schema.define(version: 2021_10_26_132842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "gameworlds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "status"
+    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "planets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "movement_difficulty"
+    t.integer "recharge_multiplicator"
+    t.integer "planet_type", default: 0
+    t.datetime "taken_at"
+    t.uuid "gameworld_id", null: false
+    t.integer "x"
+    t.integer "y"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["gameworld_id"], name: "index_planets_on_gameworld_id"
+  end
+
+  create_table "planets_neighbours", id: false, force: :cascade do |t|
+    t.uuid "planet_id"
+    t.uuid "neighbour_id"
+    t.index ["planet_id", "neighbour_id"], name: "index_planets_neighbours_on_planet_id_and_neighbour_id", unique: true
   end
 
   create_table "resource_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -29,4 +48,5 @@ ActiveRecord::Schema.define(version: 2021_10_26_124405) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "planets", "gameworlds"
 end
