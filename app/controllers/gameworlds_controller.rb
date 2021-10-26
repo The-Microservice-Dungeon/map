@@ -24,7 +24,11 @@ class GameworldsController < ApplicationController
         render json: @gameworld.errors, status: :unprocessable_entity
       end
     else
-      render json: { 'error' => 'player_amount and round_amount need to be larger than 0' },
+      render json: {
+        'status' => 422,
+        'error' => 'Unprocessable Entity',
+        'exception' => 'player_amount and round_amount need to be larger than 0'
+      },
              status: :unprocessable_entity
     end
 
