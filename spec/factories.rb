@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :resource do
+    max_amount { 1000 }
+    current_amount { 400 }
+    planet
+    resource_type
+  end
+
   factory :gameworld do
     status { 'active' }
   end

@@ -10,6 +10,8 @@ class Planet < ApplicationRecord
                           foreign_key: 'planet_id',
                           association_foreign_key: 'neighbour_id'
 
+  has_many :resources
+
   def add_neighbour(neighbour)
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self
     neighbour.neighbours << self unless neighbour.neighbours.include?(self) || self == neighbour
