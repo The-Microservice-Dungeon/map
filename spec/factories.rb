@@ -1,4 +1,10 @@
-FactoryBot.define do
+ FactoryBot.define do
+  factory :mining do
+    planet 
+    amount_mined { 100 }
+    resource_type 
+  end
+
   factory :resource do
     max_amount { 1000 }
     current_amount { 400 }
