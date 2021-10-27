@@ -1,5 +1,3 @@
-Rails.logger = Logger.new(STDOUT)
-
 $producer = WaterDrop::Producer.new
 
 $producer.setup do |config|
@@ -8,8 +6,4 @@ $producer.setup do |config|
     'bootstrap.servers': 'localhost:29092',
     'request.required.acks': 1
   }
-end
-
-$producer.monitor.subscribe('message.produced_async') do |event|
-  Rails.logger.debug "A message: '#{event[:message][:payload]} was produced to topic: '#{event[:message][:topic]}'!"
 end
