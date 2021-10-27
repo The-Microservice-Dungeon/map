@@ -10,7 +10,7 @@ class GameworldsController < ApplicationController
 
   # GET /gameworlds/1
   def show
-    render json: @gameworld
+    render json: @gameworld.to_json(include: :planets)
   end
 
   # POST /gameworlds
@@ -19,7 +19,7 @@ class GameworldsController < ApplicationController
       @gameworld = Gameworld.new
 
       if @gameworld.save
-        render json: @gameworld, status: :created, location: @gameworld
+        render json: @gameworld.to_json(include: :planets), status: :created, location: @gameworld
       else
         render json: @gameworld.errors, status: :unprocessable_entity
       end
