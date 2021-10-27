@@ -29,3 +29,10 @@ The Map API for The Microservice Dungeon project
 ## Running tests
 
 - Run `bundle exec rspec` to run all spec files
+
+## Kafka Producers
+
+- Run `docker compose -f kafkabroker.yml up`
+- Run `rails s`
+
+Produced Kafka messages should now arrive through zookeeper/kafka in docker through `'bootstrap_servers': 'localhost:29092'`
