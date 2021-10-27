@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_132842) do
+ActiveRecord::Schema.define(version: 2021_10_27_074135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,5 +48,19 @@ ActiveRecord::Schema.define(version: 2021_10_26_132842) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "resources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "planet_id", null: false
+    t.uuid "resource_type_id", null: false
+    t.integer "max_amount"
+    t.integer "current_amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["planet_id", "resource_type_id"], name: "index_resources_on_planet_id_and_resource_type_id", unique: true
+    t.index ["planet_id"], name: "index_resources_on_planet_id"
+    t.index ["resource_type_id"], name: "index_resources_on_resource_type_id"
+  end
+
   add_foreign_key "planets", "gameworlds"
+  add_foreign_key "resources", "planets"
+  add_foreign_key "resources", "resource_types"
 end
