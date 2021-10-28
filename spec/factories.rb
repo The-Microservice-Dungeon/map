@@ -8,6 +8,7 @@ FactoryBot.define do
   factory :spawn_creation do
     planet
   end
+
   factory :spacestation_creation do
     planet
   end

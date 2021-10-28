@@ -94,4 +94,20 @@ RSpec.describe Resource, type: :model do
     expect(resource.current_amount).to eq(400)
     expect(mining.amount_mined).to eq(0)
   end
+
+  it 'replenishes the resource' do
+    resource = create(:resource, current_amount: 400, max_amount: 1000)
+
+    resource.replenish!(400)
+
+    expect(resource.current_amount).to eq(800)
+  end
+
+  it 'replenishes the resource to the maximum amount' do
+    resource = create(:resource, current_amount: 400, max_amount: 1000)
+
+    resource.replenish!(2000)
+
+    expect(resource.current_amount).to eq(1000)
+  end
 end
