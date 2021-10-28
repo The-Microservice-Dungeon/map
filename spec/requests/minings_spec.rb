@@ -11,6 +11,12 @@ RSpec.describe '/minings', type: :request do
       get minings_url(mining.planet), headers: valid_headers, as: :json
       expect(response).to be_successful
     end
+
+    it 'renders a error response' do
+      expect do
+        get minings_url({ id: 'test' }), headers: valid_headers, as: :json
+      end.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   describe 'POST /create' do
