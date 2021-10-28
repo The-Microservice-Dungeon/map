@@ -24,7 +24,11 @@ class GameworldPrinter
     (0..grid_size).map do |x|
       (0..grid_size).map do |y|
         planet = gameworld.planets.find { |p| p.x == x && p.y == y }
-        "#{planet.planet_type} #{planet.movement_difficulty} #{planet.recharge_multiplicator}"
+        if planet
+          "#{planet.planet_type} #{planet.movement_difficulty} #{planet.recharge_multiplicator}"
+        else
+          'NOPLANET'
+        end
       end
     end
   end
