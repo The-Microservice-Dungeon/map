@@ -7,9 +7,11 @@ class Gameworld < ApplicationRecord
   def as_json(options = {})
     hash = super(options)
     planets = hash['planets']
-    planets.each do |p|
-      p.delete('x')
-      p.delete('y')
+    if planets
+      planets.each do |p|
+        p.delete('x')
+        p.delete('y')
+      end
     end
 
     hash['planets'] = planets
