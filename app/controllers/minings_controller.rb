@@ -1,9 +1,10 @@
 class MiningsController < ApplicationController
+  before_action :set_planet, only: %i[index]
   before_action :set_resource, only: %i[create]
 
   # GET /planets/1/minings
   def index
-    @minings = Mining.where(planet_id: params[:id])
+    @minings = Mining.where(planet_id: params[:id]).all
 
     render json: @minings
   end
@@ -15,6 +16,10 @@ class MiningsController < ApplicationController
   end
 
   private
+
+  def set_planet
+    @planet = Planet.find(params[:id])
+  end
 
   def set_resource
     resource_type = ResourceType.find_by_name(mining_params[:resource_type])

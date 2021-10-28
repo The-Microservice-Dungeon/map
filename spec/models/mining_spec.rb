@@ -7,9 +7,9 @@ RSpec.describe Mining, type: :model do
     expect(mining.amount_mined).to eq(100)
   end
 
-  it 'amount mined cant be 0 or less' do
+  it 'amount mined cant be less than 0' do
     expect do
-      create(:mining, amount_mined: 0)
+      create(:mining, amount_mined: -100)
     end.to raise_error(ActiveRecord::RecordInvalid)
   end
 end
