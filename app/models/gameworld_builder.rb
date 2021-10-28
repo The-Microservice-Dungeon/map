@@ -13,6 +13,20 @@ class GameworldBuilder
     end
   end
 
+  def add_movement_difficulty
+    grid_size = Math.sqrt(@gameworld.planets.size) - 1
+    inner = grid_size / 3
+    mid = grid_size / 3 / 2
+
+    @gameworld.planets.each do |p|
+      if p.x > inner && p.x < grid_size - inner && p.y > inner && p.y < grid_size - inner
+        p.movement_difficulty = 3
+      elsif p.x > mid && p.x < grid_size - mid && p.y > mid && p.y < grid_size - mid
+        p.movement_difficulty = 2
+      end
+    end
+  end
+
   def neighbour_planets
     @gameworld.planets.each do |planet|
       neighbours = get_neighbours(planet)
