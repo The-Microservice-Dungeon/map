@@ -1,64 +1,82 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/gameworlds', type: :request do
-  let(:valid_attributes) do
-    { 'player_amount' => 100, 'round_amount' => 1000 }
-  end
-
-  let(:invalid_attributes) do
-    { 'player_amount' => -100, 'round_amount' => -1000 }
-  end
-
-  let(:valid_headers) do
-    {}
-  end
-
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      Gameworld.create!
-      get gameworlds_url, headers: valid_headers, as: :json
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'GET /show' do
-    it 'renders a successful response' do
-      gameworld = Gameworld.create!
-      get gameworld_url(gameworld), as: :json
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'POST /create' do
-    context 'with valid parameters' do
-      it 'creates a new Gameworld' do
-        expect do
-          post gameworlds_url,
-               params: { gameworld: valid_attributes }, headers: valid_headers, as: :json
-        end.to change(Gameworld, :count).by(1)
-      end
-
-      it 'renders a JSON response with the new gameworld' do
-        post gameworlds_url,
-             params: { gameworld: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including('application/json'))
+RSpec.describe 'gameworlds', type: :request do
+  path '/gameworlds' do
+    get('list gameworlds') do
+      response(200, 'successful') do
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
       end
     end
 
-    context 'with invalid parameters' do
-      it 'does not create a new Gameworld' do
-        expect do
-          post gameworlds_url,
-               params: { gameworld: invalid_attributes }, as: :json
-        end.to change(Gameworld, :count).by(0)
+    post('create gameworld') do
+      response(200, 'successful') do
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
+    end
+  end
+
+  path '/gameworlds/{id}' do
+    # You'll want to customize the parameter types...
+    parameter name: 'id', in: :path, type: :string, description: 'id'
+
+    get('show gameworld') do
+      response(200, 'successful') do
+        let(:id) { '123' }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        run_test!
+      end
+    end
+  end
+
+  path '/blogs/{id}' do
+    get 'Retrieves a blog' do
+      tags 'Gameworlds'
+      produces 'application/json'
+      # parameter name: :id, in: :path, type: :string
+
+      response '200', 'OK' do
+        schema type: :object,
+               properties: {
+                 id: { type: :uuid },
+                 created_at: { type: :datetime }
+                 updated_at: { type: :datetime }
+                 status: { type: :datetime }
+               },
+               required: %w[id title content]
+
+        let(:id) { Blog.create(title: 'foo', content: 'bar').id }
+        run_test!
       end
 
-      it 'renders a JSON response with errors for the new gameworld' do
-        post gameworlds_url,
-             params: { gameworld: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+      response '404', 'blog not found' do
+        let(:id) { 'invalid' }
+        run_test!
+      end
+
+      response '406', 'unsupported accept header' do
+        let(:Accept) { 'application/foo' }
+        run_test!
       end
     end
   end

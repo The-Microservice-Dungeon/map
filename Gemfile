@@ -26,6 +26,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # gem 'rack-cors'
 
 gem 'factory_bot_rails'
+gem 'rswag'
 gem 'waterdrop'
 
 group :development, :test do

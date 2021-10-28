@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+
   get '/gameworlds', to: 'gameworlds#index'
   get '/gameworlds/:id', to: 'gameworlds#show', as: 'gameworld'
   post '/gameworlds', to: 'gameworlds#create'
