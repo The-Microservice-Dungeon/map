@@ -10,13 +10,18 @@ class MiningsController < ApplicationController
 
   # POST /planets/1/minings
   def create
-    mining = @resource.execute_mining(params[:amount_mined])
+    mining = @resource.execute_mining(mining_params[:amount_mined])
     render json: mining, status: :created
   end
 
   private
 
   def set_resource
-    @resource = Resource.of_type(params[:resource_type]).where(planet_id: params[:id]).take!
+    resource_type = ResourceType.find_by_name(mining_params[:resource_type])
+    @resource = Resource.of_type(resource_type.id).where(planet_id: params[:id]).take!
+  end
+
+  def mining_params
+    params.require(:mining).permit(%i[resource_type amount_mined])
   end
 end

@@ -4,7 +4,8 @@ class Resource < ApplicationRecord
 
   validates :max_amount, numericality: { greater_than: 0 }
   validates :current_amount, numericality: { greater_than_or_equal_to: 0 }
-  scope :of_type, ->(name) { joins(:resource_type).where('resource_type.name = ?', name) }
+
+  scope :of_type, ->(resource_type_id) { where(resource_type_id: resource_type_id) }
 
   def execute_mining(amount_mined)
     diff = current_amount - amount_mined
