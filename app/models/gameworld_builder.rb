@@ -26,27 +26,27 @@ class GameworldBuilder
     y = planet.y
     planets = @gameworld.planets
 
-    neighbours.push(planets.find { |p| p.x == (x - 1) && p.y == y }) if top_neighbour?(planets, x, y)
-    neighbours.push(planets.find { |p| p.x == (x + 1) && p.y == y }) if bottom_neighbour?(planets, x, y)
-    neighbours.push(planets.find { |p| p.x == x && p.y == (y - 1) }) if left_neighbour?(planets, x, y)
-    neighbours.push(planets.find { |p| p.x == x && p.y == (y + 1) }) if right_neighbour?(planets, x, y)
+    neighbours.push(top_neighbour(planets, x, y))
+    neighbours.push(bottom_neighbour(planets, x, y))
+    neighbours.push(left_neighbour(planets, x, y))
+    neighbours.push(right_neighbour(planets, x, y))
 
-    neighbours
+    neighbours.compact
   end
 
-  def top_neighbour?(planets, x, y)
-    x.positive? && planets.any? { |p| p.x == (x - 1) && p.y == y }
+  def top_neighbour(planets, x, y)
+    planets.find { |p| p.x == (x - 1) && p.y == y }
   end
 
-  def bottom_neighbour?(planets, x, y)
-    x < planets.length - 1 && planets.any? { |p| p.x == (x + 1) && p.y == y }
+  def bottom_neighbour(planets, x, y)
+    planets.find { |p| p.x == (x + 1) && p.y == y }
   end
 
-  def left_neighbour?(planets, x, y)
-    planets.any? { |p| p.x == x && p.y == (y - 1) }
+  def left_neighbour(planets, x, y)
+    planets.find { |p| p.x == x && p.y == (y - 1) }
   end
 
-  def right_neighbour?(planets, x, y)
-    planets.any? { |p| p.x == x && p.y == (y + 1) }
+  def right_neighbour(planets, x, y)
+    planets.find { |p| p.x == x && p.y == (y + 1) }
   end
 end
