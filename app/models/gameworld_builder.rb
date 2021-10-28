@@ -1,8 +1,10 @@
 class GameworldBuilder
-  attr_reader :gameworld
+  attr_reader :gameworld, :player_amount, :round_amount
 
-  def initialize(_player_amount, _round_amount)
+  def initialize(player_amount, round_amount)
     @gameworld = Gameworld.new
+    @player_amount = player_amount
+    @round_amount = round_amount
 
     (0..9).each do |column|
       (0..9).each do |row|
