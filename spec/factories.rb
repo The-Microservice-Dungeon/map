@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :spacestation_creation do
+    planet
+  end
+
   factory :mining do
     planet
     amount_mined { 100 }
