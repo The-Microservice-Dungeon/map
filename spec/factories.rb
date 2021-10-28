@@ -1,8 +1,8 @@
- FactoryBot.define do
+FactoryBot.define do
   factory :mining do
-    planet 
+    planet
     amount_mined { 100 }
-    resource_type 
+    resource_type
   end
 
   factory :resource do
