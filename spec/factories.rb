@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :replenishment do
+    planet
+    resource_type
+    amount_replenished { 1000 }
+  end
+
   factory :spawn_creation do
     planet
   end
