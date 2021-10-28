@@ -22,13 +22,13 @@ RSpec.describe '/minings', type: :request do
       expect(response).to have_http_status(:created)
     end
 
-    it 'fails when given a negative amount' do
+    it 'does mine 0 when given a negative amount' do
       resource = create(:resource)
       resource_type = resource.resource_type.name
-      expect do
-        post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: -100 } },
-                                           headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::RecordInvalid)
+
+      post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: -100 } },
+                                         headers: valid_headers, as: :json
+      expect(response).to have_http_status(:created)
     end
 
     it 'fails when given resource type is not existent' do
