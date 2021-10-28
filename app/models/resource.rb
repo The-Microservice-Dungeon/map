@@ -17,7 +17,8 @@ class Resource < ApplicationRecord
 
     self.current_amount = [diff, 0].max
 
+    $producer.produce_async(topic: 'resource_mined', payload: mining.to_json)
+
     mining
-    # $producer.publish_async(topic: "resource_mined", payload: mining.to_json)
   end
 end
