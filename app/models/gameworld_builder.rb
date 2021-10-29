@@ -29,7 +29,6 @@ class GameworldBuilder
     all_spawns.each do |p|
       p.planet_type = 'spawn'
     end
-
   end
 
   def add_movement_difficulty
