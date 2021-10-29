@@ -32,9 +32,4 @@ RSpec.describe Planet, type: :model do
     expect(planet.taken?).to be_truthy
   end
 
-  it 'as_json does not return x and y keys' do
-    planet = create(:planet)
-    expect(planet.as_json({}).key?('x')).to be_falsy
-    expect(planet.as_json({}).key?('y')).to be_falsy
-  end
 end

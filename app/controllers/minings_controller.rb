@@ -1,6 +1,9 @@
 class MiningsController < ApplicationController
   before_action :set_planet, only: %i[index]
   before_action :set_resource, only: %i[create]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+  rescue_from ActionController::ParameterMissing, with: :render_params_missing
+  rescue_from ActiveRecord::StatementInvalid, with: :render_unprocessable_entity
 
   # GET /planets/1/minings
   def index
@@ -29,7 +32,7 @@ class MiningsController < ApplicationController
   end
 
   def set_resource
-    resource_type = ResourceType.find_by_name(mining_params[:resource_type])
+    resource_type = ResourceType.where(name: mining_params[:resource_type]).take!
     @resource = Resource.of_type(resource_type.id).where(planet_id: params[:id]).take!
   end
 

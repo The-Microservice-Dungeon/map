@@ -1,6 +1,6 @@
 class ResourcesController < ApplicationController
   before_action :set_planet, only: %i[index show]
-  rescue_from ActiveRecord::RecordNotFound, with: :resource_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
   # GET /planets/1/resources
   def index
@@ -16,14 +16,5 @@ class ResourcesController < ApplicationController
 
   def set_planet
     @planet = Planet.find(params[:id])
-  end
-
-  def resource_not_found
-    render json: {
-      'status' => 404,
-      'error' => 'Not Found',
-      'exception' => "resource #{params[:resource_id]} could not be found on planet #{params[:id]}"
-    },
-           status: :not_found
   end
 end

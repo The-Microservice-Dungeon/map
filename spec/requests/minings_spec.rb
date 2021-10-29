@@ -13,9 +13,8 @@ RSpec.describe '/minings', type: :request do
     end
 
     it 'renders a error response' do
-      expect do
-        get minings_url({ id: 'test' }), headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::RecordNotFound)
+      get minings_url({ id: 'test' }), headers: valid_headers, as: :json
+      expect(response).to have_http_status(:not_found)
     end
   end
 
@@ -40,19 +39,17 @@ RSpec.describe '/minings', type: :request do
     it 'fails when given resource type is not existent' do
       resource = create(:resource)
       resource_type = 'obsidian'
-      expect do
-        post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
-                                           headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::StatementInvalid)
+      post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
+                                         headers: valid_headers, as: :json
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it 'fails when given planet is not existent' do
       resource = create(:resource)
       resource_type = resource.resource_type.name
-      expect do
-        post minings_url({ id: 'test' }), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
-                                          headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::RecordNotFound)
+      post minings_url({ id: 'test' }), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
+                                        headers: valid_headers, as: :json
+      expect(response).to have_http_status(:not_found)
     end
   end
 end

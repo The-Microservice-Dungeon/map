@@ -6,28 +6,85 @@ info:
 paths:
   "/gameworlds":
     get:
-      summary: list gameworlds
+      summary: Retrieves all gameworlds
+      tags:
+      - gameworlds
       responses:
         '200':
-          description: successful
-    post:
-      summary: create gameworld
-      responses:
-        '200':
-          description: successful
+          description: Return all available gameworlds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    status:
+                      type: string
+                      enum:
+                      - active
+                      - inactive
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                  required:
+                  - id
+                  - status
+                  - created_at
+                  - updated_at
   "/gameworlds/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
     get:
-      summary: show gameworld
+      summary: Retrieves a gameworld
+      tags:
+      - gameworlds
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
-          description: successful
+          description: gameworld found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - inactive
+                  planets:
+                    type: array
+                    items:
+                      id:
+                        type: string
+                        format: uuid
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - status
+                - planets
+                - created_at
+                - updated_at
+        '404':
+          description: Gameworld not found
 servers:
 - url: https://{defaultHost}
   variables:
