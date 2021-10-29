@@ -198,6 +198,55 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
+  "/planets/{id}/neighbours":
+    get:
+      summary: Retrieves all neighbours
+      tags:
+      - neighbours
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return all available neighbours
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/planet"
+  "/planets/{id}/neighbours/{neighbour_id}":
+    get:
+      summary: Retrieves a planets neighbour
+      tags:
+      - neighbours
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: neighbour_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Neighbour found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/planet"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
   "/planets":
     get:
       summary: Retrieves all planets
@@ -250,6 +299,55 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/resource_type"
+  "/planets/{id}/resources":
+    get:
+      summary: Retrieves all resources
+      tags:
+      - resources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return all available resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/planet"
+  "/planets/{id}/resources/{resource_id}":
+    get:
+      summary: Retrieves a planets resources
+      tags:
+      - resources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/planet"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
 servers:
 - url: http://{defaultHost}
   variables:

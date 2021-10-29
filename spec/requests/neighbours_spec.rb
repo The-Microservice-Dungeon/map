@@ -24,7 +24,7 @@ RSpec.describe 'neighbours', type: :request, capture_examples: true do
 
   path '/planets/{id}/neighbours/{neighbour_id}' do
     get 'Retrieves a planets neighbour' do
-      tags :planets
+      tags :neighbours
       produces 'application/json'
       parameter name: :id, in: :path, type: :string
       parameter name: :neighbour_id, in: :path, type: :string

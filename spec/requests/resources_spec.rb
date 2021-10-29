@@ -1,23 +1,45 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/resources', type: :request do
-  let(:valid_headers) do
-    {}
-  end
+RSpec.describe 'resources', type: :request, capture_examples: true do
+  path '/planets/{id}/resources' do
+    get('Retrieves all resources') do
+      produces 'application/json'
+      tags :resources
+      parameter name: :id, in: :path, type: :string
 
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      resource = create(:resource)
-      get resources_url(resource.planet), headers: valid_headers, as: :json
-      expect(response).to be_successful
+      response(200, 'Return all available resources') do
+        schema type: :array,
+               items: { '$ref' => '#/components/schemas/planet' }
+
+        let(:id) { create(:planet).id }
+        run_test!
+      end
     end
   end
 
-  describe 'GET /show' do
-    it 'renders a successful response' do
-      resource = create(:resource)
-      get resource_url(resource.planet, resource), as: :json
-      expect(response).to be_successful
+  path '/planets/{id}/resources/{resource_id}' do
+    get 'Retrieves a planets resources' do
+      tags :resources
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+      parameter name: :resource_id, in: :path, type: :string
+
+      response '200', 'Resource found' do
+        schema '$ref' => '#/components/schemas/planet'
+
+        let(:planet) { create(:planet) }
+        let(:id) { planet.id }
+        let(:resource_id) { create(:resource, planet: planet).id }
+        run_test!
+      end
+
+      response '404', 'Not Found' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:id) { 'invalid' }
+        let(:resource_id) { 'invalid' }
+        run_test!
+      end
     end
   end
 end
