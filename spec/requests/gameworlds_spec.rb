@@ -8,22 +8,47 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
 
       response(200, 'Return all available gameworlds') do
         schema type: :array,
-               items: {
-                 type: :object,
-                 properties: {
-                   id: { type: :string, format: :uuid },
-                   status: { type: :string, enum: %w[active inactive] },
-                   created_at: { type: :string, format: 'date-time' },
-                   updated_at: { type: :string, format: 'date-time' }
-                 },
-                 required: %w[id status created_at updated_at]
-               }
+               items: { '$ref' => '#/components/schemas/gameworld' }
 
-        let!(:gameworlds) do
-          3.times do
-            create(:gameworld)
-          end
-        end
+        let!(:gameworld) { create(:gameworld) }
+        run_test!
+      end
+    end
+
+    post 'Creates a gameworld' do
+      tags :gameworlds
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :gameworld, in: :body, schema: {
+        type: :object,
+        properties: {
+          gameworld: { type: :object,
+                       properties: {
+                         player_amount: { type: :integer, minimum: 1 },
+                         round_amount: { type: :integer, minimum: 1 }
+                       }, required: %i[player_amount round_amount] }
+        },
+        required: %w[gameworld]
+      }
+
+      response '201', 'Created' do
+        schema '$ref' => '#/components/schemas/gameworld'
+
+        let(:gameworld) { { gameworld: { player_amount: 100, round_amount: 100 } } }
+        run_test!
+      end
+
+      response '400', 'Bad Request' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:gameworld) { { player_amount: 100 } }
+        run_test!
+      end
+
+      response '422', 'Unprocessable Entity' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:gameworld) { { gameworld: { player_amount: 100, round_amount: -100 } } }
         run_test!
       end
     end
@@ -35,27 +60,16 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
       produces 'application/json'
       parameter name: :id, in: :path, type: :string
 
-      response '200', 'gameworld found' do
-        schema type: :object,
-               properties: {
-                 id: { type: :string, format: :uuid },
-                 status: { type: :string, enum: %w[active inactive] },
-                 planets: {
-                   type: :array,
-                   items: {
-                     id: { type: :string, format: :uuid }
-                   }
-                 },
-                 created_at: { type: :string, format: 'date-time' },
-                 updated_at: { type: :string, format: 'date-time' }
-               },
-               required: %w[id status planets created_at updated_at]
+      response '200', 'Gameworld found' do
+        schema '$ref' => '#/components/schemas/gameworld'
 
         let(:id) { create(:gameworld).id }
         run_test!
       end
 
-      response '404', 'Gameworld not found' do
+      response '404', 'Not Found' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
         let(:id) { 'invalid' }
         run_test!
       end

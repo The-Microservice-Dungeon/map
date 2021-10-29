@@ -1,8 +1,119 @@
 ---
 openapi: 3.0.1
 info:
-  title: API V1
+  title: Map API V1
   version: v1
+components:
+  schemas:
+    errors_object:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        exception:
+          type: string
+          example: Couldn't find Gameworld with 'id'=1
+    gameworld:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - active
+          - inactive
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    planet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        movement_difficulty:
+          type: integer
+        recharge_multiplicator:
+          type: integer
+        taken_at:
+          type: string
+          format: date-time
+        gameworld_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    resource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        max_amount:
+          type: integer
+        current_amount:
+          type: integer
+        planet_id:
+          type: string
+          format: uuid
+        resource_type_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    resource_type:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          enum:
+          - coal
+          - iron
+          - gem
+          - gold
+          - platin
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    mining:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount_requested:
+          type: integer
+        amount_mined:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
 paths:
   "/gameworlds":
     get:
@@ -17,27 +128,51 @@ paths:
               schema:
                 type: array
                 items:
+                  "$ref": "#/components/schemas/gameworld"
+    post:
+      summary: Creates a gameworld
+      tags:
+      - gameworlds
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/gameworld"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gameworld:
                   type: object
                   properties:
-                    id:
-                      type: string
-                      format: uuid
-                    status:
-                      type: string
-                      enum:
-                      - active
-                      - inactive
-                    created_at:
-                      type: string
-                      format: date-time
-                    updated_at:
-                      type: string
-                      format: date-time
+                    player_amount:
+                      type: integer
+                      minimum: 1
+                    round_amount:
+                      type: integer
+                      minimum: 1
                   required:
-                  - id
-                  - status
-                  - created_at
-                  - updated_at
+                  - player_amount
+                  - round_amount
+              required:
+              - gameworld
   "/gameworlds/{id}":
     get:
       summary: Retrieves a gameworld
@@ -51,42 +186,19 @@ paths:
           type: string
       responses:
         '200':
-          description: gameworld found
+          description: Gameworld found
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                  status:
-                    type: string
-                    enum:
-                    - active
-                    - inactive
-                  planets:
-                    type: array
-                    items:
-                      id:
-                        type: string
-                        format: uuid
-                  created_at:
-                    type: string
-                    format: date-time
-                  updated_at:
-                    type: string
-                    format: date-time
-                required:
-                - id
-                - status
-                - planets
-                - created_at
-                - updated_at
+                "$ref": "#/components/schemas/gameworld"
         '404':
-          description: Gameworld not found
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000

@@ -18,16 +18,80 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'API V1',
+        title: 'Map API V1',
         version: 'v1'
+      },
+      components: {
+        schemas: {
+          errors_object: {
+            type: 'object',
+            properties: {
+              status: { type: 'integer', example: 404 },
+              error: { type: 'string', example: 'Not Found' },
+              exception: { type: 'string', example: "Couldn't find Gameworld with 'id'=1" }
+            }
+          },
+          gameworld: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: :uuid },
+              status: { type: :string, enum: %w[active inactive] },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            }
+          },
+          planet: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: :uuid },
+              movement_difficulty: { type: :integer },
+              recharge_multiplicator: { type: :integer },
+              taken_at: { type: :string, format: 'date-time' },
+              gameworld_id: { type: :string, format: :uuid },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            }
+          },
+          resource: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: :uuid },
+              max_amount: { type: :integer },
+              current_amount: { type: :integer },
+              planet_id: { type: :string, format: :uuid },
+              resource_type_id: { type: :string, format: :uuid },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            }
+          },
+          resource_type: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: :uuid },
+              name: { type: :string, enum: %w[coal iron gem gold platin] },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            }
+          },
+          mining: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: :uuid },
+              amount_requested: { type: :integer },
+              amount_mined: { type: :integer },
+              created_at: { type: :string, format: 'date-time' },
+              updated_at: { type: :string, format: 'date-time' }
+            }
+          }
+        }
       },
       paths: {},
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: 'http://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'localhost:3000'
             }
           }
         }

@@ -2,6 +2,7 @@ class GameworldsController < ApplicationController
   before_action :set_gameworld, only: %i[show update destroy]
   before_action :validate_params, only: %i[create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+  rescue_from ActionController::ParameterMissing, with: :render_params_missing
 
   # GET /gameworlds
   def index
@@ -12,7 +13,7 @@ class GameworldsController < ApplicationController
 
   # GET /gameworlds/1
   def show
-    render json: @gameworld.to_json(include: { planets: { except: %i[x y] } })
+    render json: @gameworld
   end
 
   # POST /gameworlds
@@ -20,8 +21,7 @@ class GameworldsController < ApplicationController
     @gameworld = Gameworld.new
 
     if @gameworld.save
-      render json: @gameworld.to_json(include: { planets: { except: %i[x y] } }), status: :created,
-             location: @gameworld
+      render json: @gameworld, status: :created, location: @gameworld
     else
       render json: @gameworld.errors, status: :unprocessable_entity
     end
