@@ -56,5 +56,17 @@ FactoryBot.define do
 
     factory :spawn_planet, traits: %i[spawn taken]
     factory :spacestation_planet, traits: [:spacestation]
+
+    factory :planet_with_resources do
+      transient do
+        resource_count { 1 }
+      end
+
+      after(:create) do |planet, evaluator|
+        create_list(:resource, evaluator.resource_count, planet: planet)
+
+        planet.reload
+      end
+    end
   end
 end

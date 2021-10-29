@@ -1,0 +1,433 @@
+---
+openapi: 3.0.1
+info:
+  title: Map API V1
+  version: v1
+components:
+  schemas:
+    errors_object:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        exception:
+          type: string
+          example: Couldn't find Gameworld with 'id'=1
+    gameworld:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - active
+          - inactive
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    planet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        movement_difficulty:
+          type: integer
+        recharge_multiplicator:
+          type: integer
+        taken_at:
+          type: string
+          format: date-time
+          nullable: true
+        gameworld_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    resource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        max_amount:
+          type: integer
+        current_amount:
+          type: integer
+        planet_id:
+          type: string
+          format: uuid
+        resource_type_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    resource_type:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          enum:
+          - coal
+          - iron
+          - gem
+          - gold
+          - platin
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    mining:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount_requested:
+          type: integer
+        amount_mined:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+paths:
+  "/gameworlds":
+    get:
+      summary: Retrieves all gameworlds
+      tags:
+      - gameworlds
+      responses:
+        '200':
+          description: Return all available gameworlds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/gameworld"
+    post:
+      summary: Creates a gameworld
+      tags:
+      - gameworlds
+      parameters: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/gameworld"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gameworld:
+                  type: object
+                  properties:
+                    player_amount:
+                      type: integer
+                      minimum: 1
+                    round_amount:
+                      type: integer
+                      minimum: 1
+                  required:
+                  - player_amount
+                  - round_amount
+              required:
+              - gameworld
+  "/gameworlds/{id}":
+    get:
+      summary: Retrieves a gameworld
+      tags:
+      - gameworlds
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Gameworld found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/gameworld"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+  "/planets/{id}/minings":
+    get:
+      summary: Retrieves all minings
+      tags:
+      - minings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return all available minings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/mining"
+    post:
+      summary: Creates a mining
+      tags:
+      - minings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/mining"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining:
+                  type: object
+                  properties:
+                    player_id:
+                      type: string
+                      format: uuid
+                    resource_type:
+                      type: string
+                      enum:
+                      - coal
+                      - iron
+                      - gem
+                      - gold
+                      - platin
+                    amount_mined:
+                      type: integer
+                      minimum: 1
+                  required:
+                  - player_id
+                  - resource_type
+                  - amount_mined
+              required:
+              - mining
+  "/planets/{id}/neighbours":
+    get:
+      summary: Retrieves all neighbours
+      tags:
+      - neighbours
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return all available neighbours
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/planet"
+  "/planets/{id}/neighbours/{neighbour_id}":
+    get:
+      summary: Retrieves a planets neighbour
+      tags:
+      - neighbours
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: neighbour_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Neighbour found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/planet"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+  "/planets":
+    get:
+      summary: Retrieves all planets
+      tags:
+      - planets
+      responses:
+        '200':
+          description: Return all available planets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/planet"
+  "/planets/{id}":
+    get:
+      summary: Retrieves a planet
+      tags:
+      - planets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Planet found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/planet"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+  "/resource_types":
+    get:
+      summary: Retrieves all resource_types
+      tags:
+      - resource_types
+      responses:
+        '200':
+          description: Return all available resource_types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/resource_type"
+  "/planets/{id}/resources":
+    get:
+      summary: Retrieves all resources
+      tags:
+      - resources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return all available resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/resource"
+  "/planets/{id}/resources/{resource_id}":
+    get:
+      summary: Retrieves a planets resources
+      tags:
+      - resources
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/resource"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

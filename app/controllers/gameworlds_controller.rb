@@ -1,5 +1,8 @@
 class GameworldsController < ApplicationController
   before_action :set_gameworld, only: %i[show update destroy]
+  before_action :validate_params, only: %i[create]
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+  rescue_from ActionController::ParameterMissing, with: :render_params_missing
 
   # GET /gameworlds
   def index
@@ -10,30 +13,18 @@ class GameworldsController < ApplicationController
 
   # GET /gameworlds/1
   def show
-    render json: @gameworld.to_json(include: :planets)
+    render json: @gameworld
   end
 
   # POST /gameworlds
   def create
-    if gameworld_params[:player_amount] > 0 && gameworld_params[:round_amount] > 0
-      @gameworld = Gameworld.new
+    @gameworld = Gameworld.new
 
-      if @gameworld.save
-        render json: @gameworld.to_json(include: :planets), status: :created, location: @gameworld
-      else
-        render json: @gameworld.errors, status: :unprocessable_entity
-      end
+    if @gameworld.save
+      render json: @gameworld, status: :created, location: @gameworld
     else
-      render json: {
-        'status' => 422,
-        'error' => 'Unprocessable Entity',
-        'exception' => 'player_amount and round_amount need to be larger than 0'
-      },
-             status: :unprocessable_entity
+      render json: @gameworld.errors, status: :unprocessable_entity
     end
-
-    # TODO: Generate Planets based on player_amount && round_amount
-    # Incoming params: player_amount, round_amount
   end
 
   private
@@ -46,5 +37,11 @@ class GameworldsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def gameworld_params
     params.require(:gameworld).permit(%i[player_amount round_amount])
+  end
+
+  def validate_params
+    return if gameworld_params[:player_amount].positive? && gameworld_params[:round_amount].positive?
+
+    render_unprocessable_entity('player_amount and round_amount need to be positive')
   end
 end

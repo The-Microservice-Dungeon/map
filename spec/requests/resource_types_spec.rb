@@ -1,16 +1,18 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/resource_types', type: :request do
-  let(:valid_headers) do
-    {}
-  end
+RSpec.describe 'resource_types', type: :request, capture_examples: true do
+  path '/resource_types' do
+    get('Retrieves all resource_types') do
+      produces 'application/json'
+      tags :resource_types
 
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      resource_type = create(:resource_type)
+      response(200, 'Return all available resource_types') do
+        schema type: :array,
+               items: { '$ref' => '#/components/schemas/resource_type' }
 
-      get resource_types_url(resource_type), headers: valid_headers, as: :json
-      expect(response).to be_successful
+        let!(:resource_type) { create(:resource_type) }
+        run_test!
+      end
     end
   end
 end

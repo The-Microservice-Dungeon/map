@@ -1,58 +1,65 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/minings', type: :request do
-  let(:valid_headers) do
-    {}
-  end
+RSpec.describe 'minings', type: :request, capture_examples: true do
+  path '/planets/{id}/minings' do
+    get('Retrieves all minings') do
+      produces 'application/json'
+      tags :minings
+      parameter name: :id, in: :path, type: :string
 
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      mining = create(:mining)
-      get minings_url(mining.planet), headers: valid_headers, as: :json
-      expect(response).to be_successful
+      response(200, 'Return all available minings') do
+        schema type: :array,
+               items: { '$ref' => '#/components/schemas/mining' }
+
+        let(:id) { create(:planet).id }
+        run_test!
+      end
     end
 
-    it 'renders a error response' do
-      expect do
-        get minings_url({ id: 'test' }), headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
+    post 'Creates a mining' do
+      tags :minings
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+      parameter name: :mining, in: :body, schema: {
+        type: :object,
+        properties: {
+          mining: { type: :object,
+                    properties: {
+                      player_id: { type: :string, format: :uuid },
+                      resource_type: { type: :string, enum: %w[coal iron gem gold platin] },
+                      amount_mined: { type: :integer, minimum: 1 }
+                    }, required: %w[player_id resource_type amount_mined] }
+        },
+        required: %w[mining]
+      }
 
-  describe 'POST /create' do
-    it 'creates a new mining' do
-      resource = create(:resource)
-      resource_type = resource.resource_type.name
-      post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
-                                         headers: valid_headers, as: :json
-      expect(response).to have_http_status(:created)
-    end
+      response '201', 'Created' do
+        schema '$ref' => '#/components/schemas/mining'
 
-    it 'does mine 0 when given a negative amount' do
-      resource = create(:resource)
-      resource_type = resource.resource_type.name
+        let(:planet) { create(:planet_with_resources) }
+        let(:id) { planet.id }
+        let(:mining) { { mining: { resource_type: 'coal', amount_mined: 100, planet_id: planet.id } } }
+        run_test!
+      end
 
-      post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: -100 } },
-                                         headers: valid_headers, as: :json
-      expect(response).to have_http_status(:created)
-    end
+      response '404', 'Not Found' do
+        schema '$ref' => '#/components/schemas/errors_object'
 
-    it 'fails when given resource type is not existent' do
-      resource = create(:resource)
-      resource_type = 'obsidian'
-      expect do
-        post minings_url(resource.planet), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
-                                           headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::StatementInvalid)
-    end
+        let(:planet) { create(:planet) }
+        let(:id) { planet.id }
+        let(:mining) { { mining: { resource_type: 'coal', amount_mined: 100, planet_id: planet.id } } }
+        run_test!
+      end
 
-    it 'fails when given planet is not existent' do
-      resource = create(:resource)
-      resource_type = resource.resource_type.name
-      expect do
-        post minings_url({ id: 'test' }), params: { mining: { resource_type: resource_type, amount_mined: 100 } },
-                                          headers: valid_headers, as: :json
-      end.to raise_error(ActiveRecord::RecordNotFound)
+      response '422', 'Unprocessable Entity' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:planet) { create(:planet_with_resources) }
+        let(:id) { planet.id }
+        let(:mining) { { mining: { resource_type: 'obsidian', amount_mined: 100, planet_id: planet.id } } }
+        run_test!
+      end
     end
   end
 end

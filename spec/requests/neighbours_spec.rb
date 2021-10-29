@@ -1,39 +1,55 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/planets/:id/neighbours', type: :request do
-  let(:valid_headers) do
-    {}
-  end
+RSpec.describe 'neighbours', type: :request, capture_examples: true do
+  path '/planets/{id}/neighbours' do
+    get('Retrieves all neighbours') do
+      produces 'application/json'
+      tags :neighbours
+      parameter name: :id, in: :path, type: :string
 
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      planet = create(:planet)
-      neighbour = create(:planet)
+      response(200, 'Return all available neighbours') do
+        schema type: :array,
+               items: { '$ref' => '#/components/schemas/planet' }
 
-      planet.add_neighbour(neighbour)
-
-      get neighbours_url(planet), headers: valid_headers, as: :json
-      expect(response).to be_successful
+        let(:id) do
+          planet = create(:planet)
+          neighbour = create(:planet)
+          planet.add_neighbour(neighbour)
+          planet.id
+        end
+        run_test!
+      end
     end
   end
 
-  describe 'GET /show' do
-    it 'renders a successful response' do
-      planet = create(:planet)
-      neighbour = create(:planet)
+  path '/planets/{id}/neighbours/{neighbour_id}' do
+    get 'Retrieves a planets neighbour' do
+      tags :neighbours
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+      parameter name: :neighbour_id, in: :path, type: :string
 
-      planet.add_neighbour(neighbour)
+      response '200', 'Neighbour found' do
+        schema '$ref' => '#/components/schemas/planet'
 
-      get neighbour_url(planet, neighbour), as: :json
-      expect(response).to be_successful
-    end
+        let(:planet) { create(:planet) }
+        let(:neighbour) do
+          neighbour = create(:planet)
+          planet.add_neighbour(neighbour)
+          neighbour
+        end
+        let(:id) { planet.id }
+        let(:neighbour_id) { neighbour.id }
+        run_test!
+      end
 
-    it 'renders a not found error' do
-      planet = create(:planet)
-      neighbour = create(:planet)
+      response '404', 'Not Found' do
+        schema '$ref' => '#/components/schemas/errors_object'
 
-      get neighbour_url(planet, neighbour), as: :json
-      expect(response).to have_http_status(:not_found)
+        let(:id) { 'invalid' }
+        let(:neighbour_id) { 'invalid' }
+        run_test!
+      end
     end
   end
 end

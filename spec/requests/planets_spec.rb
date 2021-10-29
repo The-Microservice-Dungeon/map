@@ -1,34 +1,40 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/planets', type: :request do
-  let(:valid_attributes) do
-    gameworld = create(:gameworld)
-    { 'movement_difficulty' => 0, 'recharge_multiplicator' => 0, 'planet_type' => 'default', 'x' => 0, 'y' => 0,
-      'gameworld_id' => gameworld.id }
-  end
+RSpec.describe 'planets', type: :request, capture_examples: true do
+  path '/planets' do
+    get('Retrieves all planets') do
+      produces 'application/json'
+      tags :planets
 
-  let(:invalid_attributes) do
-    { 'movement_difficulty' => 0, 'recharge_multiplicator' => 0, 'planet_type' => 'default', 'x' => 0, 'y' => 0,
-      'gameworld_id' => nil }
-  end
+      response(200, 'Return all available planets') do
+        schema type: :array,
+               items: { '$ref' => '#/components/schemas/planet' }
 
-  let(:valid_headers) do
-    {}
-  end
-
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      Planet.create! valid_attributes
-      get planets_url, headers: valid_headers, as: :json
-      expect(response).to be_successful
+        let!(:planet) { create(:planet) }
+        run_test!
+      end
     end
   end
 
-  describe 'GET /show' do
-    it 'renders a successful response' do
-      planet = Planet.create! valid_attributes
-      get planet_url(planet), as: :json
-      expect(response).to be_successful
+  path '/planets/{id}' do
+    get 'Retrieves a planet' do
+      tags :planets
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+
+      response '200', 'Planet found' do
+        schema '$ref' => '#/components/schemas/planet'
+
+        let(:id) { create(:planet).id }
+        run_test!
+      end
+
+      response '404', 'Not Found' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:id) { 'invalid' }
+        run_test!
+      end
     end
   end
 end

@@ -1,64 +1,77 @@
-require 'rails_helper'
+require 'swagger_helper'
 
-RSpec.describe '/gameworlds', type: :request do
-  let(:valid_attributes) do
-    { 'player_amount' => 100, 'round_amount' => 1000 }
-  end
+RSpec.describe 'gameworlds', type: :request, capture_examples: true do
+  path '/gameworlds' do
+    get('Retrieves all gameworlds') do
+      produces 'application/json'
+      tags :gameworlds
 
-  let(:invalid_attributes) do
-    { 'player_amount' => -100, 'round_amount' => -1000 }
-  end
+      response(200, 'Return all available gameworlds') do
+        schema type: :array,
+               items: { '$ref' => '#/components/schemas/gameworld' }
 
-  let(:valid_headers) do
-    {}
-  end
-
-  describe 'GET /index' do
-    it 'renders a successful response' do
-      Gameworld.create!
-      get gameworlds_url, headers: valid_headers, as: :json
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'GET /show' do
-    it 'renders a successful response' do
-      gameworld = Gameworld.create!
-      get gameworld_url(gameworld), as: :json
-      expect(response).to be_successful
-    end
-  end
-
-  describe 'POST /create' do
-    context 'with valid parameters' do
-      it 'creates a new Gameworld' do
-        expect do
-          post gameworlds_url,
-               params: { gameworld: valid_attributes }, headers: valid_headers, as: :json
-        end.to change(Gameworld, :count).by(1)
-      end
-
-      it 'renders a JSON response with the new gameworld' do
-        post gameworlds_url,
-             params: { gameworld: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including('application/json'))
+        let!(:gameworld) { create(:gameworld) }
+        run_test!
       end
     end
 
-    context 'with invalid parameters' do
-      it 'does not create a new Gameworld' do
-        expect do
-          post gameworlds_url,
-               params: { gameworld: invalid_attributes }, as: :json
-        end.to change(Gameworld, :count).by(0)
+    post 'Creates a gameworld' do
+      tags :gameworlds
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :gameworld, in: :body, schema: {
+        type: :object,
+        properties: {
+          gameworld: { type: :object,
+                       properties: {
+                         player_amount: { type: :integer, minimum: 1 },
+                         round_amount: { type: :integer, minimum: 1 }
+                       }, required: %i[player_amount round_amount] }
+        },
+        required: %w[gameworld]
+      }
+
+      response '201', 'Created' do
+        schema '$ref' => '#/components/schemas/gameworld'
+
+        let(:gameworld) { { gameworld: { player_amount: 100, round_amount: 100 } } }
+        run_test!
       end
 
-      it 'renders a JSON response with errors for the new gameworld' do
-        post gameworlds_url,
-             params: { gameworld: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json; charset=utf-8')
+      response '400', 'Bad Request' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:gameworld) { { player_amount: 100 } }
+        run_test!
+      end
+
+      response '422', 'Unprocessable Entity' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:gameworld) { { gameworld: { player_amount: 100, round_amount: -100 } } }
+        run_test!
+      end
+    end
+  end
+
+  path '/gameworlds/{id}' do
+    get 'Retrieves a gameworld' do
+      tags :gameworlds
+      produces 'application/json'
+      parameter name: :id, in: :path, type: :string
+
+      response '200', 'Gameworld found' do
+        schema '$ref' => '#/components/schemas/gameworld'
+
+        let(:id) { create(:gameworld).id }
+        run_test!
+      end
+
+      response '404', 'Not Found' do
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        let(:id) { 'invalid' }
+        run_test!
       end
     end
   end

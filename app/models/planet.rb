@@ -30,11 +30,4 @@ class Planet < ApplicationRecord
   def taken?
     !taken_at.nil?
   end
-
-  def as_json(options = {})
-    hash = super(options)
-    hash.delete('x')
-    hash.delete('y')
-    hash
-  end
 end
