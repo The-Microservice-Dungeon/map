@@ -67,4 +67,15 @@ RSpec.describe GameworldBuilder, type: :model do
       expect(gameworld.planets.first.neighbours.length).to eq(2)
     end
   end
+
+  context 'spawn creation' do
+    it 'creates as many spawns as there are players' do
+      gwb = GameworldBuilder.new(12, 1000)
+      gwb.create_spawns
+
+      spawn_count = gwb.gameworld.planets.count {|p| p.planet_type == 'spawn'}
+
+      expect(spawn_count).to eq(12)
+    end
+  end
 end
