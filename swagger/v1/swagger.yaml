@@ -197,6 +197,44 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
+  "/planets":
+    get:
+      summary: Retrieves all planets
+      tags:
+      - planets
+      responses:
+        '200':
+          description: Return all available planets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/planet"
+  "/planets/{id}":
+    get:
+      summary: Retrieves a planet
+      tags:
+      - planets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Planet found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/planet"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
 servers:
 - url: http://{defaultHost}
   variables:
