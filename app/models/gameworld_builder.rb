@@ -15,16 +15,20 @@ class GameworldBuilder
 
   def create_spawns
     grid_size = Math.sqrt(@gameworld.planets.size) - 1
+
     possible_spawns = @gameworld.planets.find_all do |p|
-      p.x == 0 ||
-      p.x == grid_size ||
-      p.y == 0 ||
-      p.y == grid_size
+      p.x.zero? ||
+        p.x == grid_size ||
+        p.y.zero? ||
+        p.y == grid_size
     end
+
     distance_between_spawns = possible_spawns.size / @player_amount
-    all_spawns = possible_spawns.select.with_index do |p, i|
+
+    all_spawns = possible_spawns.select.with_index do |_p, i|
       i % distance_between_spawns == 0
     end
+
     all_spawns.each do |p|
       p.planet_type = 'spawn'
     end
