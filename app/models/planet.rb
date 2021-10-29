@@ -2,8 +2,8 @@ class Planet < ApplicationRecord
   enum planet_type: %i[default spawn spacestation], _default: :default, _suffix: true
   validates :planet_type, inclusion: { in: planet_types.keys }
 
-  attribute :movement_difficulty, :integer, default: 0
-  attribute :recharge_multiplicator, :integer, default: 0
+  attribute :movement_difficulty, :integer, default: 1
+  attribute :recharge_multiplicator, :integer, default: 1
 
   validates :movement_difficulty, numericality: { greater_than_or_equal_to: 0 }
   validates :recharge_multiplicator, numericality: { greater_than_or_equal_to: 0 }
@@ -16,7 +16,7 @@ class Planet < ApplicationRecord
                           foreign_key: 'planet_id',
                           association_foreign_key: 'neighbour_id'
 
-  has_many :resources
+  has_many :resources, dependent: :delete_all
 
   def add_neighbour(neighbour)
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self
