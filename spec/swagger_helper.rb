@@ -46,7 +46,7 @@ RSpec.configure do |config|
               id: { type: :string, format: :uuid },
               movement_difficulty: { type: :integer },
               recharge_multiplicator: { type: :integer },
-              taken_at: { type: :string, format: 'date-time' },
+              taken_at: { type: :string, format: 'date-time', nullable: true },
               gameworld_id: { type: :string, format: :uuid },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' }

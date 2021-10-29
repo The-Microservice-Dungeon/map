@@ -10,7 +10,7 @@ RSpec.describe 'planets', type: :request, capture_examples: true do
         schema type: :array,
                items: { '$ref' => '#/components/schemas/planet' }
 
-        let!(:planet) { create(:plaanet) }
+        let!(:planet) { create(:planet) }
         run_test!
       end
     end

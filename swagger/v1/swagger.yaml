@@ -47,6 +47,7 @@ components:
         taken_at:
           type: string
           format: date-time
+          nullable: true
         gameworld_id:
           type: string
           format: uuid
@@ -235,6 +236,20 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
+  "/resource_types":
+    get:
+      summary: Retrieves all resource_types
+      tags:
+      - resource_types
+      responses:
+        '200':
+          description: Return all available resource_types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/resource_type"
 servers:
 - url: http://{defaultHost}
   variables:
