@@ -9,7 +9,7 @@ RSpec.describe 'resources', type: :request, capture_examples: true do
 
       response(200, 'Return all available resources') do
         schema type: :array,
-               items: { '$ref' => '#/components/schemas/planet' }
+               items: { '$ref' => '#/components/schemas/resource' }
 
         let(:id) { create(:planet).id }
         run_test!
@@ -25,7 +25,7 @@ RSpec.describe 'resources', type: :request, capture_examples: true do
       parameter name: :resource_id, in: :path, type: :string
 
       response '200', 'Resource found' do
-        schema '$ref' => '#/components/schemas/planet'
+        schema '$ref' => '#/components/schemas/resource'
 
         let(:planet) { create(:planet) }
         let(:id) { planet.id }

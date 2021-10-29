@@ -198,6 +198,84 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
+  "/planets/{id}/minings":
+    get:
+      summary: Retrieves all minings
+      tags:
+      - minings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return all available minings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/mining"
+    post:
+      summary: Creates a mining
+      tags:
+      - minings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/mining"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining:
+                  type: object
+                  properties:
+                    player_id:
+                      type: string
+                      format: uuid
+                    resource_type:
+                      type: string
+                      enum:
+                      - coal
+                      - iron
+                      - gem
+                      - gold
+                      - platin
+                    amount_mined:
+                      type: integer
+                      minimum: 1
+                  required:
+                  - player_id
+                  - resource_type
+                  - amount_mined
+              required:
+              - mining
   "/planets/{id}/neighbours":
     get:
       summary: Retrieves all neighbours
@@ -318,7 +396,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/planet"
+                  "$ref": "#/components/schemas/resource"
   "/planets/{id}/resources/{resource_id}":
     get:
       summary: Retrieves a planets resources
@@ -341,7 +419,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/planet"
+                "$ref": "#/components/schemas/resource"
         '404':
           description: Not Found
           content:
