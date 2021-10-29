@@ -13,7 +13,6 @@ class GameworldBuilder
     end
   end
 
-  #TODO: be careful with comma values
   def create_spawns
     grid_size = Math.sqrt(@gameworld.planets.size) - 1
     possible_spawns = @gameworld.planets.find_all do |p|
