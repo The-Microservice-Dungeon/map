@@ -10,5 +10,6 @@ class Mining < ApplicationRecord
     resource.current_amount = [diff, 0].max
 
     $producer.produce_async(topic: 'resource_mined', payload: to_json)
+    $producer.produce_async(topic: 'resource_emptied', payload: resource.to_json) if resource.current_amount.zero?
   end
 end
