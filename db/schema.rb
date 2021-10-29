@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_28_200139) do
+ActiveRecord::Schema.define(version: 2021_10_29_122322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -25,11 +25,12 @@ ActiveRecord::Schema.define(version: 2021_10_28_200139) do
   create_table "minings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "planet_id", null: false
     t.integer "amount_mined"
-    t.uuid "resource_type_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "resource_id", null: false
+    t.integer "amount_requested"
     t.index ["planet_id"], name: "index_minings_on_planet_id"
-    t.index ["resource_type_id"], name: "index_minings_on_resource_type_id"
+    t.index ["resource_id"], name: "index_minings_on_resource_id"
   end
 
   create_table "planets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -53,12 +54,12 @@ ActiveRecord::Schema.define(version: 2021_10_28_200139) do
 
   create_table "replenishments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "planet_id", null: false
-    t.uuid "resource_type_id", null: false
     t.integer "amount_replenished"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "resource_id", null: false
     t.index ["planet_id"], name: "index_replenishments_on_planet_id"
-    t.index ["resource_type_id"], name: "index_replenishments_on_resource_type_id"
+    t.index ["resource_id"], name: "index_replenishments_on_resource_id"
   end
 
   create_table "resource_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -95,10 +96,10 @@ ActiveRecord::Schema.define(version: 2021_10_28_200139) do
   end
 
   add_foreign_key "minings", "planets"
-  add_foreign_key "minings", "resource_types"
+  add_foreign_key "minings", "resources"
   add_foreign_key "planets", "gameworlds"
   add_foreign_key "replenishments", "planets"
-  add_foreign_key "replenishments", "resource_types"
+  add_foreign_key "replenishments", "resources"
   add_foreign_key "resources", "planets"
   add_foreign_key "resources", "resource_types"
   add_foreign_key "spacestation_creations", "planets"

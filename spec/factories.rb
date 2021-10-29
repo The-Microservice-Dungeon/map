@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :replenishment do
     planet
-    resource_type
-    amount_replenished { 1000 }
+    resource
   end
 
   factory :spawn_creation do
@@ -15,8 +14,8 @@ FactoryBot.define do
 
   factory :mining do
     planet
-    amount_mined { 100 }
-    resource_type
+    amount_requested { 300 }
+    resource
   end
 
   factory :resource do

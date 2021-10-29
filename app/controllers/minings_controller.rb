@@ -11,8 +11,15 @@ class MiningsController < ApplicationController
 
   # POST /planets/1/minings
   def create
-    mining = @resource.execute_mining(mining_params[:amount_mined])
-    render json: mining, status: :created
+    amount_requested = mining_params[:amount_mined]
+    @mining = Mining.new(resource_id: @resource.id, planet_id: @resource.planet_id, amount_requested: amount_requested)
+    @mining.execute
+
+    if @mining.save
+      render json: @mining, status: :created
+    else
+      render json: @mining.errors, status: :unprocessable_entity
+    end
   end
 
   private
