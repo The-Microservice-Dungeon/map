@@ -100,12 +100,12 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'spacestation creation' do
     it 'creates spacestations in all tiles within boundaries' do
-      gwb = GameworldBuilder.new(10, 10)
+      gwb = GameworldBuilder.new(12, 10)
       gwb.create_spacestation
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
 
-      expect(spacestation_count).to eq(36)
+      expect(spacestation_count).to eq(4)
     end
   end
 end

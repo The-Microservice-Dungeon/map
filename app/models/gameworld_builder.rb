@@ -22,6 +22,7 @@ class GameworldBuilder
         p.y >= border
     end
     spacestation_amount = possible_spacestations.size.fdiv(100) * @player_amount
+
     all_spacestations = possible_spacestations.sample(spacestation_amount)
 
     all_spacestations.each do |p|
