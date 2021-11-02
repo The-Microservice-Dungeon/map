@@ -73,7 +73,7 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb = GameworldBuilder.new(12, 20)
       gwb.create_spawns
 
-      energy_count = gwb.gameworld.planets.count {|p| p.recharge_multiplicator == 2}
+      energy_count = gwb.gameworld.planets.count { |p| p.recharge_multiplicator == 2 }
 
       expect(energy_count).to eq(12)
     end
@@ -88,13 +88,24 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb3 = GameworldBuilder.new(2, 20)
       gwb3.create_spawns
 
-      spawn_count = gwb.gameworld.planets.count {|p| p.planet_type == 'spawn'}
-      spawn_count2 = gwb2.gameworld.planets.count {|p| p.planet_type == 'spawn'}
-      spawn_count3 = gwb3.gameworld.planets.count {|p| p.planet_type == 'spawn'}
+      spawn_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' }
+      spawn_count2 = gwb2.gameworld.planets.count { |p| p.planet_type == 'spawn' }
+      spawn_count3 = gwb3.gameworld.planets.count { |p| p.planet_type == 'spawn' }
 
       expect(spawn_count).to eq(12)
       expect(spawn_count2).to eq(35)
       expect(spawn_count3).to eq(2)
+    end
+  end
+
+  context 'spacestation creation' do
+    it 'creates spacestations in all tiles within boundaries' do
+      gwb = GameworldBuilder.new(12, 10)
+      gwb.create_spacestation
+
+      spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
+
+      expect(spacestation_count).to eq(4)
     end
   end
 end
