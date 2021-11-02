@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe GameworldBuilder, type: :model do
   context 'initializing the gameworld builder' do
     it 'builds a new gameworld with associated planets' do
-      gwb = GameworldBuilder.new(1, 1)
+      gwb = GameworldBuilder.new(1, 10)
       gameworld = gwb.gameworld
 
       expect(gameworld.status).to eq('active')
@@ -12,16 +12,16 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'builds the planet size dependent on parameters given' do
-      gwb = GameworldBuilder.new(30, 1000)
+      gwb = GameworldBuilder.new(10, 20)
       planets = gwb.gameworld.planets
 
-      expect(planets.length).to eq(100)
+      expect(planets.length).to eq(400)
     end
   end
 
   context 'neighbour the gameworlds planets' do
     it 'planet at x:0, y:0 should have 2 neighbours' do
-      gwb = GameworldBuilder.new(1, 1)
+      gwb = GameworldBuilder.new(1, 10)
       gwb.neighbour_planets
 
       planets = gwb.gameworld.planets
@@ -38,7 +38,7 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'planet at x:5, y:5 should have 4 neighbours' do
-      gwb = GameworldBuilder.new(30, 1000)
+      gwb = GameworldBuilder.new(5, 10)
       gwb.neighbour_planets
 
       planets = gwb.gameworld.planets
@@ -57,13 +57,13 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'database persistence' do
     it 'saves the gameworld to the database' do
-      gwb = GameworldBuilder.new(30, 1000)
+      gwb = GameworldBuilder.new(30, 20)
       gwb.gameworld.save
       gwb.neighbour_planets
 
       gameworld = Gameworld.all.first
 
-      expect(gameworld.planets.length).to eq(100)
+      expect(gameworld.planets.length).to eq(400)
       expect(gameworld.planets.first.neighbours.length).to eq(2)
     end
   end
@@ -81,7 +81,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'spawn creation' do
     it 'creates as many spawns as there are players' do
-      gwb = GameworldBuilder.new(12, 1000)
+      gwb = GameworldBuilder.new(12, 10)
       gwb.create_spawns
 
       spawn_count = gwb.gameworld.planets.count {|p| p.planet_type == 'spawn'}

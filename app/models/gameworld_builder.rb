@@ -1,13 +1,13 @@
 class GameworldBuilder
-  attr_reader :gameworld, :player_amount, :round_amount
+  attr_reader :gameworld, :player_amount, :map_size
 
-  def initialize(player_amount, round_amount)
+  def initialize(player_amount, map_size)
     @gameworld = Gameworld.new
     @player_amount = player_amount
-    @round_amount = round_amount
+    @map_size = map_size
 
-    (0..9).each do |column|
-      (0..9).each do |row|
+    (0..map_size - 1).each do |column|
+      (0..map_size - 1).each do |row|
         @gameworld.planets.build(x: column, y: row)
       end
     end
