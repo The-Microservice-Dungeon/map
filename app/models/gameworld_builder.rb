@@ -31,6 +31,7 @@ class GameworldBuilder
 
     all_spawns.each do |p|
       p.planet_type = 'spawn'
+      p.recharge_multiplicator = 2
     end
   end
 
