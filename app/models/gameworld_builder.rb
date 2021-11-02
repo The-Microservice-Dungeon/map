@@ -21,7 +21,9 @@ class GameworldBuilder
         p.x < @map_size - border   &&
         p.y >= border
     end
-    all_spacestations = possible_spacestations
+    spacestation_amount = possible_spacestations.size.fdiv(100) * @player_amount
+    all_spacestations = possible_spacestations.sample(spacestation_amount)
+
     all_spacestations.each do |p|
       p.planet_type = 'spacestation'
       p.recharge_multiplicator = 2
