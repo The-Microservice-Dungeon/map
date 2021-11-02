@@ -70,7 +70,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'spawn creation' do
     it 'recharge faster if on spawn' do
-      gwb = GameworldBuilder.new(12, 1000)
+      gwb = GameworldBuilder.new(12, 20)
       gwb.create_spawns
 
       energy_count = gwb.gameworld.planets.count {|p| p.recharge_multiplicator == 2}
@@ -81,12 +81,20 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'spawn creation' do
     it 'creates as many spawns as there are players' do
-      gwb = GameworldBuilder.new(12, 10)
+      gwb = GameworldBuilder.new(12, 20)
       gwb.create_spawns
+      gwb2 = GameworldBuilder.new(35, 10)
+      gwb2.create_spawns
+      gwb3 = GameworldBuilder.new(2, 20)
+      gwb3.create_spawns
 
       spawn_count = gwb.gameworld.planets.count {|p| p.planet_type == 'spawn'}
+      spawn_count2 = gwb2.gameworld.planets.count {|p| p.planet_type == 'spawn'}
+      spawn_count3 = gwb3.gameworld.planets.count {|p| p.planet_type == 'spawn'}
 
       expect(spawn_count).to eq(12)
+      expect(spawn_count2).to eq(35)
+      expect(spawn_count3).to eq(2)
     end
   end
 end

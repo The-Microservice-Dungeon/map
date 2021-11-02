@@ -29,6 +29,10 @@ class GameworldBuilder
       i % distance_between_spawns == 0
     end
 
+    if all_spawns.size > @player_amount
+      all_spawns.pop()
+    end
+
     all_spawns.each do |p|
       p.planet_type = 'spawn'
       p.recharge_multiplicator = 2
