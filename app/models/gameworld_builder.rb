@@ -13,6 +13,21 @@ class GameworldBuilder
     end
   end
 
+  def create_spacestation
+    border = 2
+    possible_spacestations = @gameworld.planets.find_all do |p|
+      p.x >= border &&
+        p.y < @map_size - border   &&
+        p.x < @map_size - border   &&
+        p.y >= border
+    end
+    all_spacestations = possible_spacestations
+    all_spacestations.each do |p|
+      p.planet_type = 'spacestation'
+      p.recharge_multiplicator = 2
+    end
+  end
+
   def create_spawns
     grid_size = Math.sqrt(@gameworld.planets.size) - 1
 
@@ -29,9 +44,7 @@ class GameworldBuilder
       i % distance_between_spawns == 0
     end
 
-    if all_spawns.size > @player_amount
-      all_spawns.pop()
-    end
+    all_spawns.pop if all_spawns.size > @player_amount
 
     all_spawns.each do |p|
       p.planet_type = 'spawn'
