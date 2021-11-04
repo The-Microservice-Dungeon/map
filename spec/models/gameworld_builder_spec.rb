@@ -110,7 +110,7 @@ RSpec.describe GameworldBuilder, type: :model do
   end
 
   context 'resouces created' do
-    it 'creates appropriate amount of recources' do
+    it 'creates appropriate amount of resources' do
       coal = create(:resource_type, name: 'coal')
       iron = create(:resource_type, name: 'iron')
       gem = create(:resource_type, name: 'gem')
@@ -120,7 +120,7 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb = GameworldBuilder.new(12, 20)
       gwb.create_spawns
       gwb.create_spacestations
-      gwb.create_recources
+      gwb.create_resources
 
       coal_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == coal.id } }
       iron_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == iron.id } }
@@ -135,7 +135,7 @@ RSpec.describe GameworldBuilder, type: :model do
       expect(platin_count).to eq(8)
     end
 
-    it 'doesn´t place recources on Spawns or Space Stations' do
+    it 'doesn´t place resources on Spawns or Space Stations' do
       create(:resource_type, name: 'coal')
       create(:resource_type, name: 'iron')
       create(:resource_type, name: 'gem')
@@ -145,7 +145,7 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb = GameworldBuilder.new(12, 20)
       gwb.create_spawns
       gwb.create_spacestations
-      gwb.create_recources
+      gwb.create_resources
 
       spawns = gwb.gameworld.planets.find_all { |p| p.planet_type == 'spawn' && p.resources.empty? }.count
       spacestations = gwb.gameworld.planets.find_all do |p|

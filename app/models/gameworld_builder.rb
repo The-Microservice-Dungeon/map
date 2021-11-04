@@ -69,7 +69,7 @@ class GameworldBuilder
     end
   end
 
-  def create_recources
+  def create_resources
     resources = [
       { patch_amount: @gameworld.planets.size / 10, name: 'coal', part_of_map: :outer_map? },
       { patch_amount: @gameworld.planets.size / 20, name: 'iron', part_of_map: :mid_map? },
@@ -108,7 +108,7 @@ class GameworldBuilder
   end
 
   def outer_map?(planet)
-    !inner_map?(planet) || !mid_map?(planet)
+    !inner_map?(planet) && !mid_map?(planet)
   end
 
   def get_neighbours(planet)
