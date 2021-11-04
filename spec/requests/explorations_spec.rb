@@ -15,7 +15,7 @@ RSpec.describe 'explorations', type: :request, capture_examples: true do
                            transaction_id: { type: :string, format: :uuid }
                          }, required: %i[transaction_id] }
         },
-        required: %w[gameworld]
+        required: %w[exploration]
       }
 
       response '201', 'Created' do
