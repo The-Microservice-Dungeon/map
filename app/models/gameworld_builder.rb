@@ -86,11 +86,11 @@ class GameworldBuilder
   private
 
   def create_specific_resources(name, patch_amount, part_of_map)
-    coal_planets = @gameworld.planets.select do |p|
+    resource_planets = @gameworld.planets.select do |p|
       method(part_of_map).call(p) && p.planet_type == 'default' && p.resources.empty?
     end.sample(patch_amount)
 
-    coal_planets.each do |p|
+    resource_planets.each do |p|
       p.add_resource(ResourceType.find_by(name: name).id, 10_000)
     end
   end
