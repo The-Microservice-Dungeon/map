@@ -44,12 +44,12 @@ class GameworldBuilder
     distance_between_spawns = possible_spawns.size / @player_amount
 
     all_spawns = possible_spawns.select.with_index do |_p, i|
-      i % distance_between_spawns == 0
+      ((i + 1) % distance_between_spawns).zero?
     end
 
     all_spawns.pop if all_spawns.size > @player_amount
 
-    all_spawns.each do |p|
+    all_spawns.sort_by { |s| s.y && s.x }.each do |p|
       p.planet_type = 'spawn'
       p.recharge_multiplicator = 2
     end
@@ -78,20 +78,20 @@ class GameworldBuilder
 
   def create_recources
     planets = @gameworld.planets
-    resource_patch_amount = [planets.size / 10, planets.size / 20, planets.size / 30, planets.size / 40, planets.size / 50]
-    resource_names = ['coal','iron','gem','gold','platin']
+    resource_patch_amount = [planets.size / 10, planets.size / 20, planets.size / 30, planets.size / 40,
+                             planets.size / 50]
+    resource_names = %w[coal iron gem gold platin]
 
     possible_patches = @gameworld.planets.find_all do |p|
       p.planet_type == 'default' &&
-      p.resources.empty?
+        p.resources.empty?
     end
 
-    resource_patch_amount.each_with_index do | resource_type , index |
-
+    resource_patch_amount.each_with_index do |_resource_type, index|
       resource_patches = possible_patches.sample(resource_patch_amount[index])
 
-      resource_patches.each do | p |
-        p.add_resource(ResourceType.find_by(name: resource_names[index]).id, 10000)
+      resource_patches.each do |p|
+        p.add_resource(ResourceType.find_by(name: resource_names[index]).id, 10_000)
       end
     end
   end
