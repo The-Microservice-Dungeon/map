@@ -133,7 +133,26 @@ RSpec.describe GameworldBuilder, type: :model do
       expect(gem_count).to eq(13)  
       expect(gold_count).to eq(10)  
       expect(platin_count).to eq(8)  
+      
+    end
 
+    it 'doesn´t place recources on Spawns or Space Stations' do
+      coal = create(:resource_type, name: "coal")
+      iron = create(:resource_type, name: "iron")
+      gem = create(:resource_type, name: "gem")
+      gold = create(:resource_type, name: "gold")
+      platin = create(:resource_type, name: "platin")
+
+      gwb = GameworldBuilder.new(12, 20)
+      gwb.create_spawns
+      gwb.create_spacestation
+      gwb.create_recources
+
+      spawns = gwb.gameworld.planets.find_all {|p| p.planet_type == "spawn" && p.resources.empty?}.count
+      spacestations = gwb.gameworld.planets.find_all {|p| p.planet_type == "spacestation" && p.resources.empty?}.count
+
+      expect(spawns).to eq(12)
+      expect(spacestations).to eq(30)  
     end
   end
 end

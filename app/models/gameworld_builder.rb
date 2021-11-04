@@ -82,7 +82,7 @@ class GameworldBuilder
     resource_names = ['coal','iron','gem','gold','platin']
 
     possible_patches = @gameworld.planets.find_all do |p|
-      p.planet_type == 'default' ||
+      p.planet_type == 'default' &&
       p.resources.empty?
     end
 
