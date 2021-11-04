@@ -55,6 +55,15 @@ class GameworldBuilder
     end
   end
 
+  def delete_random_planets
+    #TODO: How many to delete?
+    planet = @gameworld.planets.find_all do |p|
+      p.x == 0 &&
+      p.y == 0
+    end
+    @gameworld.planets.destroy(planet)
+  end
+
   def add_movement_difficulty
     grid_size = Math.sqrt(@gameworld.planets.size) - 1
     inner = grid_size / 3
