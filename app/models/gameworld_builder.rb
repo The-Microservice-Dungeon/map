@@ -13,7 +13,7 @@ class GameworldBuilder
     end
   end
 
-  def create_spacestation
+  def create_spacestations
     border = 2
     possible_spacestations = @gameworld.planets.find_all do |p|
       p.x >= border &&
@@ -56,16 +56,9 @@ class GameworldBuilder
   end
 
   def add_movement_difficulty
-    grid_size = Math.sqrt(@gameworld.planets.size) - 1
-    inner = grid_size / 3
-    mid = grid_size / 3 / 2
-
     @gameworld.planets.each do |p|
-      if p.x > inner && p.x < grid_size - inner && p.y > inner && p.y < grid_size - inner
-        p.movement_difficulty = 3
-      elsif p.x > mid && p.x < grid_size - mid && p.y > mid && p.y < grid_size - mid
-        p.movement_difficulty = 2
-      end
+      p.movement_difficulty = 3 if inner_map?(p)
+      p.movement_difficulty = 2 if mid_map?(p)
     end
   end
 
@@ -77,26 +70,46 @@ class GameworldBuilder
   end
 
   def create_recources
-    planets = @gameworld.planets
-    resource_patch_amount = [planets.size / 10, planets.size / 20, planets.size / 30, planets.size / 40,
-                             planets.size / 50]
-    resource_names = %w[coal iron gem gold platin]
+    resources = [
+      { patch_amount: @gameworld.planets.size / 10, name: 'coal', part_of_map: :outer_map? },
+      { patch_amount: @gameworld.planets.size / 20, name: 'iron', part_of_map: :mid_map? },
+      { patch_amount: @gameworld.planets.size / 30, name: 'gem', part_of_map: :mid_map? },
+      { patch_amount: @gameworld.planets.size / 40, name: 'gold', part_of_map: :inner_map? },
+      { patch_amount: @gameworld.planets.size / 50, name: 'platin', part_of_map: :inner_map? }
+    ]
 
-    possible_patches = @gameworld.planets.find_all do |p|
-      p.planet_type == 'default' &&
-        p.resources.empty?
-    end
-
-    resource_patch_amount.each_with_index do |_resource_type, index|
-      resource_patches = possible_patches.sample(resource_patch_amount[index])
-
-      resource_patches.each do |p|
-        p.add_resource(ResourceType.find_by(name: resource_names[index]).id, 10_000)
-      end
+    resources.each do |r|
+      create_specific_resources(r[:name], r[:patch_amount], r[:part_of_map])
     end
   end
 
   private
+
+  def create_specific_resources(name, patch_amount, part_of_map)
+    coal_planets = @gameworld.planets.select do |p|
+      method(part_of_map).call(p) && p.planet_type == 'default' && p.resources.empty?
+    end.sample(patch_amount)
+
+    coal_planets.each do |p|
+      p.add_resource(ResourceType.find_by(name: name).id, 10_000)
+    end
+  end
+
+  def inner_map?(planet)
+    grid_size = @map_size - 1
+    inner = grid_size / 3
+    planet.x > inner && planet.x < grid_size - inner && planet.y > inner && planet.y < grid_size - inner
+  end
+
+  def mid_map?(planet)
+    grid_size = @map_size - 1
+    mid = grid_size / 3 / 2
+    planet.x > mid && planet.x < grid_size - mid && planet.y > mid && planet.y < grid_size - mid
+  end
+
+  def outer_map?(planet)
+    !inner_map?(planet) || !mid_map?(planet)
+  end
 
   def get_neighbours(planet)
     neighbours = []
