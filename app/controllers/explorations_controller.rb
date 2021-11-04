@@ -6,9 +6,9 @@ class ExplorationsController < ApplicationController
   # POST /planets/:planet_id/explorations
   def create
     @exploration = Exploration.new(planet_id: @planet.id, transaction_id: exploration_params[:transaction_id])
-    @exploration.execute
 
     if @exploration.save
+      @exploration.execute
       render json: @exploration, status: :created
     else
       render json: @exploration.errors, status: :unprocessable_entity
