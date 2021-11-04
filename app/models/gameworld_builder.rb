@@ -32,7 +32,7 @@ class GameworldBuilder
   end
 
   def create_spawns
-    grid_size = Math.sqrt(@gameworld.planets.size) - 1
+    grid_size = @map_size
 
     possible_spawns = @gameworld.planets.find_all do |p|
       p.x.zero? ||
@@ -65,7 +65,7 @@ class GameworldBuilder
   end
 
   def add_movement_difficulty
-    grid_size = Math.sqrt(@gameworld.planets.size) - 1
+    grid_size = @map_size
     inner = grid_size / 3
     mid = grid_size / 3 / 2
 

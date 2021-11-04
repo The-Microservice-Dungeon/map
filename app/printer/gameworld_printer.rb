@@ -19,7 +19,7 @@ class GameworldPrinter
   end
 
   def self.gameworld_to_2d_array(gameworld)
-    grid_size = Math.sqrt(gameworld.planets.size) - 1
+    grid_size = gameworld.map_size
 
     (0..grid_size).map do |x|
       (0..grid_size).map do |y|
@@ -29,7 +29,7 @@ class GameworldPrinter
   end
 
   def self.gameworld_to_stringified_2d_array(gameworld)
-    grid_size = Math.sqrt(gameworld.planets.size) - 1
+    grid_size = gameworld.map_size
 
     (0..grid_size).map do |x|
       (0..grid_size).map do |y|
