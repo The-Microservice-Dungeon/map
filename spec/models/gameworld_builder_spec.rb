@@ -108,4 +108,32 @@ RSpec.describe GameworldBuilder, type: :model do
       expect(spacestation_count).to eq(4)
     end
   end
+
+  context 'resouces created' do
+    it 'creates appropriate amount of recources' do
+      coal = create(:resource_type, name: "coal")
+      iron = create(:resource_type, name: "iron")
+      gem = create(:resource_type, name: "gem")
+      gold = create(:resource_type, name: "gold")
+      platin = create(:resource_type, name: "platin")
+
+      gwb = GameworldBuilder.new(12, 20)
+      gwb.create_spawns
+      gwb.create_spacestation
+      gwb.create_recources
+
+      coal_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == coal.id }}
+      iron_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == iron.id }}
+      gem_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gem.id }}
+      gold_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gold.id }}
+      platin_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == platin.id }}
+
+      expect(coal_count).to eq(40)
+      expect(iron_count).to eq(20)  
+      expect(gem_count).to eq(13)  
+      expect(gold_count).to eq(10)  
+      expect(platin_count).to eq(8)  
+
+    end
+  end
 end

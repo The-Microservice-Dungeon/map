@@ -76,11 +76,23 @@ class GameworldBuilder
     end
   end
 
-  def add_resources_to_world
-    planets = @gameworld.planets.size
-    resource_patch_amount = [planets / 10, planets / 20, planets / 30, planets / 40, planets / 50]
+  def create_recources
+    planets = @gameworld.planets
+    resource_patch_amount = [planets.size / 10, planets.size / 20, planets.size / 30, planets.size / 40, planets.size / 50]
+    resource_names = ['coal','iron','gem','gold','platin']
+
+    possible_patches = @gameworld.planets.find_all do |p|
+      p.planet_type == 'default' ||
+      p.resources.empty?
+    end
+
     resource_patch_amount.each_with_index do | resource_type , index |
-      
+
+      resource_patches = possible_patches.sample(resource_patch_amount[index])
+
+      resource_patches.each do | p |
+        p.add_resource(ResourceType.find_by(name: resource_names[index]).id, 10000)
+      end
     end
   end
 
