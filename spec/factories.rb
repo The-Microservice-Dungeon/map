@@ -1,4 +1,9 @@
 FactoryBot.define do
+  factory :exploration do
+    planet
+    transaction_id { "" }
+  end
+
   factory :replenishment do
     planet
     resource

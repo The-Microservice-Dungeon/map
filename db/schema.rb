@@ -10,11 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_29_122322) do
+ActiveRecord::Schema.define(version: 2021_11_04_103158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "explorations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "planet_id", null: false
+    t.uuid "transaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["planet_id"], name: "index_explorations_on_planet_id"
+  end
 
   create_table "gameworlds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "status", default: 0
@@ -95,6 +103,7 @@ ActiveRecord::Schema.define(version: 2021_10_29_122322) do
     t.index ["planet_id"], name: "index_spawn_creations_on_planet_id"
   end
 
+  add_foreign_key "explorations", "planets"
   add_foreign_key "minings", "planets"
   add_foreign_key "minings", "resources"
   add_foreign_key "planets", "gameworlds"
