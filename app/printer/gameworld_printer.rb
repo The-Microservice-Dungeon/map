@@ -31,7 +31,7 @@ class GameworldPrinter
 
   def self.gameworld_to_stringified_2d_array(gwb)
     gameworld = gwb.gameworld
-    map_size = gwb.map_size
+    map_size = gwb.map_size - 1
 
     (0..map_size).map do |x|
       (0..map_size).map do |y|
