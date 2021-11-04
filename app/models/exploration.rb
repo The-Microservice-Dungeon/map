@@ -11,7 +11,7 @@ class Exploration < ApplicationRecord
       planet: {
         id: planet.id,
         resources: planet.resources,
-        neighbours: planet.neighbours,
+        neighbour_ids: planet.neighbours.pluck(:id),
         recharge_multiplicator: planet.recharge_multiplicator,
         movement_difficulty: planet.movement_difficulty,
         planet_type: planet.planet_type
