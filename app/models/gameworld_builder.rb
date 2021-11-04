@@ -60,6 +60,14 @@ class GameworldBuilder
     end
   end
 
+  def add_resources_to_world
+    planets = @gameworld.planets.size
+    resource_patch_amount = [planets / 10, planets / 20, planets / 30, planets / 40, planets / 50]
+    resource_patch_amount.each_with_index do | resource_type , index |
+      
+    end
+  end
+
   private
 
   def get_neighbours(planet)
