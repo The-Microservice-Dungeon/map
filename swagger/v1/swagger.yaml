@@ -1,7 +1,8 @@
 ---
 openapi: 3.0.1
 info:
-  title: Map API V1
+  title: Map Service API
+  description: This is REST documentation for the Map Service
   version: v1
 components:
   schemas:
@@ -136,7 +137,7 @@ components:
 paths:
   "/planets/{planet_id}/explorations":
     post:
-      summary: Creates a gameworld
+      summary: Creates an exploration
       tags:
       - explorations
       parameters:
