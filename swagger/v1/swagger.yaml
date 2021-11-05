@@ -179,7 +179,7 @@ paths:
                   required:
                   - transaction_id
               required:
-              - gameworld
+              - exploration
   "/gameworlds":
     get:
       summary: Retrieves all gameworlds
@@ -320,9 +320,6 @@ paths:
                 mining:
                   type: object
                   properties:
-                    player_id:
-                      type: string
-                      format: uuid
                     resource_type:
                       type: string
                       enum:

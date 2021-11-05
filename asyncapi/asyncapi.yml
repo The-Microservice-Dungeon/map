@@ -69,10 +69,27 @@ components:
           planet:
             type: object
             properties:
-              id:
+              resourece_ids:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                  description: UUID of the resources on the explored planed
+              neighbour_ids:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+                  description: UUID of the neighbour on the explored planed
+              recharge_multiplicator:
+                type: integer
+                description: Recharge multiplicator of the planet explored
+              movement_difficulty:
+                type: integer
+                description: Movemenet difficulty of the planet explored
+              planet_type:
                 type: string
-                format: uuid
-                description: UUID of the planet explored
+                description: Planet type (`default`, `spawn` or `spacestation`) of the planet explored
     resource_replenished:
       payload:
         type: object
@@ -95,6 +112,7 @@ components:
             description: UUID of the planet where the resource is located
           resource_id:
             type: string
+            format: uuid
             description: UUID of the replenished resource
           amount_mined:
             type: integer
@@ -109,4 +127,5 @@ components:
             description: UUID of the planet where the resource is located
           resource_id:
             type: string
+            format: uuid
             description: UUID of the empty resource

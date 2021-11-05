@@ -26,7 +26,6 @@ RSpec.describe 'minings', type: :request, capture_examples: true do
         properties: {
           mining: { type: :object,
                     properties: {
-                      player_id: { type: :string, format: :uuid },
                       resource_type: { type: :string, enum: %w[coal iron gem gold platin] },
                       amount_mined: { type: :integer, minimum: 1 }
                     }, required: %w[player_id resource_type amount_mined] }
