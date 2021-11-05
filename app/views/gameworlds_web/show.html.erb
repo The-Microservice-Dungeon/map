@@ -1,0 +1,17 @@
+<div class="wrapper">
+  <h1><%= @gameworld.id %></h1>
+
+  <% @gameworld2d.each do |row| %>
+  <div class="row">
+    <% row.each do |p| %>
+    <div class="box">
+      <p>x:<%= p.x%></p>
+      <p>y:<%= p.y%></p>
+    </div>
+    <% end %>
+  </div>
+  <% end %>
+
+
+  <p>ich habe fertig</p>
+</div>

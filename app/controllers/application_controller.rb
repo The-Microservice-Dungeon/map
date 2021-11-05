@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   def render_not_found(exception)
     render json: {
       'status' => 404,

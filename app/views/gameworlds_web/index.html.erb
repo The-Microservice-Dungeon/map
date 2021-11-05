@@ -1,0 +1,14 @@
+<div class="wrapper">
+  <h1>test</h1>
+
+  <div class="worldList">
+    <% @gameworlds.each do |g| %>
+    <div class="block">
+      <!-- <button><%= g.id %></button> -->
+      <%= link_to g.id, controller: "gameworlds_web", action: "show", id: g %>
+    </div>
+    <% end %>
+  </div>
+  <button>create World</button>
+
+</div>
