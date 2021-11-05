@@ -57,8 +57,8 @@ class GameworldBuilder
 
   def add_movement_difficulty
     @gameworld.planets.each do |p|
-      p.movement_difficulty = 3 if inner_map?(p)
       p.movement_difficulty = 2 if mid_map?(p)
+      p.movement_difficulty = 3 if inner_map?(p)
     end
   end
 
@@ -91,8 +91,7 @@ class GameworldBuilder
     end
   end
 
-  def self.create_regular_gameworld(player_amount, _round_amount)
-    map_size = player_amount * 0.9
+  def self.create_regular_gameworld(player_amount, map_size, _round_amount)
 
     gameworld_builder = new(player_amount, map_size)
     gameworld_builder.add_movement_difficulty
