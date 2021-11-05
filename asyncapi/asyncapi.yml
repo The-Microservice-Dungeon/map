@@ -1,0 +1,112 @@
+asyncapi: '2.2.0'
+info:
+  title: Map Service
+  version: 1.0.0
+  description: This service is in charge of creating the gameworld
+channels:
+  gameworld_created:
+    publish:
+      message:
+        $ref: '#/components/messages/gameworld_created'
+  spawn_created:
+    publish:
+      message:
+        $ref: '#/components/messages/spawn_created'
+  spacestation_created:
+      publish:
+        message:
+          $ref: '#/components/messages/spacestation_created'
+  planet_explored:
+      publish:
+        message:
+          $ref: '#/components/messages/planet_explored'
+  resource_mined:
+    publish:
+      message:
+        $ref: '#/components/messages/resource_mined'
+  resource_emptied:
+    publish:
+      message:
+        $ref: '#/components/messages/resource_emptied'
+  resource_replenished:
+    publish:
+      message:
+        $ref: '#/components/messages/resource_replenished'
+components:
+  messages:
+    gameworld_created:
+      payload:
+        type: object
+        properties:
+          gameworld_id:
+            type: string
+            format: uuid
+            description: UUID of the created gameworld
+    spawn_created:
+      payload:
+        type: object
+        properties:
+          planet_id:
+            type: string
+            format: uuid
+            description: UUID of the created planet
+    spacestation_created:
+      payload:
+        type: object
+        properties:
+          planet_id:
+            type: string
+            format: uuid
+            description: UUID of the created planet
+    planet_explored:
+      payload:
+        type: object
+        properties:
+          transaction_id:
+            type: string
+            format: uuid
+            description: UUID of the transaction
+          planet:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                description: UUID of the planet explored
+    resource_replenished:
+      payload:
+        type: object
+        properties:
+          planet_id:
+            type: string
+            format: uuid
+            description: UUID of the planet where the resource is located
+          resource_id:
+            type: string
+            format: uuid
+            description: UUID of the replenished resource
+    resource_mined:
+      payload:
+        type: object
+        properties:
+          planet_id:
+            type: string
+            format: uuid
+            description: UUID of the planet where the resource is located
+          resource_id:
+            type: string
+            description: UUID of the replenished resource
+          amount_mined:
+            type: integer
+            description: The actual amount that has been mined
+    resource_emptied:
+      payload:
+        type: object
+        properties:
+          planet_id:
+            type: string
+            format: uuid
+            description: UUID of the planet where the resource is located
+          resource_id:
+            type: string
+            description: UUID of the empty resource
