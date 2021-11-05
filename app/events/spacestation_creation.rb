@@ -8,6 +8,6 @@ class SpacestationCreation < ApplicationRecord
   end
 
   def publish_speacestation_creation_events
-    $producer.produce_async(topic: 'spacestation_creation', payload: to_json)
+    $producer.produce_async(topic: 'spacestation_created', payload: to_json)
   end
 end

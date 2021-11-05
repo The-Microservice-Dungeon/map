@@ -84,6 +84,8 @@ class GameworldBuilder
   end
 
   def finalize_async
+    Thread.report_on_exception = false
+
     Thread.new do
       neighbour_planets
     end
