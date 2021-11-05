@@ -87,14 +87,6 @@ class GameworldBuilder
     Thread.new do
       neighbour_planets
     end
-
-    Thread.new do
-      Gameworld.where(status: 'active').each do |gameworld|
-        gameworld.status == 'inactive' unless gameworld.id == @gameworld.id
-      end
-    end
-
-    $producer.produce_async(topic: 'gameworld_created', payload: { gameworld_id: @gameworld.id }.to_json)
   end
 
   def self.create_regular_gameworld(player_amount, _round_amount)
