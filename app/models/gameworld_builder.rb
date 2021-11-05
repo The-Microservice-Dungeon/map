@@ -83,6 +83,26 @@ class GameworldBuilder
     end
   end
 
+  def finalize_async
+    Thread.report_on_exception = false
+
+    Thread.new do
+      neighbour_planets
+    end
+  end
+
+  def self.create_regular_gameworld(player_amount, _round_amount)
+    map_size = player_amount * 0.9
+
+    gameworld_builder = new(player_amount, map_size)
+    gameworld_builder.add_movement_difficulty
+    gameworld_builder.create_spawns
+    gameworld_builder.create_spacestations
+    gameworld_builder.create_resources
+    gameworld_builder.gameworld
+    gameworld_builder
+  end
+
   private
 
   def create_specific_resources(name, patch_amount, part_of_map)
@@ -91,7 +111,8 @@ class GameworldBuilder
     end.sample(patch_amount)
 
     resource_planets.each do |p|
-      p.add_resource(ResourceType.find_by(name: name).id, 10_000)
+      resource_type = ResourceType.find_by(name: name)
+      p.add_resource(resource_type.id, 10_000) unless resource_type.nil?
     end
   end
 

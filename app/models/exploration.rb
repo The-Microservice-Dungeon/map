@@ -1,7 +1,9 @@
 class Exploration < ApplicationRecord
   belongs_to :planet
 
-  def execute
+  after_save :publish_planet_explored_event
+
+  def publish_planet_explored_event
     $producer.produce_async(topic: 'planet_explored', payload: payload.to_json)
   end
 

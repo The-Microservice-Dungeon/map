@@ -34,21 +34,21 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
       response '201', 'Created' do
         schema '$ref' => '#/components/schemas/gameworld'
 
-        let(:gameworld) { { gameworld: { player_amount: 100, round_amount: 100 } } }
+        let(:gameworld) { { gameworld: { player_amount: 50, round_amount: 100 } } }
         run_test!
       end
 
       response '400', 'Bad Request' do
         schema '$ref' => '#/components/schemas/errors_object'
 
-        let(:gameworld) { { player_amount: 100 } }
+        let(:gameworld) { { player_amount: 50 } }
         run_test!
       end
 
       response '422', 'Unprocessable Entity' do
         schema '$ref' => '#/components/schemas/errors_object'
 
-        let(:gameworld) { { gameworld: { player_amount: 100, round_amount: -100 } } }
+        let(:gameworld) { { gameworld: { player_amount: 50, round_amount: -100 } } }
         run_test!
       end
     end
