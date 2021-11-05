@@ -83,6 +83,32 @@ class GameworldBuilder
     end
   end
 
+  def finalize_async
+    Thread.new do
+      neighbour_planets
+    end
+
+    Thread.new do
+      Gameworld.where(status: 'active').each do |gameworld|
+        gameworld.status == 'inactive' unless gameworld.id == @gameworld.id
+      end
+    end
+
+    $producer.produce_async(topic: 'gameworld_created', payload: { gameworld_id: @gameworld.id }.to_json)
+  end
+
+  def self.create_regular_gameworld(player_amount, _round_amount)
+    map_size = player_amount * 0.9
+
+    gameworld_builder = new(player_amount, map_size)
+    gameworld_builder.add_movement_difficulty
+    gameworld_builder.create_spawns
+    gameworld_builder.create_spacestations
+    gameworld_builder.create_resources
+    gameworld_builder.gameworld
+    gameworld_builder
+  end
+
   private
 
   def create_specific_resources(name, patch_amount, part_of_map)
