@@ -32,7 +32,7 @@ class GameworldBuilder
   end
 
   def create_spawns
-    grid_size = Math.sqrt(@gameworld.planets.size) - 1
+    grid_size = @map_size - 1
 
     possible_spawns = @gameworld.planets.find_all do |p|
       p.x.zero? ||
@@ -52,6 +52,26 @@ class GameworldBuilder
     all_spawns.sort_by { |s| s.y && s.x }.each do |p|
       p.planet_type = 'spawn'
       p.recharge_multiplicator = 2
+    end
+  end
+
+  def delete_random_planets
+    count_to_delete = @gameworld.planets.size.fdiv(10).ceil * rand(1..5).ceil
+    deletable_planets = @gameworld.planets.select do |p|
+      p.planet_type == 'default' &&
+      p.resources.empty?
+    end.sample(count_to_delete)
+    
+    deletable_planets.each do |p|
+      @gameworld.planets.delete(p)
+    end
+  end
+
+  def debug(x, y)
+    @gameworld.planets.each do |p|
+      if p.x == x && p.y == y
+        p.movement_difficulty = 2
+      end
     end
   end
 
