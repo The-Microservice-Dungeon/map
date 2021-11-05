@@ -8,7 +8,7 @@ class Gameworld < ApplicationRecord
   after_save :trigger_gameworld_created_event
 
   def trigger_gameworld_created_event
-    $producer.produce_async(topic: 'gameworld_created', payload: { gameworld_id: @gameworld.id }.to_json)
+    $producer.produce_async(topic: 'gameworld_created', payload: { gameworld_id: id }.to_json)
   end
 
   def set_other_gameworlds_to_inactive

@@ -8,7 +8,6 @@ class ExplorationsController < ApplicationController
     @exploration = Exploration.new(planet_id: @planet.id, transaction_id: exploration_params[:transaction_id])
 
     if @exploration.save
-      @exploration.execute
       render json: @exploration, status: :created
     else
       render json: @exploration.errors, status: :unprocessable_entity
