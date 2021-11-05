@@ -59,9 +59,9 @@ class GameworldBuilder
     count_to_delete = @gameworld.planets.size.fdiv(10).ceil * rand(1..5).ceil
     deletable_planets = @gameworld.planets.select do |p|
       p.planet_type == 'default' &&
-      p.resources.empty?
+        p.resources.empty?
     end.sample(count_to_delete)
-    
+
     deletable_planets.each do |p|
       @gameworld.planets.delete(p)
     end
@@ -69,16 +69,14 @@ class GameworldBuilder
 
   def debug(x, y)
     @gameworld.planets.each do |p|
-      if p.x == x && p.y == y
-        p.movement_difficulty = 2
-      end
+      p.movement_difficulty = 2 if p.x == x && p.y == y
     end
   end
 
   def add_movement_difficulty
     @gameworld.planets.each do |p|
-      p.movement_difficulty = 3 if inner_map?(p)
       p.movement_difficulty = 2 if mid_map?(p)
+      p.movement_difficulty = 3 if inner_map?(p)
     end
   end
 
