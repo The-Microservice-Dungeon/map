@@ -37,7 +37,8 @@ class GameworldPrinter
       (0..map_size).map do |y|
         planet = gameworld.planets.find { |p| p.x == x && p.y == y }
         if planet
-          "#{planet.planet_type} #{planet.movement_difficulty} #{planet.recharge_multiplicator}"
+          resource_type_name = planet.resources.any? ? ResourceType.find(planet.resources.first.resource_type_id).name : 'NORESOURCE'
+          "#{planet.planet_type} #{planet.movement_difficulty} #{planet.recharge_multiplicator} #{resource_type_name}"
         else
           'NOPLANET'
         end

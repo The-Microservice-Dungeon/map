@@ -18,9 +18,12 @@ class GameworldsController < ApplicationController
 
   # POST /gameworlds
   def create
-    @gameworld = Gameworld.new
+    gameworld_builder = GameworldBuilder.create_regular_gameworld(gameworld_params[:player_amount],
+                                                                  gameworld_params[:round_amount])
+    @gameworld = gameworld_builder.gameworld
 
     if @gameworld.save
+      gameworld_builder.finalize_async
       render json: @gameworld, status: :created, location: @gameworld
     else
       render json: @gameworld.errors, status: :unprocessable_entity

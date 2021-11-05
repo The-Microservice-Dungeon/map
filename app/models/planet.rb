@@ -23,6 +23,10 @@ class Planet < ApplicationRecord
     neighbour.neighbours << self unless neighbour.neighbours.include?(self) || self == neighbour
   end
 
+  def add_resource(resource_type_id, max_amount)
+    resources << Resource.create(resource_type_id: resource_type_id, planet_id: self.id, max_amount: max_amount, current_amount: max_amount)
+  end
+
   def taken!
     self.taken_at = DateTime.current
   end

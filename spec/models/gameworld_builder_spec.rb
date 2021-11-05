@@ -101,11 +101,59 @@ RSpec.describe GameworldBuilder, type: :model do
   context 'spacestation creation' do
     it 'creates spacestations in all tiles within boundaries' do
       gwb = GameworldBuilder.new(12, 10)
-      gwb.create_spacestation
+      gwb.create_spacestations
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
 
       expect(spacestation_count).to eq(4)
+    end
+  end
+
+  context 'resouces created' do
+    it 'creates appropriate amount of resources' do
+      coal = create(:resource_type, name: 'coal')
+      iron = create(:resource_type, name: 'iron')
+      gem = create(:resource_type, name: 'gem')
+      gold = create(:resource_type, name: 'gold')
+      platin = create(:resource_type, name: 'platin')
+
+      gwb = GameworldBuilder.new(12, 20)
+      gwb.create_spawns
+      gwb.create_spacestations
+      gwb.create_resources
+
+      coal_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == coal.id } }
+      iron_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == iron.id } }
+      gem_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gem.id } }
+      gold_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gold.id } }
+      platin_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == platin.id } }
+
+      expect(coal_count).to eq(40)
+      expect(iron_count).to eq(20)
+      expect(gem_count).to eq(13)
+      expect(gold_count).to eq(10)
+      expect(platin_count).to eq(8)
+    end
+
+    it 'doesn´t place resources on Spawns or Space Stations' do
+      create(:resource_type, name: 'coal')
+      create(:resource_type, name: 'iron')
+      create(:resource_type, name: 'gem')
+      create(:resource_type, name: 'gold')
+      create(:resource_type, name: 'platin')
+
+      gwb = GameworldBuilder.new(12, 20)
+      gwb.create_spawns
+      gwb.create_spacestations
+      gwb.create_resources
+
+      spawns = gwb.gameworld.planets.find_all { |p| p.planet_type == 'spawn' && p.resources.empty? }.count
+      spacestations = gwb.gameworld.planets.find_all do |p|
+        p.planet_type == 'spacestation' && p.resources.empty?
+      end.count
+
+      expect(spawns).to eq(12)
+      expect(spacestations).to eq(30)
     end
   end
 end
