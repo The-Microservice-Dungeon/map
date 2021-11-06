@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   get '/gameworlds_web', to: 'gameworlds_web#index'
   get '/gameworlds_web/:id', to: 'gameworlds_web#show'
+  post '/gameworlds_web', to: 'gameworlds_web#create'
 
   get '/planets', to: 'planets#index'
   get '/planets/:id', to: 'planets#show', as: 'planet'
