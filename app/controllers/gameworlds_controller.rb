@@ -19,6 +19,7 @@ class GameworldsController < ApplicationController
   # POST /gameworlds
   def create
     gameworld_builder = GameworldBuilder.create_regular_gameworld(gameworld_params[:player_amount],
+                                                                  gameworld_params[:map_size],
                                                                   gameworld_params[:round_amount])
     @gameworld = gameworld_builder.gameworld
 
@@ -39,7 +40,7 @@ class GameworldsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def gameworld_params
-    params.require(:gameworld).permit(%i[player_amount round_amount])
+    params.require(:gameworld).permit(%i[player_amount map_size round_amount])
   end
 
   def validate_params
