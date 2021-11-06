@@ -5,6 +5,7 @@
 
 .wrapper{
   padding: 10px;
+  background-color: #EBEAE8;
 }
 
 .worldList{
@@ -30,7 +31,26 @@
 }
 
 .box {
+  padding: 2px;
+  border-radius: 10px;
   width: 5vh;
   height: 5vh;
   border: solid 1px black;
+}
+
+.move_cost_1{
+  background-color: yellowgreen;
+}
+
+.move_cost_2{
+  background-color: yellow;
+}
+
+.move_cost_3{
+  background-color: red;
+}
+
+.png{
+  width: 5vh;
+  height: 5vh;
 }
