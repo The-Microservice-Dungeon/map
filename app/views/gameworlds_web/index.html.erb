@@ -1,14 +1,15 @@
-<div class="wrapper">
-  <h1>test</h1>
+<div class="wrapper_index">
+  <div style="padding: 10px;">
+    <h1>test</h1>
 
-  <div class="worldList">
-    <% @gameworlds.each do |g| %>
-    <div class="block">
-      <!-- <button><%= g.id %></button> -->
-      <%= link_to g.id, controller: "gameworlds_web", action: "show", id: g %>
+    <div class="worldList">
+      <% @gameworlds.each do |g| %>
+      <div class="block">
+        <!-- <button><%= g.id %></button> -->
+        <%= link_to g.id, controller: "gameworlds_web", action: "show", id: g %>
+      </div>
+      <% end %>
     </div>
-    <% end %>
+    <%= button_to "CREATE deez nuts", { action: "create" }, remote: "true", class: "button" %>
   </div>
-  <%= button_to "CREATE deez nuts", { action: "create" }, remote: "true", class: "button" %>
-
 </div>
