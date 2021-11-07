@@ -71,11 +71,11 @@ class GameworldBuilder
 
   def create_resources
     resources = [
-      { patch_amount: @gameworld.planets.size / 10, name: 'coal', part_of_map: :outer_map? },
-      { patch_amount: @gameworld.planets.size / 20, name: 'iron', part_of_map: :mid_map? },
-      { patch_amount: @gameworld.planets.size / 30, name: 'gem', part_of_map: :mid_map? },
-      { patch_amount: @gameworld.planets.size / 40, name: 'gold', part_of_map: :inner_map? },
-      { patch_amount: @gameworld.planets.size / 50, name: 'platin', part_of_map: :inner_map? }
+      { patch_amount: @gameworld.planets.size / 20, name: 'coal', part_of_map: :outer_map? },
+      { patch_amount: @gameworld.planets.size / 30, name: 'iron', part_of_map: :mid_map? },
+      { patch_amount: @gameworld.planets.size / 40, name: 'gem', part_of_map: :mid_map? },
+      { patch_amount: @gameworld.planets.size / 50, name: 'gold', part_of_map: :inner_map? },
+      { patch_amount: @gameworld.planets.size / 60, name: 'platin', part_of_map: :inner_map? }
     ]
 
     resources.each do |r|
