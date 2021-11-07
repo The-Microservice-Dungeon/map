@@ -21,9 +21,9 @@ class GameworldPrinter
 
   def self.gameworld_to_2d_array(gameworld)
     
+    (0..grid_size).map do |y|
+      (0..grid_size).map do |x|
 
-    (0..@map_size).map do |x|
-      (0..@map_size).map do |y|
         gameworld.planets.find { |p| p.x == x && p.y == y }
       end
     end

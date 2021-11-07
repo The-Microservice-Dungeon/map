@@ -1,0 +1,100 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper_index{
+  background-color: #EBEAE8;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.wrapper_show{
+  padding: 10px;
+  background-color: #EBEAE8;
+  display: flex;
+  flex-direction: row;
+}
+
+.worldList{
+  border: solid black;
+  border-width: 2px 2px 0 0;
+  width: 50vw;
+}
+
+.world_name{
+  text-align: center;
+}
+
+.game_world{
+  width: fit-content;
+}
+
+.sidebar{
+  padding-left: 2rem;
+}
+
+.map_legend{
+  border:  solid black;
+  border-width: 2px 2px 0 0;
+}
+
+.map_legend > div {
+  border:  solid black;
+  border-width: 0 0 2px 2px ;
+  height: 6vh;
+  width: 200px;
+  background-color: rgb(165, 165, 165);
+  display: flex;
+  flex-direction: row;
+}
+
+
+.legend_image, .legend_text{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.map_legend > div:nth-child(odd) {
+  background-color: rgb(182, 182, 182);
+
+}
+
+.block {
+  height: 5vh;
+  border: solid black;
+  border-width: 0 0 2px 2px;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+}
+
+.box {
+  padding: 2px;
+  border-radius: 10px;
+  width: 5vh;
+  height: 5vh;
+  border: solid 1px black;
+}
+
+.move_cost_1{
+  background-color: yellowgreen;
+}
+
+.move_cost_2{
+  background-color: yellow;
+}
+
+.move_cost_3{
+  background-color: orange;
+}
+
+.png{
+  width: 5vh;
+  height: 5vh;
+}

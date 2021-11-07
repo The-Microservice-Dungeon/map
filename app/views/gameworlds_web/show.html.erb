@@ -1,0 +1,79 @@
+<div class="wrapper_show">
+  <div class="game_world">
+    <h1 class="world_name"><%= @gameworld.id %></h1>
+    <% @gameworld2d.each do |row| %>
+    <div class="row">
+      <% row.each do |p| %>
+      <div class="box 
+      <%= 'move_cost_1' if p.movement_difficulty == 1 %>
+      <%= 'move_cost_2' if p.movement_difficulty == 2 %>
+      <%= 'move_cost_3' if p.movement_difficulty == 3 %>">
+        <div>
+          <div style="position: absolute;">
+            <%= image_tag "spawn.png", :class => 'png' if p.planet_type == 'spawn' %>
+            <%= image_tag "space_station.png", :class => 'png' if p.planet_type == 'spacestation' %>
+            <%  if p.resources.any?
+              id =  p.resources.to_ary[0].resource_type_id
+              end %>
+            <%= image_tag "coal.png", :class => 'png' if id == ResourceType.find_by(name: "coal").id %>
+            <%= image_tag "iron.png", :class => 'png' if id == ResourceType.find_by(name: "iron").id %>
+            <%= image_tag "gem.png", :class => 'png' if id == ResourceType.find_by(name: "gem").id %>
+            <%= image_tag "gold.png", :class => 'png' if id == ResourceType.find_by(name: "gold").id %>
+            <%= image_tag "platin.png", :class => 'png' if id == ResourceType.find_by(name: "platin").id %>
+          </div>
+          <p>x:<%= p.x%></p>
+          <p>y:<%= p.y%></p>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+  <div class="sidebar">
+    <h1>Legende</h1>
+    <div class="map_legend">
+      <div>
+        <div class="legend_image">
+          <%= image_tag "spawn.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Spawn</h1>
+      </div>
+      <div>
+        <div class="legend_image">
+          <%= image_tag "space_station.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Space Station</h1>
+      </div>
+      <div>
+        <div class="legend_image">
+          <%= image_tag "coal.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Kohle</h1>
+      </div>
+      <div>
+        <div class="legend_image">
+          <%= image_tag "iron.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Eisen</h1>
+      </div>
+      <div>
+        <div class="legend_image">
+          <%= image_tag "gem.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Gems</h1>
+      </div>
+      <div>
+        <div class="legend_image">
+          <%= image_tag "gold.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Gold</h1>
+      </div>
+      <div>
+        <div class="legend_image">
+          <%= image_tag "platin.png", :class => 'png' %>
+        </div>
+        <h1 class="legend_text"> Platin</h1>
+      </div>
+    </div>
+  </div>
+</div>

@@ -117,7 +117,9 @@ RSpec.describe GameworldBuilder, type: :model do
       gold = create(:resource_type, name: 'gold')
       platin = create(:resource_type, name: 'platin')
 
-      gwb = GameworldBuilder.new(12, 20)
+      map_size = 20
+
+      gwb = GameworldBuilder.new(12, map_size)
       gwb.create_spawns
       gwb.create_spacestations
       gwb.create_resources
@@ -128,11 +130,11 @@ RSpec.describe GameworldBuilder, type: :model do
       gold_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gold.id } }
       platin_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == platin.id } }
 
-      expect(coal_count).to eq(40)
-      expect(iron_count).to eq(20)
-      expect(gem_count).to eq(13)
-      expect(gold_count).to eq(10)
-      expect(platin_count).to eq(8)
+      expect(coal_count).to eq((map_size*map_size)/20)
+      expect(iron_count).to eq((map_size*map_size)/30)
+      expect(gem_count).to eq((map_size*map_size)/40)
+      expect(gold_count).to eq((map_size*map_size)/50)
+      expect(platin_count).to eq((map_size*map_size)/60)
     end
 
     it 'doesn´t place resources on Spawns or Space Stations' do
