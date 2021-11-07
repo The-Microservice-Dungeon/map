@@ -11,12 +11,12 @@ class GameworldsWebController < ApplicationController
   end
 
   def create
-    gameworld_builder = GameworldBuilder.create_regular_gameworld(10,20,1000)
+    gameworld_builder = GameworldBuilder.create_regular_gameworld(10, 20, 1000)
     @gameworld = gameworld_builder.gameworld
 
     if @gameworld.save
       gameworld_builder.finalize_async
-
+      redirect_to action: 'show', id: @gameworld.id
     end
   end
 end

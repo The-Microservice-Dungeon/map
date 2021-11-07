@@ -1,5 +1,4 @@
 class GameworldPrinter
-  
   def self.print_gameworld(gwb, margin_width = 2)
     gameworld = gameworld_to_stringified_2d_array(gwb)
 
@@ -20,10 +19,10 @@ class GameworldPrinter
   end
 
   def self.gameworld_to_2d_array(gameworld)
-    
+    grid_size = Math.sqrt(gameworld.planets.size) - 1
+
     (0..grid_size).map do |y|
       (0..grid_size).map do |x|
-
         gameworld.planets.find { |p| p.x == x && p.y == y }
       end
     end

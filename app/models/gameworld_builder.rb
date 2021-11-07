@@ -110,13 +110,11 @@ class GameworldBuilder
   end
 
   def self.create_regular_gameworld(player_amount, map_size, _round_amount)
-
     gameworld_builder = new(player_amount, map_size)
     gameworld_builder.add_movement_difficulty
     gameworld_builder.create_spawns
     gameworld_builder.create_spacestations
     gameworld_builder.create_resources
-    gameworld_builder.gameworld
     gameworld_builder
   end
 
