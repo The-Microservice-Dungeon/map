@@ -18,7 +18,8 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'Map API V1',
+        title: 'Map Service API',
+        description: 'This is REST documentation for the Map Service',
         version: 'v1'
       },
       components: {

@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'explorations', type: :request, capture_examples: true do
   path '/planets/{planet_id}/explorations' do
-    post 'Creates a gameworld' do
+    post 'Creates an exploration' do
       tags :explorations
       consumes 'application/json'
       produces 'application/json'
