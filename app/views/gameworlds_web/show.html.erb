@@ -5,6 +5,7 @@
     <div class="row">
       <% row.each do |p| %>
       <div class="box 
+      <%= 'empty' if p.planet_type == 'empty' %>
       <%= 'move_cost_1' if p.movement_difficulty == 1 %>
       <%= 'move_cost_2' if p.movement_difficulty == 2 %>
       <%= 'move_cost_3' if p.movement_difficulty == 3 %>">
@@ -36,43 +37,43 @@
         <div class="legend_image">
           <%= image_tag "spawn.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Spawn</h1>
+        <h2 class="legend_text"> Spawn</h2>
       </div>
       <div>
         <div class="legend_image">
           <%= image_tag "space_station.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Space Station</h1>
+        <h2 class="legend_text"> Space Station</h2>
       </div>
       <div>
         <div class="legend_image">
           <%= image_tag "coal.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Kohle</h1>
+        <h2 class="legend_text"> Kohle</h2>
       </div>
       <div>
         <div class="legend_image">
           <%= image_tag "iron.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Eisen</h1>
+        <h2 class="legend_text"> Eisen</h2>
       </div>
       <div>
         <div class="legend_image">
           <%= image_tag "gem.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Gems</h1>
+        <h2 class="legend_text"> Gems</h2>
       </div>
       <div>
         <div class="legend_image">
           <%= image_tag "gold.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Gold</h1>
+        <h2 class="legend_text"> Gold</h2>
       </div>
       <div>
         <div class="legend_image">
           <%= image_tag "platin.png", :class => 'png' %>
         </div>
-        <h1 class="legend_text"> Platin</h1>
+        <h2 class="legend_text"> Platin</h2>
       </div>
     </div>
   </div>

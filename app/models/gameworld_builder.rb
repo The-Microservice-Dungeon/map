@@ -63,7 +63,7 @@ class GameworldBuilder
     end.sample(count_to_delete)
 
     deletable_planets.each do |p|
-      @gameworld.planets.delete(p)
+      p.planet_type = 'empty'
     end
   end
 
@@ -111,6 +111,7 @@ class GameworldBuilder
 
   def self.create_regular_gameworld(player_amount, map_size, _round_amount)
     gameworld_builder = new(player_amount, map_size)
+    gameworld_builder.delete_random_planets
     gameworld_builder.add_movement_difficulty
     gameworld_builder.create_spawns
     gameworld_builder.create_spacestations
