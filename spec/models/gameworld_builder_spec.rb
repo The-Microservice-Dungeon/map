@@ -158,4 +158,29 @@ RSpec.describe GameworldBuilder, type: :model do
       expect(spacestations).to eq(30)
     end
   end
+
+  context 'planets removed' do
+    it 'no empty planets hold resources' do
+
+      gwb = GameworldBuilder.create_regular_gameworld(12,20,1000)
+
+      empty_planets = gwb.gameworld.planets.find_all {|p| p.planet_type == 'empty'}
+      resources_in_empty_planets = empty_planets.find_all {|p| p.resources.any?}.size
+
+      expect(resources_in_empty_planets).to eq(0)
+    end
+
+    it 'correct amount of spawns and spacestations' do
+
+      gwb = GameworldBuilder.create_regular_gameworld(12,20,1000)
+      
+      spawn_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' }
+      spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
+
+      expect(spawn_count).to eq(12)
+      expect(spacestation_count).to eq(30)
+      
+    end
+    
+  end
 end
