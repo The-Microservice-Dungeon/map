@@ -3,7 +3,13 @@ class Mining < ApplicationRecord
   belongs_to :resource
   validates :amount_requested, numericality: { greater_than_or_equal_to: 0 }, presence: true
 
+  before_save :increase_version
   after_save :publish_mining_events
+
+  def increase_version
+    result = ActiveRecord::Base.connection.execute("SELECT nextval('minings_version_seq')")
+    self.version = result[0]['nextval']
+  end
 
   def execute
     self.amount_requested = [amount_requested, 0].max
@@ -13,7 +19,25 @@ class Mining < ApplicationRecord
   end
 
   def publish_mining_events
-    $producer.produce_async(topic: 'resource_mined', payload: to_json)
-    $producer.produce_async(topic: 'resource_emptied', payload: resource.to_json) if resource.current_amount.zero?
+    $producer.produce_async(topic: 'minings', headers: resource_mined_headers, payload: resource_mined_payload.to_json)
+  end
+
+  def resource_mined_headers
+    {
+      'eventId' => id,
+      'transactionId' => transaction_id.to_s,
+      'version' => version.to_s,
+      'timestamp' => created_at.iso8601,
+      'type' => 'resource-mined'
+    }
+  end
+
+  def resource_mined_payload
+    {
+      id: resource_id,
+      resource_type: resource.resource_type.name,
+      amount_mined: amount_mined,
+      amount_left: resource.current_amount
+    }
   end
 end

@@ -14,8 +14,11 @@ class MiningsController < ApplicationController
 
   # POST /planets/1/minings
   def create
-    amount_requested = mining_params[:amount_mined]
-    @mining = Mining.new(resource_id: @resource.id, planet_id: @resource.planet_id, amount_requested: amount_requested)
+    @mining = Mining.new resource_id: @resource.id,
+                         planet_id: @resource.planet_id,
+                         amount_requested: mining_params[:amount_mined],
+                         transaction_id: mining_params[:transaction_id]
+
     @mining.execute
 
     if @mining.save
@@ -37,6 +40,6 @@ class MiningsController < ApplicationController
   end
 
   def mining_params
-    params.require(:mining).permit(%i[resource_type amount_mined])
+    params.require(:mining).permit(%i[resource_type amount_mined transaction_id])
   end
 end
