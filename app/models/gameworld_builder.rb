@@ -51,11 +51,7 @@ class GameworldBuilder
       ((i + 1) % distance_between_spawns).zero?
     end
 
-    while all_spawns.size > @player_amount
-      all_spawns.pop 
-    end
-
-    all_spawns.sort_by { |s| s.y && s.x }.each do |p|
+    all_spawns.sample(@player_amount).sort_by { |s| s.y && s.x }.each do |p|
       p.planet_type = 'spawn'
       p.recharge_multiplicator = 2
     end
