@@ -5,7 +5,7 @@
     <div class="row">
       <% row.each do |p| %>
       <div class="box 
-      <%= 'empty' if p.planet_type == 'empty' %>
+      <%= 'empty' if p.deleted_at %>
       <%= 'move_cost_1' if p.movement_difficulty == 1 %>
       <%= 'move_cost_2' if p.movement_difficulty == 2 %>
       <%= 'move_cost_3' if p.movement_difficulty == 3 %>">

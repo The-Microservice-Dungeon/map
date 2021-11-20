@@ -1,5 +1,5 @@
 class Planet < ApplicationRecord
-  enum planet_type: %i[default spawn spacestation empty], _default: :default, _suffix: true
+  enum planet_type: %i[default spawn spacestation], _default: :default, _suffix: true
   validates :planet_type, inclusion: { in: planet_types.keys }
 
   attribute :movement_difficulty, :integer, default: 1
