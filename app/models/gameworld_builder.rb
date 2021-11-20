@@ -23,7 +23,7 @@ class GameworldBuilder
         p.deleted_at == nil
     end
 
-    spacestation_amount = ((@map_size - 4) * (map_size - 4)).fdiv(100) * @player_amount
+    spacestation_amount = ((@map_size - 4) * (@map_size - 4)).fdiv(100) * @player_amount
 
     all_spacestations = possible_spacestations.sample(spacestation_amount)
 
@@ -51,7 +51,9 @@ class GameworldBuilder
       ((i + 1) % distance_between_spawns).zero?
     end
 
-    all_spawns.pop if all_spawns.size > @player_amount
+    while all_spawns.size > @player_amount
+      all_spawns.pop 
+    end
 
     all_spawns.sort_by { |s| s.y && s.x }.each do |p|
       p.planet_type = 'spawn'
