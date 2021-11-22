@@ -34,7 +34,7 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
       response '201', 'Created' do
         schema '$ref' => '#/components/schemas/gameworld'
 
-        let(:gameworld) { { gameworld: { player_amount: 50, map_size: 20, round_amount: 100 } } }
+        let(:gameworld) { { gameworld: { player_amount: 30, map_size: 20, round_amount: 100 } } }
         run_test!
       end
 

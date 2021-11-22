@@ -19,9 +19,11 @@ class GameworldBuilder
       p.x >= border &&
         p.y < @map_size - border   &&
         p.x < @map_size - border   &&
-        p.y >= border
+        p.y >= border  &&
+        p.deleted_at == nil
     end
-    spacestation_amount = possible_spacestations.size.fdiv(100) * @player_amount
+
+    spacestation_amount = ((@map_size - 4) * (@map_size - 4)).fdiv(100) * @player_amount
 
     all_spacestations = possible_spacestations.sample(spacestation_amount)
 
@@ -34,11 +36,13 @@ class GameworldBuilder
   def create_spawns
     grid_size = @map_size - 1
 
-    possible_spawns = @gameworld.planets.find_all do |p|
-      p.x.zero? ||
+    existing_planets = @gameworld.planets.find_all {|p| p.deleted_at == nil}
+
+    possible_spawns = existing_planets.find_all do |p|
+        p.x.zero? ||
         p.x == grid_size ||
         p.y.zero? ||
-        p.y == grid_size
+        p.y == grid_size 
     end
 
     distance_between_spawns = possible_spawns.size / @player_amount
@@ -47,23 +51,22 @@ class GameworldBuilder
       ((i + 1) % distance_between_spawns).zero?
     end
 
-    all_spawns.pop if all_spawns.size > @player_amount
-
-    all_spawns.sort_by { |s| s.y && s.x }.each do |p|
+    all_spawns.sample(@player_amount).sort_by { |s| s.y && s.x }.each do |p|
       p.planet_type = 'spawn'
       p.recharge_multiplicator = 2
     end
   end
 
   def delete_random_planets
-    count_to_delete = @gameworld.planets.size.fdiv(10).ceil * rand(1..5).ceil
+    count_to_delete = @gameworld.planets.size.fdiv(10).ceil * rand(1..3).ceil
     deletable_planets = @gameworld.planets.select do |p|
       p.planet_type == 'default' &&
-        p.resources.empty?
+        p.resources.empty? &&
+        inner_map?(p) == false
     end.sample(count_to_delete)
 
     deletable_planets.each do |p|
-      @gameworld.planets.delete(p)
+      p.deleted_at = Time.now
     end
   end
 
@@ -111,6 +114,7 @@ class GameworldBuilder
 
   def self.create_regular_gameworld(player_amount, map_size, _round_amount)
     gameworld_builder = new(player_amount, map_size)
+    gameworld_builder.delete_random_planets
     gameworld_builder.add_movement_difficulty
     gameworld_builder.create_spawns
     gameworld_builder.create_spacestations
@@ -121,7 +125,8 @@ class GameworldBuilder
   private
 
   def create_specific_resources(name, patch_amount, part_of_map)
-    resource_planets = @gameworld.planets.select do |p|
+    existing_planets = @gameworld.planets.find_all {|p| p.deleted_at == nil}
+    resource_planets = existing_planets.select do |p|
       method(part_of_map).call(p) && p.planet_type == 'default' && p.resources.empty?
     end.sample(patch_amount)
 
