@@ -9,7 +9,8 @@ class Gameworld < ApplicationRecord
 
   def set_other_gameworlds_to_inactive
     Gameworld.where(status: 'active').each do |gameworld|
-      gameworld.status == 'inactive' unless gameworld.id == id
+      gameworld.status = 'inactive' unless gameworld.id == id
+      gameworld.save!
     end
   end
 

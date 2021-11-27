@@ -1,4 +1,5 @@
 class GameworldsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_gameworld, only: %i[show update destroy]
   before_action :validate_params, only: %i[create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
@@ -7,13 +8,11 @@ class GameworldsController < ApplicationController
   # GET /gameworlds
   def index
     @gameworlds = Gameworld.all
-
-    render json: @gameworlds
   end
 
   # GET /gameworlds/1
   def show
-    render json: @gameworld
+    @gameworld
   end
 
   # POST /gameworlds
@@ -25,7 +24,7 @@ class GameworldsController < ApplicationController
 
     if @gameworld.save
       gameworld_builder.finalize_async
-      render json: @gameworld, status: :created, location: @gameworld
+      render :show, status: :created, formats: :json
     else
       render json: @gameworld.errors, status: :unprocessable_entity
     end

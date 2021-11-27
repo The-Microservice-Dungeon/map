@@ -54,23 +54,23 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
     end
   end
 
-  path '/gameworlds/{id}' do
+  path '/gameworlds/{gameworld_id}' do
     get 'Retrieves a gameworld' do
       tags :gameworlds
       produces 'application/json'
-      parameter name: :id, in: :path, type: :string
+      parameter name: :gameworld_id, in: :path, type: :string, format: :uuid
 
       response '200', 'Gameworld found' do
         schema '$ref' => '#/components/schemas/gameworld'
 
-        let(:id) { create(:gameworld).id }
+        let(:gameworld_id) { create(:gameworld).id }
         run_test!
       end
 
       response '404', 'Not Found' do
         schema '$ref' => '#/components/schemas/errors_object'
 
-        let(:id) { 'invalid' }
+        let(:gameworld_id) { 'invalid' }
         run_test!
       end
     end

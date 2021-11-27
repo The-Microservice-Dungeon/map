@@ -239,14 +239,15 @@ paths:
                   - round_amount
               required:
               - gameworld
-  "/gameworlds/{id}":
+  "/gameworlds/{gameworld_id}":
     get:
       summary: Retrieves a gameworld
       tags:
       - gameworlds
       parameters:
-      - name: id
+      - name: gameworld_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
