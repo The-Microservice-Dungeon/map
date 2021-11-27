@@ -6,7 +6,7 @@ RSpec.describe 'explorations', type: :request, capture_examples: true do
       tags :explorations
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :planet_id, in: :path, type: :string
+      parameter name: :planet_id, in: :path, schema: { type: :string, format: :uuid }
       parameter name: :exploration, in: :body, schema: {
         type: :object,
         properties: {
