@@ -63,7 +63,7 @@ RSpec.configure do |config|
               neighbour_ids: { type: :array, items: { type: :string, format: :uuid } },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' },
-              resource: { oneOf: [{ type: nil }, { '$ref' => '#/components/schemas/resource' }] }
+              resource: { oneOf: [{ '$ref' => '#/components/schemas/resource' }, { type: nil }] }
             }
           },
           resource: {

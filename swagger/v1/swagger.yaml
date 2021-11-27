@@ -89,8 +89,8 @@ components:
           format: date-time
         resource:
           oneOf:
-          - type:
           - "$ref": "#/components/schemas/resource"
+          - type:
     resource:
       type: object
       properties:
