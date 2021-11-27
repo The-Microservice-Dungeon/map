@@ -5,7 +5,7 @@ RSpec.describe 'minings', type: :request, capture_examples: true do
     get('Retrieves all minings') do
       produces 'application/json'
       tags :minings
-      parameter name: :id, in: :path, type: :string
+      parameter name: :id, in: :path, type: :string, format: :uuid
 
       response(200, 'Return all available minings') do
         schema type: :array,
@@ -20,15 +20,14 @@ RSpec.describe 'minings', type: :request, capture_examples: true do
       tags :minings
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :id, in: :path, type: :string
+      parameter name: :id, in: :path, type: :string, format: :uuid
       parameter name: :mining, in: :body, schema: {
         type: :object,
         properties: {
           mining: { type: :object,
                     properties: {
-                      resource_type: { type: :string, enum: %w[coal iron gem gold platin] },
-                      amount_mined: { type: :integer, minimum: 1 }
-                    }, required: %w[player_id resource_type amount_mined] }
+                      amount_requested: { type: :integer, minimum: 1 }
+                    }, required: %w[amount_requested] }
         },
         required: %w[mining]
       }
@@ -38,7 +37,7 @@ RSpec.describe 'minings', type: :request, capture_examples: true do
 
         let(:planet) { create(:planet_with_resources) }
         let(:id) { planet.id }
-        let(:mining) { { mining: { resource_type: 'coal', amount_mined: 100, planet_id: planet.id } } }
+        let(:mining) { { mining: { amount_requested: 100 } } }
         run_test!
       end
 
@@ -47,16 +46,7 @@ RSpec.describe 'minings', type: :request, capture_examples: true do
 
         let(:planet) { create(:planet) }
         let(:id) { planet.id }
-        let(:mining) { { mining: { resource_type: 'coal', amount_mined: 100, planet_id: planet.id } } }
-        run_test!
-      end
-
-      response '422', 'Unprocessable Entity' do
-        schema '$ref' => '#/components/schemas/errors_object'
-
-        let(:planet) { create(:planet_with_resources) }
-        let(:id) { planet.id }
-        let(:mining) { { mining: { resource_type: 'obsidian', amount_mined: 100, planet_id: planet.id } } }
+        let(:mining) { { mining: { amount_requested: 100 } } }
         run_test!
       end
     end

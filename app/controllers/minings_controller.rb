@@ -1,6 +1,5 @@
 class MiningsController < ApplicationController
-  before_action :set_planet, only: %i[index]
-  before_action :set_resource, only: %i[create]
+  before_action :set_planet_and_resource, only: %i[create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   rescue_from ActionController::ParameterMissing, with: :render_params_missing
   rescue_from ActiveRecord::StatementInvalid, with: :render_unprocessable_entity
@@ -15,9 +14,9 @@ class MiningsController < ApplicationController
   # POST /planets/1/minings
   def create
     @mining = Mining.new resource_id: @resource.id,
-                         planet_id: @resource.planet_id,
-                         amount_requested: mining_params[:amount_mined],
-                         transaction_id: mining_params[:transaction_id]
+                         planet_id: @planet.id,
+                         amount_requested: mining_params[:amount_requested],
+                         transaction_id: nil
 
     @mining.execute
 
@@ -30,16 +29,12 @@ class MiningsController < ApplicationController
 
   private
 
-  def set_planet
+  def set_planet_and_resource
     @planet = Planet.find(params[:id])
-  end
-
-  def set_resource
-    resource_type = ResourceType.where(name: mining_params[:resource_type]).take!
-    @resource = Resource.of_type(resource_type.id).where(planet_id: params[:id]).take!
+    @resource = Resource.where(planet_id: @planet.id).take!
   end
 
   def mining_params
-    params.require(:mining).permit(%i[resource_type amount_mined transaction_id])
+    params.require(:mining).permit(%i[amount_requested])
   end
 end

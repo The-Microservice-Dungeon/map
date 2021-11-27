@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is REST documentation for the Map Service
-  version: v1
+  version: v1.1
 components:
   schemas:
     errors_object:
@@ -271,6 +271,7 @@ paths:
       parameters:
       - name: id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
@@ -290,6 +291,7 @@ paths:
       parameters:
       - name: id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
@@ -306,12 +308,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errors_object"
       requestBody:
         content:
           application/json:
@@ -321,21 +317,11 @@ paths:
                 mining:
                   type: object
                   properties:
-                    resource_type:
-                      type: string
-                      enum:
-                      - coal
-                      - iron
-                      - gem
-                      - gold
-                      - platin
-                    amount_mined:
+                    amount_requested:
                       type: integer
                       minimum: 1
                   required:
-                  - player_id
-                  - resource_type
-                  - amount_mined
+                  - amount_requested
               required:
               - mining
   "/planets/{id}/neighbours":
