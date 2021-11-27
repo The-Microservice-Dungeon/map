@@ -70,6 +70,12 @@ components:
         gameworld_id:
           type: string
           format: uuid
+        planet_type:
+          type: string
+          enum:
+          - default
+          - spawn
+          - spacestation
         created_at:
           type: string
           format: date-time
@@ -89,22 +95,7 @@ components:
         planet_id:
           type: string
           format: uuid
-        resource_type_id:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-    resource_type:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
+        resource_type:
           type: string
           enum:
           - coal
@@ -411,20 +402,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
-  "/resource_types":
-    get:
-      summary: Retrieves all resource_types
-      tags:
-      - resource_types
-      responses:
-        '200':
-          description: Return all available resource_types
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/resource_type"
   "/planets/{id}/resources":
     get:
       summary: Retrieves all resources

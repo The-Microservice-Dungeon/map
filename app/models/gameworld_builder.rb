@@ -131,8 +131,7 @@ class GameworldBuilder
     end.sample(patch_amount)
 
     resource_planets.each do |p|
-      resource_type = ResourceType.find_by(name: name)
-      p.add_resource(resource_type.id, 10_000) unless resource_type.nil?
+      p.add_resource(name, 10_000)
     end
   end
 

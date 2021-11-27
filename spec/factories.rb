@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :exploration do
     planet
-    transaction_id { "" }
+    transaction_id { '' }
   end
 
   factory :replenishment do
@@ -27,16 +27,11 @@ FactoryBot.define do
     max_amount { 1000 }
     current_amount { 400 }
     planet
-    resource_type
+    resource_type { 'coal' }
   end
 
   factory :gameworld do
     status { 'active' }
-  end
-
-  factory :resource_type do
-    difficulty { 0 }
-    name { 'coal' }
   end
 
   factory :planet do
