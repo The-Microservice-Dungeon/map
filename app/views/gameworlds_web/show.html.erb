@@ -13,8 +13,8 @@
           <div style="position: absolute;">
             <%= image_tag "spawn.png", :class => 'png' if p.planet_type == 'spawn' %>
             <%= image_tag "space_station.png", :class => 'png' if p.planet_type == 'spacestation' %>
-            <%  if p.resources.any?
-              resource_type = p.resources.to_ary[0].resource_type
+            <%  unless p.resource.nil?
+              resource_type = p.resource.resource_type
               end %>
             <%= image_tag "coal.png", :class => 'png' if resource_type == "coal" %>
             <%= image_tag "iron.png", :class => 'png' if resource_type == "iron" %>

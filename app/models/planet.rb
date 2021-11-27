@@ -16,7 +16,7 @@ class Planet < ApplicationRecord
                           foreign_key: 'planet_id',
                           association_foreign_key: 'neighbour_id'
 
-  has_many :resources, dependent: :delete_all
+  has_one :resource, dependent: :delete
 
   def add_neighbour(neighbour)
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self
@@ -24,10 +24,10 @@ class Planet < ApplicationRecord
   end
 
   def add_resource(resource_type, max_amount)
-    resources << Resource.create(resource_type: resource_type,
-                                 planet_id: id,
-                                 max_amount: max_amount,
-                                 current_amount: max_amount)
+    self.resource = Resource.create(resource_type: resource_type,
+                                    planet_id: id,
+                                    max_amount: max_amount,
+                                    current_amount: max_amount)
   end
 
   def taken!

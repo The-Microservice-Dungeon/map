@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   get '/planets/:id/neighbours/:neighbour_id', to: 'neighbours#show', as: 'neighbour'
 
   get '/planets/:id/resources', to: 'resources#index', as: 'resources'
-  get '/planets/:id/resources/:resource_id', to: 'resources#show', as: 'resource'
 
   get '/planets/:id/minings', to: 'minings#index', as: 'minings'
   post '/planets/:id/minings', to: 'minings#create'

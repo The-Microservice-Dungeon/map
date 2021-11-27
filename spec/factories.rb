@@ -62,8 +62,8 @@ FactoryBot.define do
         resource_count { 1 }
       end
 
-      after(:create) do |planet, evaluator|
-        create_list(:resource, evaluator.resource_count, planet: planet)
+      after(:create) do |planet, _evaluator|
+        create(:resource, planet: planet)
 
         planet.reload
       end

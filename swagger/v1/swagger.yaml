@@ -254,13 +254,13 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
-  "/planets/{id}/minings":
+  "/planets/{planet_id}/minings":
     get:
       summary: Retrieves all minings
       tags:
       - minings
       parameters:
-      - name: id
+      - name: planet_id
         in: path
         format: uuid
         required: true
@@ -280,7 +280,7 @@ paths:
       tags:
       - minings
       parameters:
-      - name: id
+      - name: planet_id
         in: path
         format: uuid
         required: true
@@ -402,14 +402,15 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
-  "/planets/{id}/resources":
+  "/planets/{planet_id}/resources":
     get:
       summary: Retrieves all resources
       tags:
       - resources
       parameters:
-      - name: id
+      - name: planet_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
@@ -422,35 +423,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/resource"
-  "/planets/{id}/resources/{resource_id}":
-    get:
-      summary: Retrieves a planets resources
-      tags:
-      - resources
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: resource_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Resource found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/resource"
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errors_object"
 servers:
 - url: http://{defaultHost}
   variables:
