@@ -11,7 +11,7 @@ class SpawnCreation < ApplicationRecord
 
   def execute
     planet.planet_type = 'spawn'
-    planet.resources.delete
+    planet.resource.delete
     planet.save!
   end
 

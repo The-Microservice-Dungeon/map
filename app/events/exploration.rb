@@ -28,7 +28,7 @@ class Exploration < ApplicationRecord
   def payload
     {
       planet: {
-        resource_ids: planet.resources.pluck(:id),
+        resource_id: planet.resource&.id,
         neighbour_ids: planet.neighbours.pluck(:id),
         recharge_multiplicator: planet.recharge_multiplicator,
         movement_difficulty: planet.movement_difficulty,

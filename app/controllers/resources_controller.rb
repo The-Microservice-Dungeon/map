@@ -4,12 +4,7 @@ class ResourcesController < ApplicationController
 
   # GET /planets/1/resources
   def index
-    render json: @planet.resources
-  end
-
-  # GET /planets/1/resources/1
-  def show
-    render json: @planet.resources.find(params[:resource_id])
+    render json: [@planet.resource]
   end
 
   private

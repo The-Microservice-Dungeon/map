@@ -11,7 +11,7 @@ class SpacestationCreation < ApplicationRecord
 
   def execute
     planet.planet_type = 'spacestation'
-    planet.resources.delete
+    planet.resource.delete
     planet.save!
   end
 

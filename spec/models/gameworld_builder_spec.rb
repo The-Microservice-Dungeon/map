@@ -118,11 +118,11 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb.create_spacestations
       gwb.create_resources
 
-      coal_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'coal' } }
-      iron_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'iron' } }
-      gem_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'gem' } }
-      gold_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'gold' } }
-      platin_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'platin' } }
+      coal_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'coal' }
+      iron_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'iron' }
+      gem_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'gem' }
+      gold_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'gold' }
+      platin_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'platin' }
 
       expect(coal_count).to eq((map_size * map_size) / 20)
       expect(iron_count).to eq((map_size * map_size) / 30)
@@ -137,9 +137,9 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb.create_spacestations
       gwb.create_resources
 
-      spawns = gwb.gameworld.planets.find_all { |p| p.planet_type == 'spawn' && p.resources.empty? }.count
+      spawns = gwb.gameworld.planets.find_all { |p| p.planet_type == 'spawn' }.count
       spacestations = gwb.gameworld.planets.find_all do |p|
-        p.planet_type == 'spacestation' && p.resources.empty?
+        p.planet_type == 'spacestation' && p.resource.nil?
       end.count
 
       expect(spawns).to eq(12)
@@ -155,11 +155,11 @@ RSpec.describe GameworldBuilder, type: :model do
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
-      coal_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'coal' } }
-      iron_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'iron' } }
-      gem_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'gem' } }
-      gold_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'gold' } }
-      platin_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'platin' } }
+      coal_count = existing_planets.count { |p| p.resource&.resource_type == 'coal' }
+      iron_count = existing_planets.count { |p| p.resource&.resource_type == 'iron' }
+      gem_count = existing_planets.count { |p| p.resource&.resource_type == 'gem' }
+      gold_count = existing_planets.count { |p| p.resource&.resource_type == 'gold' }
+      platin_count = existing_planets.count { |p| p.resource&.resource_type == 'platin' }
 
       expect(coal_count).to eq((map_size * map_size) / 20)
       expect(iron_count).to eq((map_size * map_size) / 30)

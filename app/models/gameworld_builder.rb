@@ -61,7 +61,7 @@ class GameworldBuilder
     count_to_delete = @gameworld.planets.size.fdiv(10).ceil * rand(1..3).ceil
     deletable_planets = @gameworld.planets.select do |p|
       p.planet_type == 'default' &&
-        p.resources.empty? &&
+        p.resource.nil? &&
         inner_map?(p) == false
     end.sample(count_to_delete)
 
@@ -127,7 +127,7 @@ class GameworldBuilder
   def create_specific_resources(name, patch_amount, part_of_map)
     existing_planets = @gameworld.planets.find_all { |p| p.deleted_at.nil? }
     resource_planets = existing_planets.select do |p|
-      method(part_of_map).call(p) && p.planet_type == 'default' && p.resources.empty?
+      method(part_of_map).call(p) && p.planet_type == 'default' && p.resource.nil?
     end.sample(patch_amount)
 
     resource_planets.each do |p|
