@@ -88,20 +88,28 @@ components:
           type: string
           format: date-time
         resource:
-          "$ref": "#/components/schemas/resource"
+          oneOf:
+          - type:
+          - "$ref": "#/components/schemas/resource"
     resource:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        planet_id:
+          type: string
+          format: uuid
         max_amount:
           type: integer
         current_amount:
           type: integer
-        planet_id:
+        created_at:
           type: string
-          format: uuid
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         resource_type:
           type: string
           enum:
@@ -110,12 +118,6 @@ components:
           - gem
           - gold
           - platin
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
     mining:
       type: object
       properties:
