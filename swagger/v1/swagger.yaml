@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is REST documentation for the Map Service
-  version: v1
+  version: v1.1
 components:
   schemas:
     errors_object:
@@ -271,6 +271,7 @@ paths:
       parameters:
       - name: id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
@@ -290,6 +291,7 @@ paths:
       parameters:
       - name: id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
