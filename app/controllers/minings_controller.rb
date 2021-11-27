@@ -7,8 +7,6 @@ class MiningsController < ApplicationController
   # GET /planets/1/minings
   def index
     @minings = Mining.where(planet_id: params[:id]).all
-
-    render json: @minings
   end
 
   # POST /planets/1/minings
