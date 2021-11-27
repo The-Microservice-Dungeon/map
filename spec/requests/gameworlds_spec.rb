@@ -58,7 +58,7 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
     get 'Retrieves a gameworld' do
       tags :gameworlds
       produces 'application/json'
-      parameter name: :gameworld_id, in: :path, type: :string, format: :uuid
+      parameter name: :gameworld_id, in: :path, schema: { type: :string, format: :uuid }
 
       response '200', 'Gameworld found' do
         schema '$ref' => '#/components/schemas/gameworld'

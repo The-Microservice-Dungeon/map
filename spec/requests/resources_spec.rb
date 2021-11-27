@@ -5,7 +5,7 @@ RSpec.describe 'resources', type: :request, capture_examples: true do
     get('Retrieves all resources') do
       produces 'application/json'
       tags :resources
-      parameter name: :planet_id, in: :path, type: :string, format: :uuid
+      parameter name: :planet_id, in: :path, schema: { type: :string, format: :uuid }
 
       response(200, 'Return all available resources') do
         schema type: :array,

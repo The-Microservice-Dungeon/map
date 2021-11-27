@@ -5,7 +5,7 @@ RSpec.describe 'neighbours', type: :request, capture_examples: true do
     get('Retrieves all neighbours') do
       produces 'application/json'
       tags :neighbours
-      parameter name: :planet_id, in: :path, type: :string, format: :uuid
+      parameter name: :planet_id, in: :path, schema: { type: :string, format: :uuid }
 
       response(200, 'Return all available neighbours') do
         schema type: :array,
@@ -26,8 +26,8 @@ RSpec.describe 'neighbours', type: :request, capture_examples: true do
     get 'Retrieves a planets neighbour' do
       tags :neighbours
       produces 'application/json'
-      parameter name: :planet_id, in: :path, type: :string, format: :uuid
-      parameter name: :neighbour_id, in: :path, type: :string, format: :uuid
+      parameter name: :planet_id, in: :path, schema: { type: :string, format: :uuid }
+      parameter name: :neighbour_id, in: :path, schema: { type: :string, format: :uuid }
 
       response '200', 'Neighbour found' do
         schema '$ref' => '#/components/schemas/planet'
