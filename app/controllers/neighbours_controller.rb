@@ -4,12 +4,12 @@ class NeighboursController < ApplicationController
 
   # GET /planets/1/neighbours
   def index
-    render json: @planet.neighbours.to_json(except: %i[x y])
+    @neighbours = @planet.neighbours
   end
 
   # GET /planets/1/neighbours/1
   def show
-    render json: @planet.neighbours.find(params[:neighbour_id]).to_json(except: %i[x y])
+    @neighbour = @planet.neighbours.find(params[:neighbour_id])
   end
 
   private

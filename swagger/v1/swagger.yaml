@@ -324,14 +324,15 @@ paths:
                   - amount_requested
               required:
               - mining
-  "/planets/{id}/neighbours":
+  "/planets/{planet_id}/neighbours":
     get:
       summary: Retrieves all neighbours
       tags:
       - neighbours
       parameters:
-      - name: id
+      - name: planet_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
@@ -344,19 +345,21 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/planet"
-  "/planets/{id}/neighbours/{neighbour_id}":
+  "/planets/{planet_id}/neighbours/{neighbour_id}":
     get:
       summary: Retrieves a planets neighbour
       tags:
       - neighbours
       parameters:
-      - name: id
+      - name: planet_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
       - name: neighbour_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string
