@@ -29,7 +29,7 @@ RSpec.describe 'resources', type: :request, capture_examples: true do
 
         let(:planet) { create(:planet) }
         let(:id) { planet.id }
-        let(:resource_id) { create(:resource, planet: planet).id }
+        let(:resource_id) { create(:resource, resource_type: 'coal', planet: planet).id }
         run_test!
       end
 

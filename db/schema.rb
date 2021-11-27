@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deleted_at"
-    t.integer "resource_type", default: 0
     t.index ["gameworld_id"], name: "index_planets_on_gameworld_id"
   end
 
@@ -83,6 +82,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.integer "current_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "resource_type", default: 0
     t.index ["planet_id"], name: "index_resources_on_planet_id"
   end
 
