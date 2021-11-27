@@ -6,7 +6,7 @@ RSpec.describe 'planets', type: :request, capture_examples: true do
       produces 'application/json'
       tags :planets
 
-      response(200, 'Return all available planets') do
+      response(200, 'Return all available planets for the active gameworld') do
         schema type: :array,
                items: { '$ref' => '#/components/schemas/planet' }
 

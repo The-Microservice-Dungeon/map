@@ -380,7 +380,7 @@ paths:
       - planets
       responses:
         '200':
-          description: Return all available planets
+          description: Return all available planets for the active gameworld
           content:
             application/json:
               schema:
