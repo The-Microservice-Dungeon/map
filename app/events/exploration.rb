@@ -10,7 +10,7 @@ class Exploration < ApplicationRecord
   end
 
   def publish_planet_explored_event
-    $producer.produce_async topic:   'explorations',
+    $producer.produce_async topic: 'explorations',
                             headers: headers,
                             payload: payload.to_json
   end
