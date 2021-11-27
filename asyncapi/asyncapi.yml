@@ -1,40 +1,74 @@
 asyncapi: '2.2.0'
+
 info:
   title: Map Service
   version: 1.0.0
-  description: This service is in charge of creating the gameworld
+  contact: 
+    name: "The Microservice Dungeon"
+    url: "https://github.com/The-Microservice-Dungeon"
+  description: |
+                This service is in charge of the gameworld for The Microservice Dungeon
+
+                You can use the "map" topic to subcribe to our events
+
+servers:
+  local_development:
+    url: localhost:29092
+    protocol: kafka
+    description: Local Kafka Broker started through docker compose.
+
 channels:
-  gameworld_created:
+  gameworld-created:
     publish:
       message:
-        $ref: '#/components/messages/gameworld_created'
-  spawn_created:
+        $ref: '#/components/messages/gameworld-created'
+  spawn-created:
     publish:
       message:
-        $ref: '#/components/messages/spawn_created'
-  spacestation_created:
+        $ref: '#/components/messages/spawn-created'
+  spacestation-created:
       publish:
         message:
-          $ref: '#/components/messages/spacestation_created'
+          $ref: '#/components/messages/spacestation-created'
   planet_explored:
       publish:
         message:
-          $ref: '#/components/messages/planet_explored'
-  resource_mined:
+          $ref: '#/components/messages/planet-explored'
+  resource-mined:
     publish:
       message:
-        $ref: '#/components/messages/resource_mined'
-  resource_emptied:
+        $ref: '#/components/messages/resource-mined'
+  resource-replenished:
     publish:
       message:
-        $ref: '#/components/messages/resource_emptied'
-  resource_replenished:
-    publish:
-      message:
-        $ref: '#/components/messages/resource_replenished'
+        $ref: '#/components/messages/resource-replenished'
+
 components:
   messages:
-    gameworld_created:
+    gameworld-created:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: UUID of the event.
+          transactionId:
+            type: string
+            format: uuid
+            description: UUID of the transaction.
+          version:
+            type: string
+            example: "1"
+            description: Version number of the event.
+          timestamp:
+            type: string
+            format: date-time
+            description: Timestamp of the event.
+          type:
+            type: string
+            example: gameworld-created
+            description: Type of the event.
       payload:
         type: object
         properties:
@@ -42,7 +76,31 @@ components:
             type: string
             format: uuid
             description: UUID of the created gameworld
-    spawn_created:
+
+    spawn-created:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: UUID of the event.
+          transactionId:
+            type: string
+            format: uuid
+            description: UUID of the transaction.
+          version:
+            type: string
+            example: "1"
+            description: Version number of the event.
+          timestamp:
+            type: string
+            format: date-time
+            description: Timestamp of the event.
+          type:
+            type: string
+            example: spawn-created
+            description: Type of the event.
       payload:
         type: object
         properties:
@@ -50,7 +108,31 @@ components:
             type: string
             format: uuid
             description: UUID of the created planet
-    spacestation_created:
+
+    spacestation-created:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: UUID of the event.
+          transactionId:
+            type: string
+            format: uuid
+            description: UUID of the transaction.
+          version:
+            type: string
+            example: "1"
+            description: Version number of the event.
+          timestamp:
+            type: string
+            format: date-time
+            description: Timestamp of the event.
+          type:
+            type: string
+            example: spacestation-created
+            description: Type of the event.
       payload:
         type: object
         properties:
@@ -58,74 +140,139 @@ components:
             type: string
             format: uuid
             description: UUID of the created planet
-    planet_explored:
+  
+    planet-explored:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: UUID of the event.
+          transactionId:
+            type: string
+            format: uuid
+            description: UUID of the transaction.
+          version:
+            type: string
+            example: "1"
+            description: Version number of the event.
+          timestamp:
+            type: string
+            format: date-time
+            description: Timestamp of the event.
+          type:
+            type: string
+            example: planet-explored
+            description: Type of the event.
       payload:
         type: object
         properties:
-          transaction_id:
-            type: string
-            format: uuid
-            description: UUID of the transaction
           planet:
             type: object
             properties:
-              resourece_ids:
-                type: array
-                items:
-                  type: string
-                  format: uuid
-                  description: UUID of the resources on the explored planed
+              resource_id:
+                type: string
+                format: uuid
+                description: UUID of the resource on the explored planet.
               neighbour_ids:
                 type: array
                 items:
                   type: string
                   format: uuid
-                  description: UUID of the neighbour on the explored planed
+                  description: UUID of the neighbour on the explored planet.
               recharge_multiplicator:
                 type: integer
-                description: Recharge multiplicator of the planet explored
+                description: Recharge multiplicator of the planet explored.
               movement_difficulty:
                 type: integer
-                description: Movemenet difficulty of the planet explored
+                description: Movemenet difficulty of the planet explored.
               planet_type:
                 type: string
-                description: Planet type (`default`, `spawn` or `spacestation`) of the planet explored
-    resource_replenished:
+                description: Planet type (`default`, `spawn` or `spacestation`) of the planet explored.
+
+    resource-replenished:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: UUID of the event.
+          transactionId:
+            type: string
+            format: uuid
+            description: UUID of the transaction.
+          version:
+            type: string
+            example: "1"
+            description: Version number of the event.
+          timestamp:
+            type: string
+            format: date-time
+            description: Timestamp of the event.
+          type:
+            type: string
+            example: resource-replenished
+            description: Type of the event.
       payload:
         type: object
         properties:
           planet_id:
             type: string
             format: uuid
-            description: UUID of the planet where the resource is located
-          resource_id:
+            description: UUID of the planet of the replenishment.
+          resource:
             type: string
             format: uuid
-            description: UUID of the replenished resource
-    resource_mined:
+            description: UUID of the resource.
+          resource_type:
+            type: string
+            example: coal
+            description: Type of resource.
+  
+    resource-mined:
+      headers:
+        type: object
+        properties:
+          eventId:
+            type: string
+            format: uuid
+            description: UUID of the event.
+          transactionId:
+            type: string
+            format: uuid
+            description: UUID of the transaction.
+          version:
+            type: string
+            example: "1"
+            description: Version number of the event.
+          timestamp:
+            type: string
+            format: date-time
+            description: Timestamp of the event.
+          type:
+            type: string
+            example: resource-mined
+            description: Type of the event.
       payload:
         type: object
         properties:
           planet_id:
             type: string
             format: uuid
-            description: UUID of the planet where the resource is located
+            description: UUID of the planet of the mining.
           resource_id:
             type: string
             format: uuid
-            description: UUID of the replenished resource
+            description: UUID of the resource mined.
+          resource_type:
+            type: string
+            example: coal
+            description: Type of resource.
           amount_mined:
             type: integer
             description: The actual amount that has been mined
-    resource_emptied:
-      payload:
-        type: object
-        properties:
-          planet_id:
-            type: string
-            format: uuid
-            description: UUID of the planet where the resource is located
-          resource_id:
-            type: string
-            format: uuid
-            description: UUID of the empty resource
+          amount_left:
+            type: integer
+            description: The current amount of resource left.

@@ -36,7 +36,8 @@ class Mining < ApplicationRecord
 
   def resource_mined_payload
     {
-      id: resource_id,
+      planet_id: planet_id,
+      resource_id: resource_id,
       resource_type: resource.resource_type,
       amount_mined: amount_mined,
       amount_left: resource.current_amount

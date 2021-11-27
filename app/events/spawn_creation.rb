@@ -33,7 +33,7 @@ class SpawnCreation < ApplicationRecord
 
   def spawn_created_payload
     {
-      id: planet_id
+      planet_id: planet_id
     }
   end
 end
