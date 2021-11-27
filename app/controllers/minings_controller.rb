@@ -1,4 +1,5 @@
 class MiningsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_planet_and_resource, only: %i[create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   rescue_from ActionController::ParameterMissing, with: :render_params_missing
