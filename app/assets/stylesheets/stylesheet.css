@@ -82,6 +82,10 @@
   border: solid 1px black;
 }
 
+.empty {
+  opacity: 0;
+}
+
 .move_cost_1{
   background-color: yellowgreen;
 }
