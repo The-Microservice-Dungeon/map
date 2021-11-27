@@ -19,7 +19,9 @@ class Mining < ApplicationRecord
   end
 
   def publish_mining_events
-    $producer.produce_async(topic: 'minings', headers: resource_mined_headers, payload: resource_mined_payload.to_json)
+    $producer.produce_async topic: 'map',
+                            headers: resource_mined_headers,
+                            payload: resource_mined_payload.to_json
   end
 
   def resource_mined_headers
