@@ -387,14 +387,15 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/planet"
-  "/planets/{id}":
+  "/planets/{planet_id}":
     get:
       summary: Retrieves a planet
       tags:
       - planets
       parameters:
-      - name: id
+      - name: planet_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string

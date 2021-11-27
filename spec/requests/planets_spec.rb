@@ -16,23 +16,23 @@ RSpec.describe 'planets', type: :request, capture_examples: true do
     end
   end
 
-  path '/planets/{id}' do
+  path '/planets/{planet_id}' do
     get 'Retrieves a planet' do
       tags :planets
       produces 'application/json'
-      parameter name: :id, in: :path, type: :string
+      parameter name: :planet_id, in: :path, type: :string, format: :uuid
 
       response '200', 'Planet found' do
         schema '$ref' => '#/components/schemas/planet'
 
-        let(:id) { create(:planet).id }
+        let(:planet_id) { create(:planet).id }
         run_test!
       end
 
       response '404', 'Not Found' do
         schema '$ref' => '#/components/schemas/errors_object'
 
-        let(:id) { 'invalid' }
+        let(:planet_id) { 'invalid' }
         run_test!
       end
     end
