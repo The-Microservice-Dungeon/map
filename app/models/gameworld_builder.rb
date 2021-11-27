@@ -166,18 +166,18 @@ class GameworldBuilder
   end
 
   def top_neighbour(planets, x, y)
-    planets.find { |p| p.x == (x - 1) && p.y == y }
+    planets.find { |p| p.x == (x - 1) && p.y == y && p.deleted_at.nil? }
   end
 
   def bottom_neighbour(planets, x, y)
-    planets.find { |p| p.x == (x + 1) && p.y == y }
+    planets.find { |p| p.x == (x + 1) && p.y == y && p.deleted_at.nil? }
   end
 
   def left_neighbour(planets, x, y)
-    planets.find { |p| p.x == x && p.y == (y - 1) }
+    planets.find { |p| p.x == x && p.y == (y - 1) && p.deleted_at.nil? }
   end
 
   def right_neighbour(planets, x, y)
-    planets.find { |p| p.x == x && p.y == (y + 1) }
+    planets.find { |p| p.x == x && p.y == (y + 1) && p.deleted_at.nil? }
   end
 end
