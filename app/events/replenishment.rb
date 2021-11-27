@@ -34,7 +34,7 @@ class Replenishment < ApplicationRecord
   def resource_replenished_payload
     {
       id: resource_id,
-      resource_type: resource.resource_type.name
+      resource_type: resource.resource_type
     }
   end
 end

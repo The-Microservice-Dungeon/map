@@ -111,12 +111,6 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'resouces created' do
     it 'creates appropriate amount of resources' do
-      coal = create(:resource_type, name: 'coal')
-      iron = create(:resource_type, name: 'iron')
-      gem = create(:resource_type, name: 'gem')
-      gold = create(:resource_type, name: 'gold')
-      platin = create(:resource_type, name: 'platin')
-
       map_size = 20
 
       gwb = GameworldBuilder.new(12, map_size)
@@ -124,26 +118,20 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb.create_spacestations
       gwb.create_resources
 
-      coal_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == coal.id } }
-      iron_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == iron.id } }
-      gem_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gem.id } }
-      gold_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == gold.id } }
-      platin_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type_id == platin.id } }
+      coal_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'coal' } }
+      iron_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'iron' } }
+      gem_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'gem' } }
+      gold_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'gold' } }
+      platin_count = gwb.gameworld.planets.count { |p| p.resources.any? { |r| r.resource_type == 'platin' } }
 
-      expect(coal_count).to eq((map_size*map_size)/20)
-      expect(iron_count).to eq((map_size*map_size)/30)
-      expect(gem_count).to eq((map_size*map_size)/40)
-      expect(gold_count).to eq((map_size*map_size)/50)
-      expect(platin_count).to eq((map_size*map_size)/60)
+      expect(coal_count).to eq((map_size * map_size) / 20)
+      expect(iron_count).to eq((map_size * map_size) / 30)
+      expect(gem_count).to eq((map_size * map_size) / 40)
+      expect(gold_count).to eq((map_size * map_size) / 50)
+      expect(platin_count).to eq((map_size * map_size) / 60)
     end
 
     it 'doesn´t place resources on Spawns or Space Stations' do
-      create(:resource_type, name: 'coal')
-      create(:resource_type, name: 'iron')
-      create(:resource_type, name: 'gem')
-      create(:resource_type, name: 'gold')
-      create(:resource_type, name: 'platin')
-
       gwb = GameworldBuilder.new(12, 20)
       gwb.create_spawns
       gwb.create_spacestations
@@ -160,45 +148,36 @@ RSpec.describe GameworldBuilder, type: :model do
   end
 
   context 'planets removed' do
-    it 'enouth resources after planet deletion' do
-
-      coal = create(:resource_type, name: 'coal')
-      iron = create(:resource_type, name: 'iron')
-      gem = create(:resource_type, name: 'gem')
-      gold = create(:resource_type, name: 'gold')
-      platin = create(:resource_type, name: 'platin')
-
+    it 'enough resources after planet deletion' do
       map_size = 20
 
-      gwb = GameworldBuilder.create_regular_gameworld(12,map_size,1000)
+      gwb = GameworldBuilder.create_regular_gameworld(12, map_size, 1000)
 
-      existing_planets = gwb.gameworld.planets.find_all {|p| p.deleted_at == nil}
+      existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
-      coal_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type_id == coal.id } }
-      iron_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type_id == iron.id } }
-      gem_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type_id == gem.id } }
-      gold_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type_id == gold.id } }
-      platin_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type_id == platin.id } }
+      coal_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'coal' } }
+      iron_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'iron' } }
+      gem_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'gem' } }
+      gold_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'gold' } }
+      platin_count = existing_planets.count { |p| p.resources.any? { |r| r.resource_type == 'platin' } }
 
-      expect(coal_count).to eq((map_size*map_size)/20)
-      expect(iron_count).to eq((map_size*map_size)/30)
-      expect(gem_count).to eq((map_size*map_size)/40)
-      expect(gold_count).to eq((map_size*map_size)/50)
-      expect(platin_count).to eq((map_size*map_size)/60)
+      expect(coal_count).to eq((map_size * map_size) / 20)
+      expect(iron_count).to eq((map_size * map_size) / 30)
+      expect(gem_count).to eq((map_size * map_size) / 40)
+      expect(gold_count).to eq((map_size * map_size) / 50)
+      expect(platin_count).to eq((map_size * map_size) / 60)
     end
 
     it 'correct amount of spawns and spacestations' do
+      gwb = GameworldBuilder.create_regular_gameworld(12, 20, 1000)
 
-      gwb = GameworldBuilder.create_regular_gameworld(12,20,1000)
+      existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
-      existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at == nil }
-      
       spawn_count = existing_planets.count { |p| p.planet_type == 'spawn' }
       spacestation_count = existing_planets.count { |p| p.planet_type == 'spacestation' }
 
       expect(spawn_count).to eq(12)
       expect(spacestation_count).to eq(30)
-      
     end
   end
 end

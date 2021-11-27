@@ -22,8 +22,6 @@ Rails.application.routes.draw do
   get '/planets/:id/minings', to: 'minings#index', as: 'minings'
   post '/planets/:id/minings', to: 'minings#create'
 
-  get '/resource_types', to: 'resource_types#index'
-
   post '/planets/:planet_id/explorations', to: 'explorations#create'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_15_153831) do
+ActiveRecord::Schema.define(version: 2021_11_27_145536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -76,23 +76,14 @@ ActiveRecord::Schema.define(version: 2021_11_15_153831) do
     t.index ["resource_id"], name: "index_replenishments_on_resource_id"
   end
 
-  create_table "resource_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "difficulty", default: 0
-    t.integer "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "resources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "planet_id", null: false
-    t.uuid "resource_type_id", null: false
     t.integer "max_amount"
     t.integer "current_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["planet_id", "resource_type_id"], name: "index_resources_on_planet_id_and_resource_type_id", unique: true
+    t.integer "resource_type", default: 0
     t.index ["planet_id"], name: "index_resources_on_planet_id"
-    t.index ["resource_type_id"], name: "index_resources_on_resource_type_id"
   end
 
   create_table "spacestation_creations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -120,7 +111,6 @@ ActiveRecord::Schema.define(version: 2021_11_15_153831) do
   add_foreign_key "replenishments", "planets"
   add_foreign_key "replenishments", "resources"
   add_foreign_key "resources", "planets"
-  add_foreign_key "resources", "resource_types"
   add_foreign_key "spacestation_creations", "planets"
   add_foreign_key "spawn_creations", "planets"
 end

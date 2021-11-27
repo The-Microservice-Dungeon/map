@@ -19,8 +19,8 @@ class GameworldBuilder
       p.x >= border &&
         p.y < @map_size - border   &&
         p.x < @map_size - border   &&
-        p.y >= border  &&
-        p.deleted_at == nil
+        p.y >= border &&
+        p.deleted_at.nil?
     end
 
     spacestation_amount = ((@map_size - 4) * (@map_size - 4)).fdiv(100) * @player_amount
@@ -36,13 +36,13 @@ class GameworldBuilder
   def create_spawns
     grid_size = @map_size - 1
 
-    existing_planets = @gameworld.planets.find_all {|p| p.deleted_at == nil}
+    existing_planets = @gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
     possible_spawns = existing_planets.find_all do |p|
-        p.x.zero? ||
+      p.x.zero? ||
         p.x == grid_size ||
         p.y.zero? ||
-        p.y == grid_size 
+        p.y == grid_size
     end
 
     distance_between_spawns = possible_spawns.size / @player_amount
@@ -125,14 +125,13 @@ class GameworldBuilder
   private
 
   def create_specific_resources(name, patch_amount, part_of_map)
-    existing_planets = @gameworld.planets.find_all {|p| p.deleted_at == nil}
+    existing_planets = @gameworld.planets.find_all { |p| p.deleted_at.nil? }
     resource_planets = existing_planets.select do |p|
       method(part_of_map).call(p) && p.planet_type == 'default' && p.resources.empty?
     end.sample(patch_amount)
 
     resource_planets.each do |p|
-      resource_type = ResourceType.find_by(name: name)
-      p.add_resource(resource_type.id, 10_000) unless resource_type.nil?
+      p.add_resource(name, 10_000)
     end
   end
 
