@@ -4,14 +4,13 @@ class PlanetsController < ApplicationController
 
   # GET /planets
   def index
-    @planets = Planet.all
-
-    render json: @planets.to_json(include: { neighbours: { except: %i[x y] } }, except: %i[x y])
+    gameworld = Gameworld.find_by(status: 'active')
+    @planets = Planet.where(gameworld_id: gameworld.id, deleted_at: nil)
   end
 
   # GET /planets/1
   def show
-    render json: @planet.to_json(include: { neighbours: { except: %i[x y] } }, except: %i[x y])
+    @planet
   end
 
   private

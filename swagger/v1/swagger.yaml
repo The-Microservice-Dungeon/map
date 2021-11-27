@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is REST documentation for the Map Service
-  version: v1.1
+  version: v1.2
 components:
   schemas:
     errors_object:
@@ -76,25 +76,40 @@ components:
           - default
           - spawn
           - spacestation
+        neighbour_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
         created_at:
           type: string
           format: date-time
         updated_at:
           type: string
           format: date-time
+        resource:
+          oneOf:
+          - type:
+          - "$ref": "#/components/schemas/resource"
     resource:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        planet_id:
+          type: string
+          format: uuid
         max_amount:
           type: integer
         current_amount:
           type: integer
-        planet_id:
+        created_at:
           type: string
-          format: uuid
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         resource_type:
           type: string
           enum:
@@ -103,12 +118,6 @@ components:
           - gem
           - gold
           - platin
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
     mining:
       type: object
       properties:
@@ -371,21 +380,22 @@ paths:
       - planets
       responses:
         '200':
-          description: Return all available planets
+          description: Return all available planets for the active gameworld
           content:
             application/json:
               schema:
                 type: array
                 items:
                   "$ref": "#/components/schemas/planet"
-  "/planets/{id}":
+  "/planets/{planet_id}":
     get:
       summary: Retrieves a planet
       tags:
       - planets
       parameters:
-      - name: id
+      - name: planet_id
         in: path
+        format: uuid
         required: true
         schema:
           type: string

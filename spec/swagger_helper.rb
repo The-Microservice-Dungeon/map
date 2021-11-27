@@ -20,7 +20,7 @@ RSpec.configure do |config|
       info: {
         title: 'Map Service API',
         description: 'This is REST documentation for the Map Service',
-        version: 'v1.1'
+        version: 'v1.2'
       },
       components: {
         schemas: {
@@ -60,20 +60,22 @@ RSpec.configure do |config|
               taken_at: { type: :string, format: 'date-time', nullable: true },
               gameworld_id: { type: :string, format: :uuid },
               planet_type: { type: :string, enum: %w[default spawn spacestation] },
+              neighbour_ids: { type: :array, items: { type: :string, format: :uuid } },
               created_at: { type: :string, format: 'date-time' },
-              updated_at: { type: :string, format: 'date-time' }
+              updated_at: { type: :string, format: 'date-time' },
+              resource: { oneOf: [{ type: nil }, { '$ref' => '#/components/schemas/resource' }] }
             }
           },
           resource: {
             type: :object,
             properties: {
               id: { type: :string, format: :uuid },
+              planet_id: { type: :string, format: :uuid },
               max_amount: { type: :integer },
               current_amount: { type: :integer },
-              planet_id: { type: :string, format: :uuid },
-              resource_type: { type: :string, enum: %w[coal iron gem gold platin] },
               created_at: { type: :string, format: 'date-time' },
-              updated_at: { type: :string, format: 'date-time' }
+              updated_at: { type: :string, format: 'date-time' },
+              resource_type: { type: :string, enum: %w[coal iron gem gold platin] }
             }
           },
           mining: {

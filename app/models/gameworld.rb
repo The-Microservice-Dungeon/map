@@ -4,7 +4,7 @@ class Gameworld < ApplicationRecord
 
   has_many :planets, dependent: :destroy
 
-  after_save :set_other_gameworlds_to_inactive
+  after_create :set_other_gameworlds_to_inactive
   after_create :publish_gameworld_created_event
 
   def set_other_gameworlds_to_inactive
