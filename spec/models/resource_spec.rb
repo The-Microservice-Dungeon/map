@@ -8,7 +8,7 @@ RSpec.describe Resource, type: :model do
     expect(planet.resource).to eq(resource)
   end
 
-  xit 'a planet can only have one resource' do
+  it 'a planet can only have one resource' do
     planet = create(:planet)
 
     Resource.new(max_amount: 1000, current_amount: 400, planet_id: planet.id, resource_type: 'coal').save

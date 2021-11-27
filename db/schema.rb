@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_27_145536) do
+ActiveRecord::Schema.define(version: 2021_11_27_211239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.uuid "transaction_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.index ["planet_id"], name: "index_explorations_on_planet_id"
   end
 
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
     t.integer "amount_requested"
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_minings_on_planet_id"
     t.index ["resource_id"], name: "index_minings_on_resource_id"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_replenishments_on_planet_id"
     t.index ["resource_id"], name: "index_replenishments_on_resource_id"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "resource_type", default: 0
+    t.index ["planet_id", "resource_type"], name: "index_resources_on_planet_id_and_resource_type", unique: true
     t.index ["planet_id"], name: "index_resources_on_planet_id"
   end
 
@@ -90,7 +91,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spacestation_creations_on_planet_id"
   end
@@ -99,7 +100,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_145536) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spawn_creations_on_planet_id"
   end
