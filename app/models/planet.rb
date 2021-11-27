@@ -37,4 +37,8 @@ class Planet < ApplicationRecord
   def taken?
     !taken_at.nil?
   end
+
+  def neighbour_ids
+    neighbours.pluck(:id)
+  end
 end
