@@ -453,7 +453,7 @@ paths:
                 planet:
                   type: object
                   properties:
-                    taken_At:
+                    taken_at:
                       type: string
                       format: date-time
                   required:

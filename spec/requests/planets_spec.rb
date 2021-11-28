@@ -53,7 +53,7 @@ RSpec.describe 'planets', type: :request, capture_examples: true do
         type: :object,
         properties: {
           planet: { type: :object,
-                    properties: { taken_At: { type: :string, format: 'date-time' } }, required: %i[taken_at] }
+                    properties: { taken_at: { type: :string, format: 'date-time' } }, required: %i[taken_at] }
         },
         required: %w[planet]
       }

@@ -30,7 +30,7 @@ channels:
       publish:
         message:
           $ref: '#/components/messages/spacestation-created'
-  planet_explored:
+  planet-explored:
       publish:
         message:
           $ref: '#/components/messages/planet-explored'
