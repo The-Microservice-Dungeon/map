@@ -1,5 +1,6 @@
 class PlanetsController < ApplicationController
-  before_action :set_planet, only: %i[show update destroy]
+  skip_before_action :verify_authenticity_token
+  before_action :set_planet, only: %i[show take]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
   # GET /planets
@@ -13,11 +14,21 @@ class PlanetsController < ApplicationController
     @planet
   end
 
+  # PATCH /planets/1
+  def take
+    @planet.taken_at = planet_params[:taken_at]
+    if @planet.save
+      render :show, status: :ok, formats: :json
+    else
+      render json: @planet.errors, status: :unprocessable_entity
+    end
+  end
+
   private
 
   # Only allow a list of trusted parameters through.
-  def gameworld_params
-    params.require(:gameworld).permit(%i[player_amount])
+  def planet_params
+    params.require(:planet).permit(%i[taken_at])
   end
 
   # Use callbacks to share common setup or constraints between actions.

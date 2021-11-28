@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   get '/planets', to: 'planets#index'
   get '/planets/:id', to: 'planets#show', as: 'planet'
+  patch '/planets/:id', to: 'planets#take'
 
   get '/planets/:id/neighbours', to: 'neighbours#index', as: 'neighbours'
   get '/planets/:id/neighbours/:neighbour_id', to: 'neighbours#show', as: 'neighbour'

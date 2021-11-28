@@ -39,7 +39,8 @@ class Planet < ApplicationRecord
   end
 
   def taken!
-    self.taken_at = DateTime.current
+    self.taken_at = Time.now
+    save!
   end
 
   def taken?
