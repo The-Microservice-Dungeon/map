@@ -5,7 +5,7 @@ class PlanetsController < ApplicationController
   # GET /planets
   def index
     gameworld = Gameworld.find_by(status: 'active')
-    @planets = Planet.where(gameworld_id: gameworld.id, deleted_at: nil)
+    @planets = Planet.filter(params.slice(:planet_type, :taken)).where(gameworld_id: gameworld.id, deleted_at: nil)
   end
 
   # GET /planets/1
@@ -14,6 +14,11 @@ class PlanetsController < ApplicationController
   end
 
   private
+
+  # Only allow a list of trusted parameters through.
+  def gameworld_params
+    params.require(:gameworld).permit(%i[player_amount])
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planet

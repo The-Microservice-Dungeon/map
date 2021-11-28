@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_11_27_211239) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deleted_at"
     t.index ["gameworld_id"], name: "index_planets_on_gameworld_id"
+    t.index ["id"], name: "index_planets_on_id"
   end
 
   create_table "planets_neighbours", id: false, force: :cascade do |t|

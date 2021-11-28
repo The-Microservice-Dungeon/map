@@ -1,4 +1,6 @@
 class Planet < ApplicationRecord
+  include Filterable
+
   enum planet_type: %i[default spawn spacestation], _default: :default, _suffix: true
   validates :planet_type, inclusion: { in: planet_types.keys }
 
@@ -17,6 +19,12 @@ class Planet < ApplicationRecord
                           association_foreign_key: 'neighbour_id'
 
   has_one :resource, dependent: :delete
+
+  scope :filter_by_planet_type, ->(planet_type) { where planet_type: planet_type }
+  scope :filter_by_taken, lambda { |taken|
+    where taken_at: nil if taken == 'false'
+    where.not taken_at: nil if taken == 'true'
+  }
 
   def add_neighbour(neighbour)
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self

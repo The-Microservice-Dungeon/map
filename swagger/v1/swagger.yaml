@@ -377,6 +377,17 @@ paths:
   "/planets":
     get:
       summary: Retrieves all planets
+      parameters:
+      - name: planet_type
+        in: query
+        schema:
+          type: string
+        description: Optional, planet type
+      - name: taken
+        in: query
+        schema:
+          type: boolean
+        description: Optional, if the planet/spawn is already taken
       tags:
       - planets
       responses:
