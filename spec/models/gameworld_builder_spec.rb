@@ -150,8 +150,7 @@ RSpec.describe GameworldBuilder, type: :model do
   context 'planets removed' do
     it 'enough resources after planet deletion' do
       map_size = 20
-
-      gwb = GameworldBuilder.create_regular_gameworld(12, map_size, 1000)
+      gwb = GameworldBuilder.create_regular_gameworld(12)
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
@@ -169,7 +168,7 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'correct amount of spawns and spacestations' do
-      gwb = GameworldBuilder.create_regular_gameworld(12, 20, 1000)
+      gwb = GameworldBuilder.create_regular_gameworld(12)
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 

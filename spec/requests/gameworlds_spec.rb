@@ -23,10 +23,7 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
         type: :object,
         properties: {
           gameworld: { type: :object,
-                       properties: {
-                         player_amount: { type: :integer, minimum: 1 },
-                         round_amount: { type: :integer, minimum: 1 }
-                       }, required: %i[player_amount round_amount] }
+                       properties: { player_amount: { type: :integer, minimum: 1 } }, required: %i[player_amount] }
         },
         required: %w[gameworld]
       }
@@ -34,21 +31,21 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
       response '201', 'Created' do
         schema '$ref' => '#/components/schemas/gameworld'
 
-        let(:gameworld) { { gameworld: { player_amount: 30, map_size: 20, round_amount: 100 } } }
+        let(:gameworld) { { gameworld: { player_amount: 30 } } }
         run_test!
       end
 
       response '400', 'Bad Request' do
         schema '$ref' => '#/components/schemas/errors_object'
 
-        let(:gameworld) { { player_amount: 50 } }
+        let(:gameworld) { {} }
         run_test!
       end
 
       response '422', 'Unprocessable Entity' do
         schema '$ref' => '#/components/schemas/errors_object'
 
-        let(:gameworld) { { gameworld: { player_amount: 50, map_size: 20, round_amount: -100 } } }
+        let(:gameworld) { { gameworld: { player_amount: -10 } } }
         run_test!
       end
     end

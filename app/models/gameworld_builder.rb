@@ -60,9 +60,7 @@ class GameworldBuilder
   def delete_random_planets
     count_to_delete = @gameworld.planets.size.fdiv(10).ceil * rand(1..3).ceil
     deletable_planets = @gameworld.planets.select do |p|
-      p.planet_type == 'default' &&
-        p.resource.nil? &&
-        inner_map?(p) == false
+      p.planet_type == 'default' && !inner_map?(p) && p.x != 1 && p.y != 1 && p.x != map_size - 2 && p.y != map_size - 2
     end.sample(count_to_delete)
 
     deletable_planets.each do |p|
@@ -112,14 +110,24 @@ class GameworldBuilder
     end
   end
 
-  def self.create_regular_gameworld(player_amount, map_size, _round_amount)
-    gameworld_builder = new(player_amount, map_size)
+  def self.create_regular_gameworld(player_amount)
+    gameworld_builder = new(player_amount, map_size(player_amount))
     gameworld_builder.delete_random_planets
     gameworld_builder.add_movement_difficulty
     gameworld_builder.create_spawns
     gameworld_builder.create_spacestations
     gameworld_builder.create_resources
     gameworld_builder
+  end
+
+  def self.map_size(player_amount)
+    if player_amount < 10
+      15
+    elsif player_amount < 20
+      20
+    else
+      35
+    end
   end
 
   private

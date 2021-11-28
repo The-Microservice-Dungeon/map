@@ -19,8 +19,8 @@ RSpec.configure do |config|
       openapi: '3.0.1',
       info: {
         title: 'Map Service API',
-        description: 'This is REST documentation for the Map Service',
-        version: 'v1.2'
+        description: 'This is the REST documentation for the Map Service',
+        version: 'v1.3'
       },
       components: {
         schemas: {

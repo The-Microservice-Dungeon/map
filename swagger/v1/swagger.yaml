@@ -2,8 +2,8 @@
 openapi: 3.0.1
 info:
   title: Map Service API
-  description: This is REST documentation for the Map Service
-  version: v1.2
+  description: This is the REST documentation for the Map Service
+  version: v1.3
 components:
   schemas:
     errors_object:
@@ -232,12 +232,8 @@ paths:
                     player_amount:
                       type: integer
                       minimum: 1
-                    round_amount:
-                      type: integer
-                      minimum: 1
                   required:
                   - player_amount
-                  - round_amount
               required:
               - gameworld
   "/gameworlds/{gameworld_id}":

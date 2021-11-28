@@ -17,9 +17,7 @@ class GameworldsController < ApplicationController
 
   # POST /gameworlds
   def create
-    gameworld_builder = GameworldBuilder.create_regular_gameworld(gameworld_params[:player_amount],
-                                                                  gameworld_params[:map_size],
-                                                                  gameworld_params[:round_amount])
+    gameworld_builder = GameworldBuilder.create_regular_gameworld gameworld_params[:player_amount]
     @gameworld = gameworld_builder.gameworld
 
     if @gameworld.save
@@ -39,12 +37,12 @@ class GameworldsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def gameworld_params
-    params.require(:gameworld).permit(%i[player_amount map_size round_amount])
+    params.require(:gameworld).permit(%i[player_amount])
   end
 
   def validate_params
-    return if gameworld_params[:player_amount].positive? && gameworld_params[:round_amount].positive?
+    return if gameworld_params[:player_amount].positive?
 
-    render_unprocessable_entity('player_amount and round_amount need to be positive')
+    render_unprocessable_entity('player_amount needs to be positive')
   end
 end
