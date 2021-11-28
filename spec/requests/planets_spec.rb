@@ -41,5 +41,30 @@ RSpec.describe 'planets', type: :request, capture_examples: true do
         run_test!
       end
     end
+
+    patch 'Set the taken_at field of a planet/spawn' do
+      tags :planets
+      description 'Set the taken_at field of the planet to the given timestamp or null'
+      consumes 'application/json'
+      produces 'application/json'
+      description
+      parameter name: :planet_id, in: :path, schema: { type: :string, format: :uuid }
+      parameter name: :planet, in: :body, schema: {
+        type: :object,
+        properties: {
+          planet: { type: :object,
+                    properties: { taken_At: { type: :string, format: 'date-time' } }, required: %i[taken_at] }
+        },
+        required: %w[planet]
+      }
+
+      response '200', 'Taken at updated' do
+        schema '$ref' => '#/components/schemas/planet'
+
+        let(:planet_id) { create(:planet).id }
+        let(:planet) { { planet: { taken_at: Time.now.to_s } } }
+        run_test!
+      end
+    end
   end
 end

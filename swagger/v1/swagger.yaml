@@ -424,6 +424,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
+    patch:
+      summary: Set the taken_at field of a planet/spawn
+      tags:
+      - planets
+      description: Set the taken_at field of the planet to the given timestamp or
+        null
+      parameters:
+      - name: planet_id
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+      responses:
+        '200':
+          description: Taken at updated
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/planet"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planet:
+                  type: object
+                  properties:
+                    taken_At:
+                      type: string
+                      format: date-time
+                  required:
+                  - taken_at
+              required:
+              - planet
   "/planets/{planet_id}/resources":
     get:
       summary: Retrieves all resources
