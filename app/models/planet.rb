@@ -12,12 +12,6 @@ class Planet < ApplicationRecord
 
   belongs_to :gameworld
 
-  has_and_belongs_to_many :neighbours,
-                          class_name: 'Planet',
-                          join_table: 'planets_neighbours',
-                          foreign_key: 'planet_id',
-                          association_foreign_key: 'neighbour_id'
-
   has_one :resource, dependent: :delete
 
   scope :filter_by_planet_type, ->(planet_type) { where planet_type: planet_type }
@@ -25,6 +19,11 @@ class Planet < ApplicationRecord
     where taken_at: nil if taken == 'false'
     where.not taken_at: nil if taken == 'true'
   }
+
+  after_create do
+    SpawnCreation.create(planet_id: id) if planet_type == 'spawn'
+    SpacestationCreation.create(planet_id: id) if planet_type == 'spacestation'
+  end
 
   def add_neighbour(neighbour)
     neighbours << neighbour unless neighbours.include?(neighbour) || neighbour == self
@@ -49,5 +48,25 @@ class Planet < ApplicationRecord
 
   def neighbour_ids
     neighbours.pluck(:id)
+  end
+
+  def neighbours
+    [top_neighbour, bottom_neighbour, right_neighbour, left_neighbour].compact
+  end
+
+  def top_neighbour
+    Planet.find_by(gameworld_id: gameworld_id, x: (x - 1), y: y, deleted_at: nil)
+  end
+
+  def bottom_neighbour
+    Planet.find_by(gameworld_id: gameworld_id, x: (x + 1), y: y, deleted_at: nil)
+  end
+
+  def left_neighbour
+    Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y - 1), deleted_at: nil)
+  end
+
+  def right_neighbour
+    Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y + 1), deleted_at: nil)
   end
 end

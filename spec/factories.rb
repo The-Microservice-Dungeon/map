@@ -31,7 +31,7 @@ FactoryBot.define do
   end
 
   factory :gameworld do
-    status { 'active' }
+    status { 'inactive' }
   end
 
   factory :planet do

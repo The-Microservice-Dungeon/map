@@ -1,14 +1,16 @@
 class GameworldBuilder
   attr_reader :gameworld, :player_amount, :map_size
 
-  def initialize(player_amount, map_size)
-    @gameworld = Gameworld.new
+  def initialize(gameworld, player_amount, map_size)
+    @gameworld = gameworld
     @player_amount = player_amount
     @map_size = map_size
+  end
 
-    (0..map_size - 1).each do |column|
-      (0..map_size - 1).each do |row|
-        @gameworld.planets.build(x: column, y: row)
+  def init_planets
+    (0..@map_size - 1).each do |column|
+      (0..@map_size - 1).each do |row|
+        @gameworld.planets.create(x: column, y: row)
       end
     end
   end
@@ -30,6 +32,7 @@ class GameworldBuilder
     all_spacestations.each do |p|
       p.planet_type = 'spacestation'
       p.recharge_multiplicator = 2
+      p.save!
     end
   end
 
@@ -54,6 +57,7 @@ class GameworldBuilder
     all_spawns.sample(@player_amount).sort_by { |s| s.y && s.x }.each do |p|
       p.planet_type = 'spawn'
       p.recharge_multiplicator = 2
+      p.save!
     end
   end
 
@@ -65,12 +69,7 @@ class GameworldBuilder
 
     deletable_planets.each do |p|
       p.deleted_at = Time.now
-    end
-  end
-
-  def debug(x, y)
-    @gameworld.planets.each do |p|
-      p.movement_difficulty = 2 if p.x == x && p.y == y
+      p.save!
     end
   end
 
@@ -78,13 +77,7 @@ class GameworldBuilder
     @gameworld.planets.each do |p|
       p.movement_difficulty = 2 if mid_map?(p)
       p.movement_difficulty = 3 if inner_map?(p)
-    end
-  end
-
-  def neighbour_planets
-    @gameworld.planets.each do |planet|
-      neighbours = get_neighbours(planet)
-      neighbours.each { |neighbour| planet.add_neighbour(neighbour) }
+      p.save!
     end
   end
 
@@ -102,20 +95,13 @@ class GameworldBuilder
     end
   end
 
-  def finalize_async
-    Thread.report_on_exception = false
-
-    Thread.new do
-      neighbour_planets
-    end
-  end
-
-  def self.create_regular_gameworld(player_amount)
-    gameworld_builder = new(player_amount, map_size(player_amount))
-    gameworld_builder.delete_random_planets
+  def self.create_regular_gameworld(gameworld, player_amount)
+    gameworld_builder = new(gameworld, player_amount, map_size(player_amount))
+    gameworld_builder.init_planets
     gameworld_builder.add_movement_difficulty
     gameworld_builder.create_spawns
     gameworld_builder.create_spacestations
+    gameworld_builder.delete_random_planets
     gameworld_builder.create_resources
     gameworld_builder
   end
@@ -157,35 +143,5 @@ class GameworldBuilder
 
   def outer_map?(planet)
     !inner_map?(planet) && !mid_map?(planet)
-  end
-
-  def get_neighbours(planet)
-    neighbours = []
-    x = planet.x
-    y = planet.y
-    planets = @gameworld.planets
-
-    neighbours.push(top_neighbour(planets, x, y))
-    neighbours.push(bottom_neighbour(planets, x, y))
-    neighbours.push(left_neighbour(planets, x, y))
-    neighbours.push(right_neighbour(planets, x, y))
-
-    neighbours.compact
-  end
-
-  def top_neighbour(planets, x, y)
-    planets.find { |p| p.x == (x - 1) && p.y == y && p.deleted_at.nil? }
-  end
-
-  def bottom_neighbour(planets, x, y)
-    planets.find { |p| p.x == (x + 1) && p.y == y && p.deleted_at.nil? }
-  end
-
-  def left_neighbour(planets, x, y)
-    planets.find { |p| p.x == x && p.y == (y - 1) && p.deleted_at.nil? }
-  end
-
-  def right_neighbour(planets, x, y)
-    planets.find { |p| p.x == x && p.y == (y + 1) && p.deleted_at.nil? }
   end
 end

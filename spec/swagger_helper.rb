@@ -36,7 +36,7 @@ RSpec.configure do |config|
             type: :object,
             properties: {
               id: { type: :string, format: :uuid },
-              status: { type: :string, enum: %w[active inactive] },
+              status: { type: :string, enum: %w[inactive active] },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' }
             }

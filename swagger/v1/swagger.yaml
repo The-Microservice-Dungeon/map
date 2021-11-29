@@ -27,8 +27,8 @@ components:
         status:
           type: string
           enum:
-          - active
           - inactive
+          - active
         created_at:
           type: string
           format: date-time
@@ -388,6 +388,11 @@ paths:
         schema:
           type: boolean
         description: Optional, if the planet/spawn is already taken
+      - name: page
+        in: query
+        schema:
+          type: integer
+        description: Optional, page. The API shows 50 planets per page
       tags:
       - planets
       responses:

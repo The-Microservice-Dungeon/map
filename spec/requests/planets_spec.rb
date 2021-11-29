@@ -7,14 +7,18 @@ RSpec.describe 'planets', type: :request, capture_examples: true do
       parameter name: :planet_type, in: :query, schema: { type: :string }, description: 'Optional, planet type'
       parameter name: :taken, in: :query, schema: { type: :boolean },
                 description: 'Optional, if the planet/spawn is already taken'
+      parameter name: :page, in: :query, schema: { type: :integer },
+                description: 'Optional, page. The API shows 50 planets per page'
       tags :planets
 
       response(200, 'Return all available planets for the active gameworld') do
         schema type: :array,
                items: { '$ref' => '#/components/schemas/planet' }
 
-        let!(:planet) { create(:planet) }
+        let!(:gameworld) { create(:gameworld, status: 'active') }
+        let!(:planet) { create(:planet, gameworld: gameworld) }
         let(:taken) {}
+        let(:page) { 1 }
         let(:planet_type) {}
         run_test!
       end

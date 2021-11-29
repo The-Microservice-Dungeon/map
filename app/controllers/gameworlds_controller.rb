@@ -17,11 +17,10 @@ class GameworldsController < ApplicationController
 
   # POST /gameworlds
   def create
-    gameworld_builder = GameworldBuilder.create_regular_gameworld gameworld_params[:player_amount]
-    @gameworld = gameworld_builder.gameworld
+    @gameworld = Gameworld.new
 
     if @gameworld.save
-      gameworld_builder.finalize_async
+      CreateGameworldJob.perform_later(@gameworld.id, gameworld_params[:player_amount])
       render :show, status: :created, formats: :json
     else
       render json: @gameworld.errors, status: :unprocessable_entity

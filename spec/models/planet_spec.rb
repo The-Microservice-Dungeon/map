@@ -7,11 +7,10 @@ RSpec.describe Planet, type: :model do
     expect(planet.planet_type).to eq('default')
   end
 
-  it 'adds a neighbouring planet' do
-    planet = create(:planet)
-    neighbour = create(:planet)
-
-    planet.add_neighbour(neighbour)
+  it 'finds the planet by location' do
+    gameworld = create(:gameworld)
+    planet = create(:planet, gameworld: gameworld, x: 0, y: 0)
+    neighbour = create(:planet, gameworld: gameworld, x: 1, y: 0)
 
     expect(planet.neighbours).to eq([neighbour])
     expect(neighbour.neighbours).to eq([planet])
