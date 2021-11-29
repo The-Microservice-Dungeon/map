@@ -5,13 +5,15 @@
       <% @gameworlds.each do |g| %>
         <div class="block">
           <!-- <button><%= g.id %></button> -->
-          <%= link_to g.id, controller: "gameworlds_web", action: "show", id: g %>
+          <%= link_to g.name, controller: "gameworlds_web", action: "show", id: g %>
         </div>
       <% end %>
     </div>
     <form action="/gameworlds_web" method="post" accept-charset="UTF-8" >
       <label for="player_amount">Player amount</label>
       <input id="player_amount" name="player_amount" type="number" />
+      <label for="name">Gameworld Name</label>
+      <input id="name" name="name" type="string" />
       <input name="create" type="submit" class="button" value="CREATE deez nuts"  />
     </form>
   </div>

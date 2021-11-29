@@ -12,7 +12,7 @@ class GameworldsWebController < ApplicationController
   end
 
   def create
-    @gameworld = Gameworld.new
+    @gameworld = Gameworld.new(name: params[:name])
 
     if @gameworld.save
       CreateGameworldJob.perform_later(@gameworld.id, params[:player_amount].to_i)
