@@ -27,13 +27,21 @@ class CreateGameworldResourcesJob < ApplicationJob
   end
 
   def create_specific_resources(name, patch_amount, part_of_map)
-    existing_planets = @gameworld.planets.find_all { |p| p.deleted_at.nil? }
+    existing_planets = @gameworld.planets.where(deleted_at: nil, planet_type: 'default')
     resource_planets = existing_planets.select do |p|
-      p.method(part_of_map).call && p.planet_type == 'default' && p.resource.nil?
-    end.sample(patch_amount)
-
-    resource_planets.each do |p|
-      p.add_resource(name, 10_000)
+      p.method(part_of_map).call
     end
+
+    resources = resource_planets.sample(patch_amount).map do |p|
+      { id: SecureRandom.uuid,
+        planet_id: p.id,
+        resource_type: name,
+        max_amount: 10_000,
+        current_amount: 10_000,
+        created_at: Time.now,
+        updated_at: Time.now }
+    end
+
+    Resource.insert_all(resources)
   end
 end
