@@ -30,5 +30,4 @@ RSpec.describe Planet, type: :model do
     expect(planet.taken_at).to be_within(2).of(DateTime.current)
     expect(planet.taken?).to be_truthy
   end
-
 end

@@ -11,12 +11,11 @@ RSpec.describe 'neighbours', type: :request, capture_examples: true do
         schema type: :array,
                items: { '$ref' => '#/components/schemas/planet' }
 
-        let(:planet_id) do
-          planet = create(:planet)
-          neighbour = create(:planet)
-          planet.add_neighbour(neighbour)
-          planet.id
-        end
+        let(:gameworld) { create(:gameworld) }
+        let(:planet) { create(:planet, gameworld: gameworld, x: 0, y: 0) }
+        let(:neighbour) { create(:planet, gameworld: gameworld, x: 1, y: 0) }
+        let(:planet_id) { planet.id }
+        let(:neighbour_id) { neighbour.id }
         run_test!
       end
     end

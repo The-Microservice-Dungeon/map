@@ -51,7 +51,11 @@ class Planet < ApplicationRecord
   end
 
   def neighbours
-    [top_neighbour, bottom_neighbour, right_neighbour, left_neighbour].compact
+    Planet.where(x: (x - 1), y: y)
+          .or(Planet.where(x: (x + 1), y: y))
+          .or(Planet.where(x: x, y: (y - 1)))
+          .or(Planet.where(x: x, y: (y + 1)))
+          .where(gameworld_id: gameworld_id, deleted_at: nil)
   end
 
   def top_neighbour

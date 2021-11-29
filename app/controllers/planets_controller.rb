@@ -5,10 +5,11 @@ class PlanetsController < ApplicationController
 
   # GET /planets
   def index
-    gameworld = Gameworld.find_by(status: 'active')
     @planets = Planet
                .filter(params.slice(:planet_type, :taken))
-               .where(gameworld_id: gameworld.id, deleted_at: nil)
+               .joins(:gameworld)
+               .preload(:resource)
+               .where(gameworld: { status: 'active' }, deleted_at: nil)
                .paginate(page: params[:page], per_page: 50)
   end
 
