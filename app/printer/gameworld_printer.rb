@@ -28,6 +28,16 @@ class GameworldPrinter
     end
   end
 
+  def self.planets_to_2d_array(planets)
+    grid_size = Math.sqrt(planets.size) - 1
+
+    (0..grid_size).map do |y|
+      (0..grid_size).map do |x|
+        planets.find { |p| p.x == x && p.y == y }
+      end
+    end
+  end
+
   def self.gameworld_to_stringified_2d_array(gwb)
     gameworld = gwb.gameworld
     map_size = gwb.map_size - 1

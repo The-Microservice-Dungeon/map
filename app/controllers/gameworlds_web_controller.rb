@@ -7,7 +7,8 @@ class GameworldsWebController < ApplicationController
 
   def show
     @gameworld = Gameworld.find(params[:id])
-    @gameworld2d = GameworldPrinter.gameworld_to_2d_array(@gameworld)
+    planets = @gameworld.planets.preload(:resource)
+    @gameworld2d = GameworldPrinter.planets_to_2d_array(planets)
   end
 
   def create

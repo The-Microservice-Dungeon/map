@@ -17,6 +17,7 @@ class GameworldBuilder
 
   def create_spacestations
     border = 2
+
     possible_spacestations = @gameworld.planets.find_all do |p|
       p.x >= border &&
         p.y < @map_size - border   &&
@@ -25,11 +26,7 @@ class GameworldBuilder
         p.deleted_at.nil?
     end
 
-    spacestation_amount = ((@map_size - 4) * (@map_size - 4)).fdiv(100) * @player_amount
-
-    all_spacestations = possible_spacestations.sample(spacestation_amount)
-
-    all_spacestations.each do |p|
+    possible_spacestations.sample(@map_size).each do |p|
       p.planet_type = 'spacestation'
       p.recharge_multiplicator = 2
       p.save!
