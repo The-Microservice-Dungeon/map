@@ -73,4 +73,20 @@ class Planet < ApplicationRecord
   def right_neighbour
     Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y + 1), deleted_at: nil)
   end
+
+  def inner_map?
+    grid_size = gameworld.map_size - 1
+    inner = grid_size / 3
+    x > inner && x < grid_size - inner && y > inner && y < grid_size - inner
+  end
+
+  def mid_map?
+    grid_size = gameworld.map_size - 1
+    mid = grid_size / 3 / 2
+    x > mid && x < grid_size - mid && y > mid && y < grid_size - mid
+  end
+
+  def outer_map?
+    !inner_map? && !mid_map?
+  end
 end

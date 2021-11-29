@@ -77,7 +77,7 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'creates spacestations in all tiles within boundaries' do
       gwb = GameworldBuilder.new(gameworld, 12, 10)
       gwb.init_planets
-      gwb.create_spacestations
+      CreateGameworldSpacestationsJob.new.perform(gameworld.id)
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
 
@@ -94,8 +94,8 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb = GameworldBuilder.new(gameworld, 12, map_size)
       gwb.init_planets
       gwb.create_spawns
-      gwb.create_spacestations
-      gwb.create_resources
+      CreateGameworldSpacestationsJob.new.perform(gameworld.id)
+      CreateGameworldResourcesJob.new.perform(gameworld.id)
 
       coal_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'coal' }
       iron_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'iron' }
@@ -114,8 +114,10 @@ RSpec.describe GameworldBuilder, type: :model do
       gwb = GameworldBuilder.new(gameworld, 12, 20)
       gwb.init_planets
       gwb.create_spawns
-      gwb.create_spacestations
-      gwb.create_resources
+      CreateGameworldSpacestationsJob.new.perform(gameworld.id)
+      CreateGameworldResourcesJob.new.perform(gameworld.id)
+
+      gwb.gameworld.reload
 
       spawns = gwb.gameworld.planets.find_all { |p| p.planet_type == 'spawn' }.count
       spacestations = gwb.gameworld.planets.find_all do |p|
@@ -150,6 +152,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
     it 'correct amount of spawns and spacestations' do
       gwb = GameworldBuilder.create_regular_gameworld(gameworld, 12)
+      gwb.gameworld.reload
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
