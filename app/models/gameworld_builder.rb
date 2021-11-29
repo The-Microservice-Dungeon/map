@@ -10,45 +10,84 @@ class GameworldBuilder
   end
 
   def init_planets
-    (0..@map_size - 1).each do |column|
-      (0..@map_size - 1).each do |row|
-        @gameworld.planets.create(x: column, y: row)
+    planets = (0..@map_size - 1).map do |column|
+      (0..@map_size - 1).map do |row|
+        { id: SecureRandom.uuid,
+          movement_difficulty: movement_difficulty(column, row),
+          recharge_multiplicator: 1,
+          gameworld_id: @gameworld.id,
+          x: column,
+          y: row,
+          created_at: Time.now,
+          updated_at: Time.now,
+          planet_type: 'default',
+          deleted_at: nil }
       end
+    end.flatten
+
+    distance_between_spawns = (@map_size * 4 - 4) / @player_amount
+
+    spawns = planets.select.with_index do |planet, i|
+      ((i + 1) % distance_between_spawns).zero? && possible_spawn?(planet[:x], planet[:y])
+    end.sample(@player_amount).pluck(:x, :y)
+
+    planets = planets.map do |planet|
+      if spawns.include?([planet[:x], planet[:y]])
+        planet[:planet_type] = 'spawn'
+        planet[:recharge_multiplicator] = 2
+      end
+      planet
     end
+
+    spacestations = planets.filter do |planet|
+      possible_spacestation?(planet[:x], planet[:y])
+    end.sample(@map_size).pluck(:x, :y)
+
+    planets = planets.map do |planet|
+      if spacestations.include?([planet[:x], planet[:y]])
+        planet[:planet_type] = 'spacestation'
+        planet[:recharge_multiplicator] = 2
+      end
+      planet
+    end
+
+    count_to_delete = planets.size.fdiv(10).ceil * rand(1..3).ceil
+
+    deleted_planets = planets.filter do |planet|
+      deletable_planet?(planet[:x], planet[:y], planet[:planet_type])
+    end.sample(count_to_delete).pluck(:x, :y)
+
+    planets = planets.map do |planet|
+      planet[:deleted_at] = Time.now if deleted_planets.include?([planet[:x], planet[:y]])
+      planet
+    end
+
+    Planet.insert_all(planets)
   end
 
-  def create_spawns
-    grid_size = @map_size - 1
+  def movement_difficulty(x, y)
+    return 3 if inner_map?(x, y)
+    return 2 if mid_map?(x, y)
 
-    existing_planets = @gameworld.planets.find_all { |p| p.deleted_at.nil? }
+    1
+  end
 
-    possible_spawns = existing_planets.find_all do |p|
-      p.x.zero? ||
-        p.x == grid_size ||
-        p.y.zero? ||
-        p.y == grid_size
-    end
+  def possible_spawn?(x, y)
+    x.zero? || x == @map_size - 1 || y.zero? || y == @map_size - 1
+  end
 
-    distance_between_spawns = possible_spawns.size / @player_amount
+  def possible_spacestation?(x, y)
+    border = 2
+    x >= border && y < @map_size - border && x < @map_size - border && y >= border
+  end
 
-    all_spawns = possible_spawns.select.with_index do |_p, i|
-      ((i + 1) % distance_between_spawns).zero?
-    end
-
-    all_spawns.sample(@player_amount).sort_by { |s| s.y && s.x }.each do |p|
-      p.planet_type = 'spawn'
-      p.recharge_multiplicator = 2
-      p.save!
-    end
+  def deletable_planet?(x, y, planet_type)
+    planet_type == 'default' && !inner_map?(x, y) && x != 1 && y != 1 && x != @map_size - 2 && y != @map_size - 2
   end
 
   def self.create_regular_gameworld(gameworld, player_amount)
     gameworld_builder = new(gameworld, player_amount, map_size(player_amount))
     gameworld_builder.init_planets
-    gameworld_builder.create_spawns
-    CreateGameworldSpacestationsJob.perform_later(gameworld.id)
-    CreateGameworldDeletePlanetsJob.perform_later(gameworld.id)
-    CreateGameworldMovementDifficultyJob.perform_later(gameworld.id)
     CreateGameworldResourcesJob.perform_later(gameworld.id)
     gameworld_builder
   end
@@ -61,5 +100,17 @@ class GameworldBuilder
     else
       35
     end
+  end
+
+  def inner_map?(x, y)
+    grid_size = @map_size - 1
+    inner = grid_size / 3
+    x > inner && x < grid_size - inner && y > inner && y < grid_size - inner
+  end
+
+  def mid_map?(x, y)
+    grid_size = @map_size - 1
+    mid = grid_size / 3 / 2
+    x > mid && x < grid_size - mid && y > mid && y < grid_size - mid
   end
 end

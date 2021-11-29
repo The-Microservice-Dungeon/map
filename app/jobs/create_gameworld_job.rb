@@ -6,7 +6,7 @@ class CreateGameworldJob < ApplicationJob
 
   def perform(gameworld_id, player_amount)
     fetch_gameworld(gameworld_id)
-    GameworldBuilderFast.create_regular_gameworld(@gameworld, player_amount)
+    GameworldBuilder.create_regular_gameworld(@gameworld, player_amount)
   end
 
   private

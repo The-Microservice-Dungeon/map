@@ -39,9 +39,8 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'recharge faster if on spawn' do
       gwb = GameworldBuilder.new(gameworld, 12, 20)
       gwb.init_planets
-      gwb.create_spawns
 
-      energy_count = gwb.gameworld.planets.count { |p| p.recharge_multiplicator == 2 }
+      energy_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' && p.recharge_multiplicator == 2 }
 
       expect(energy_count).to eq(12)
     end
@@ -51,15 +50,12 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'creates as many spawns as there are players' do
       gwb = GameworldBuilder.new(create(:gameworld), 12, 20)
       gwb.init_planets
-      gwb.create_spawns
 
       gwb2 = GameworldBuilder.new(create(:gameworld), 35, 10)
       gwb2.init_planets
-      gwb2.create_spawns
 
-      gwb3 = GameworldBuilder.new(create(:gameworld), 2, 20)
+      gwb3 = GameworldBuilder.new(create(:gameworld), 3, 20)
       gwb3.init_planets
-      gwb3.create_spawns
 
       spawn_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' }
       spawn_count2 = gwb2.gameworld.planets.count { |p| p.planet_type == 'spawn' }
@@ -67,7 +63,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
       expect(spawn_count).to eq(12)
       expect(spawn_count2).to eq(35)
-      expect(spawn_count3).to eq(2)
+      expect(spawn_count3).to eq(3)
     end
   end
 
@@ -77,7 +73,6 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'creates spacestations in all tiles within boundaries' do
       gwb = GameworldBuilder.new(gameworld, 12, 10)
       gwb.init_planets
-      CreateGameworldSpacestationsJob.new.perform(gameworld.id)
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
 
@@ -91,9 +86,9 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'creates appropriate amount of resources' do
       map_size = 20
 
-      gwb = GameworldBuilderFast.new(gameworld, 12, map_size)
+      gwb = GameworldBuilder.new(gameworld, 12, map_size)
       gwb.init_planets
-      CreateGameworldResourcesJob.perform_now(gameworld.id)
+      CreateGameworldResourcesJob.new.perform(gameworld.id)
 
       coal_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'coal' }
       iron_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'iron' }
@@ -109,7 +104,7 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'doesn´t place resources on Spawns or Space Stations' do
-      gwb = GameworldBuilderFast.new(gameworld, 12, 20)
+      gwb = GameworldBuilder.new(gameworld, 12, 20)
       gwb.init_planets
       CreateGameworldResourcesJob.new.perform(gameworld.id)
 
