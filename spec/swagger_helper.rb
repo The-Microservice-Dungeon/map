@@ -61,7 +61,7 @@ RSpec.configure do |config|
               gameworld_id: { type: :string, format: :uuid },
               planet_type: { type: :string, enum: %w[default spawn spacestation] },
               neighbours: { type: :array, items: { type: :object, properties: {
-                id: { type: :string, format: :uuid },
+                planet_id: { type: :string, format: :uuid },
                 movement_difficulty: { type: :integer }
               } } },
               created_at: { type: :string, format: 'date-time' },
