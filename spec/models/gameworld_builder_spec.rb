@@ -81,7 +81,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
 
-      expect(spacestation_count).to eq(4)
+      expect(spacestation_count).to eq(10)
     end
   end
 
@@ -123,7 +123,7 @@ RSpec.describe GameworldBuilder, type: :model do
       end.count
 
       expect(spawns).to eq(12)
-      expect(spacestations).to eq(30)
+      expect(spacestations).to eq(20)
     end
   end
 
@@ -157,7 +157,7 @@ RSpec.describe GameworldBuilder, type: :model do
       spacestation_count = existing_planets.count { |p| p.planet_type == 'spacestation' }
 
       expect(spawn_count).to eq(12)
-      expect(spacestation_count).to eq(30)
+      expect(spacestation_count).to eq(20)
     end
   end
 end
