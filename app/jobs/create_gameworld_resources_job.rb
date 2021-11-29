@@ -27,7 +27,11 @@ class CreateGameworldResourcesJob < ApplicationJob
   end
 
   def create_specific_resources(name, patch_amount, part_of_map)
-    existing_planets = @gameworld.planets.where(deleted_at: nil, planet_type: 'default')
+    existing_planets = @gameworld
+                       .planets.left_joins(:resource)
+                       .where(deleted_at: nil,
+                              planet_type: 'default',
+                              resource: { planet_id: nil })
     resource_planets = existing_planets.select do |p|
       p.method(part_of_map).call
     end

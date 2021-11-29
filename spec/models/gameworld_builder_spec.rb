@@ -91,11 +91,9 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'creates appropriate amount of resources' do
       map_size = 20
 
-      gwb = GameworldBuilder.new(gameworld, 12, map_size)
+      gwb = GameworldBuilderFast.new(gameworld, 12, map_size)
       gwb.init_planets
-      gwb.create_spawns
-      CreateGameworldSpacestationsJob.new.perform(gameworld.id)
-      CreateGameworldResourcesJob.new.perform(gameworld.id)
+      CreateGameworldResourcesJob.perform_now(gameworld.id)
 
       coal_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'coal' }
       iron_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'iron' }
@@ -111,10 +109,8 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'doesn´t place resources on Spawns or Space Stations' do
-      gwb = GameworldBuilder.new(gameworld, 12, 20)
+      gwb = GameworldBuilderFast.new(gameworld, 12, 20)
       gwb.init_planets
-      gwb.create_spawns
-      CreateGameworldSpacestationsJob.new.perform(gameworld.id)
       CreateGameworldResourcesJob.new.perform(gameworld.id)
 
       gwb.gameworld.reload

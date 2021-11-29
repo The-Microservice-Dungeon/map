@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.uuid "transaction_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.index ["planet_id"], name: "index_explorations_on_planet_id"
   end
 
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
     t.integer "amount_requested"
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_minings_on_planet_id"
     t.index ["resource_id"], name: "index_minings_on_resource_id"
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_replenishments_on_planet_id"
     t.index ["resource_id"], name: "index_replenishments_on_resource_id"
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spacestation_creations_on_planet_id"
   end
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spawn_creations_on_planet_id"
   end
