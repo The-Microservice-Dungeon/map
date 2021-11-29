@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is the REST documentation for the Map Service
-  version: v1.3
+  version: v1.4
 components:
   schemas:
     errors_object:
@@ -76,11 +76,16 @@ components:
           - default
           - spawn
           - spacestation
-        neighbour_ids:
+        neighbours:
           type: array
           items:
-            type: string
-            format: uuid
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              movement_difficulty:
+                type: integer
         created_at:
           type: string
           format: date-time
