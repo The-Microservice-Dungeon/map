@@ -16,6 +16,7 @@ class Mining < ApplicationRecord
     diff = resource.current_amount - amount_requested
     self.amount_mined = [amount_requested, (amount_requested + diff)].min
     resource.current_amount = [diff, 0].max
+    resource.save!
   end
 
   def publish_mining_events
