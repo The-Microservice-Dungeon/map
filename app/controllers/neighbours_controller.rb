@@ -9,7 +9,7 @@ class NeighboursController < ApplicationController
 
   # GET /planets/1/neighbours/1
   def show
-    @neighbour = @planet.neighbours.find(params[:neighbour_id])
+    @neighbour = @planet.neighbours.find { |neighbour| neighbour.id == params[:neighbour_id] }
   end
 
   private

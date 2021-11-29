@@ -11,11 +11,10 @@ class GameworldsWebController < ApplicationController
   end
 
   def create
-    gameworld_builder = GameworldBuilder.create_regular_gameworld(10)
-    @gameworld = gameworld_builder.gameworld
+    @gameworld = Gameworld.new
 
     if @gameworld.save
-      gameworld_builder.finalize_async
+      CreateGameworldJob.perform_later(@gameworld.id, params[:player_amount].to_i)
       redirect_to action: 'show', id: @gameworld.id
     end
   end

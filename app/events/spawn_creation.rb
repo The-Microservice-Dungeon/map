@@ -27,7 +27,7 @@ class SpawnCreation < ApplicationRecord
       'transactionId' => transaction_id.to_s,
       'version' => version.to_s,
       'timestamp' => created_at.iso8601,
-      'type' => 'spawn_created'
+      'type' => 'spawn-created'
     }
   end
 

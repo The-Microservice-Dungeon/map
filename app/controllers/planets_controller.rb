@@ -6,7 +6,10 @@ class PlanetsController < ApplicationController
   # GET /planets
   def index
     gameworld = Gameworld.find_by(status: 'active')
-    @planets = Planet.filter(params.slice(:planet_type, :taken)).where(gameworld_id: gameworld.id, deleted_at: nil)
+    @planets = Planet
+               .filter(params.slice(:planet_type, :taken))
+               .where(gameworld_id: gameworld.id, deleted_at: nil)
+               .paginate(page: params[:page], per_page: 50)
   end
 
   # GET /planets/1
@@ -16,7 +19,7 @@ class PlanetsController < ApplicationController
 
   # PATCH /planets/1
   def take
-    @planet.taken_at = planet_params[:taken_at]
+    @planet.taken_at = params[:taken_at]
     if @planet.save
       render :show, status: :ok, formats: :json
     else
@@ -25,11 +28,6 @@ class PlanetsController < ApplicationController
   end
 
   private
-
-  # Only allow a list of trusted parameters through.
-  def planet_params
-    params.require(:planet).permit(%i[taken_at])
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_planet

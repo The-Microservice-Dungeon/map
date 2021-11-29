@@ -2,75 +2,43 @@ require 'rails_helper'
 
 RSpec.describe GameworldBuilder, type: :model do
   context 'initializing the gameworld builder' do
+    let(:gameworld) { create(:gameworld) }
+
     it 'builds a new gameworld with associated planets' do
-      gwb = GameworldBuilder.new(1, 10)
+      gwb = GameworldBuilder.new(gameworld, 1, 10)
+      gwb.init_planets
       gameworld = gwb.gameworld
 
-      expect(gameworld.status).to eq('active')
-      expect(gameworld.planets.first.x).to eq(0)
-      expect(gameworld.planets.first.y).to eq(0)
+      expect(gameworld.status).to eq('inactive')
+      expect(gameworld.planets.count).to eq(100)
+      expect(Planet.find_by(x: 0, y: 0)).to be_truthy
     end
 
     it 'builds the planet size dependent on parameters given' do
-      gwb = GameworldBuilder.new(10, 20)
-      planets = gwb.gameworld.planets
-
-      expect(planets.length).to eq(400)
-    end
-  end
-
-  context 'neighbour the gameworlds planets' do
-    it 'planet at x:0, y:0 should have 2 neighbours' do
-      gwb = GameworldBuilder.new(1, 10)
-      gwb.neighbour_planets
-
-      planets = gwb.gameworld.planets
-
-      planet = planets.find { |p| p.x == 0 && p.y == 0 }
-
-      expect(planet.neighbours.length).to eq(2)
-
-      expect(planet.neighbours.first.x).to eq(1)
-      expect(planets.first.neighbours.first.y).to eq(0)
-
-      expect(planet.neighbours.last.x).to eq(0)
-      expect(planet.neighbours.last.y).to eq(1)
-    end
-
-    it 'planet at x:5, y:5 should have 4 neighbours' do
-      gwb = GameworldBuilder.new(5, 10)
-      gwb.neighbour_planets
-
-      planets = gwb.gameworld.planets
-      planet = planets.find { |p| p.x == 5 && p.y == 5 }
-      neighbours = planets.select do |p|
-        p.x == 6 && p.y == 5 ||
-          p.x == 4 && p.y == 5 ||
-          p.x == 5 && p.y == 6 ||
-          p.x == 5 && p.y == 4
-      end
-
-      expect(planet.neighbours.length).to eq(4)
-      expect(planet.neighbours).to match_array(neighbours)
+      gwb = GameworldBuilder.new(gameworld, 10, 20)
+      gwb.init_planets
+      expect(gameworld.planets.count).to eq(400)
     end
   end
 
   context 'database persistence' do
+    let(:gameworld) { create(:gameworld) }
+
     it 'saves the gameworld to the database' do
-      gwb = GameworldBuilder.new(30, 20)
-      gwb.gameworld.save
-      gwb.neighbour_planets
-
+      gwb = GameworldBuilder.new(gameworld, 30, 20)
+      gwb.init_planets
       gameworld = Gameworld.all.first
-
       expect(gameworld.planets.length).to eq(400)
       expect(gameworld.planets.first.neighbours.length).to eq(2)
     end
   end
 
   context 'spawn creation' do
+    let(:gameworld) { create(:gameworld) }
+
     it 'recharge faster if on spawn' do
-      gwb = GameworldBuilder.new(12, 20)
+      gwb = GameworldBuilder.new(gameworld, 12, 20)
+      gwb.init_planets
       gwb.create_spawns
 
       energy_count = gwb.gameworld.planets.count { |p| p.recharge_multiplicator == 2 }
@@ -81,11 +49,16 @@ RSpec.describe GameworldBuilder, type: :model do
 
   context 'spawn creation' do
     it 'creates as many spawns as there are players' do
-      gwb = GameworldBuilder.new(12, 20)
+      gwb = GameworldBuilder.new(create(:gameworld), 12, 20)
+      gwb.init_planets
       gwb.create_spawns
-      gwb2 = GameworldBuilder.new(35, 10)
+
+      gwb2 = GameworldBuilder.new(create(:gameworld), 35, 10)
+      gwb2.init_planets
       gwb2.create_spawns
-      gwb3 = GameworldBuilder.new(2, 20)
+
+      gwb3 = GameworldBuilder.new(create(:gameworld), 2, 20)
+      gwb3.init_planets
       gwb3.create_spawns
 
       spawn_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' }
@@ -99,8 +72,11 @@ RSpec.describe GameworldBuilder, type: :model do
   end
 
   context 'spacestation creation' do
+    let(:gameworld) { create(:gameworld) }
+
     it 'creates spacestations in all tiles within boundaries' do
-      gwb = GameworldBuilder.new(12, 10)
+      gwb = GameworldBuilder.new(gameworld, 12, 10)
+      gwb.init_planets
       gwb.create_spacestations
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
@@ -110,10 +86,13 @@ RSpec.describe GameworldBuilder, type: :model do
   end
 
   context 'resouces created' do
+    let(:gameworld) { create(:gameworld) }
+
     it 'creates appropriate amount of resources' do
       map_size = 20
 
-      gwb = GameworldBuilder.new(12, map_size)
+      gwb = GameworldBuilder.new(gameworld, 12, map_size)
+      gwb.init_planets
       gwb.create_spawns
       gwb.create_spacestations
       gwb.create_resources
@@ -132,7 +111,8 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'doesn´t place resources on Spawns or Space Stations' do
-      gwb = GameworldBuilder.new(12, 20)
+      gwb = GameworldBuilder.new(gameworld, 12, 20)
+      gwb.init_planets
       gwb.create_spawns
       gwb.create_spacestations
       gwb.create_resources
@@ -148,9 +128,10 @@ RSpec.describe GameworldBuilder, type: :model do
   end
 
   context 'planets removed' do
+    let(:gameworld) { create(:gameworld) }
     it 'enough resources after planet deletion' do
       map_size = 20
-      gwb = GameworldBuilder.create_regular_gameworld(12)
+      gwb = GameworldBuilder.create_regular_gameworld(gameworld, 12)
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
@@ -168,7 +149,7 @@ RSpec.describe GameworldBuilder, type: :model do
     end
 
     it 'correct amount of spawns and spacestations' do
-      gwb = GameworldBuilder.create_regular_gameworld(12)
+      gwb = GameworldBuilder.create_regular_gameworld(gameworld, 12)
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 

@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Gameworld, type: :model do
-  it 'should set status to active as default' do
+  it 'should set status to inactive as default' do
     gameworld = Gameworld.new
     gameworld.save
 
-    expect(gameworld.status).to eq('active')
+    expect(gameworld.status).to eq('inactive')
   end
 end
