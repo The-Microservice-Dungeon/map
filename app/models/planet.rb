@@ -36,15 +36,6 @@ class Planet < ApplicationRecord
                                     current_amount: max_amount)
   end
 
-  def taken!
-    self.taken_at = Time.now
-    save!
-  end
-
-  def taken?
-    !taken_at.nil?
-  end
-
   def neighbour_ids
     neighbours.pluck(:id)
   end

@@ -20,7 +20,7 @@ RSpec.configure do |config|
       info: {
         title: 'Map Service API',
         description: 'This is the REST documentation for the Map Service',
-        version: 'v1.4'
+        version: 'v1.5'
       },
       components: {
         schemas: {
@@ -37,7 +37,7 @@ RSpec.configure do |config|
             properties: {
               id: { type: :string, format: :uuid },
               spacestation_ids: { type: :array, items: { type: :string, format: :uuid } },
-              status: { type: :string, enum: %w[inactive active] },
+              status: { type: :string, enum: %w[active inactive] },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' }
             }
@@ -58,9 +58,8 @@ RSpec.configure do |config|
               id: { type: :string, format: :uuid },
               movement_difficulty: { type: :integer },
               recharge_multiplicator: { type: :integer },
-              taken_at: { type: :string, format: 'date-time', nullable: true },
               gameworld_id: { type: :string, format: :uuid },
-              planet_type: { type: :string, enum: %w[default spawn spacestation] },
+              planet_type: { type: :string, enum: %w[default spacestation] },
               neighbours: { type: :array, items: { type: :object, properties: {
                 planet_id: { type: :string, format: :uuid },
                 movement_difficulty: { type: :integer }

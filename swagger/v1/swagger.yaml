@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is the REST documentation for the Map Service
-  version: v1.4
+  version: v1.5
 components:
   schemas:
     errors_object:
@@ -32,8 +32,8 @@ components:
         status:
           type: string
           enum:
-          - inactive
           - active
+          - inactive
         created_at:
           type: string
           format: date-time
@@ -68,10 +68,6 @@ components:
           type: integer
         recharge_multiplicator:
           type: integer
-        taken_at:
-          type: string
-          format: date-time
-          nullable: true
         gameworld_id:
           type: string
           format: uuid
@@ -79,7 +75,6 @@ components:
           type: string
           enum:
           - default
-          - spawn
           - spacestation
         neighbours:
           type: array
@@ -396,11 +391,6 @@ paths:
         schema:
           type: string
         description: Optional, planet type
-      - name: taken
-        in: query
-        schema:
-          type: boolean
-        description: Optional, if the planet/spawn is already taken
       - name: page
         in: query
         schema:
@@ -442,42 +432,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/errors_object"
-    patch:
-      summary: Set the taken_at field of a planet/spawn
-      tags:
-      - planets
-      description: Set the taken_at field of the planet to the given timestamp or
-        null
-      parameters:
-      - name: planet_id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        required: true
-      responses:
-        '200':
-          description: Taken at updated
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/planet"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                planet:
-                  type: object
-                  properties:
-                    taken_at:
-                      type: string
-                      format: date-time
-                  required:
-                  - taken_at
-              required:
-              - planet
   "/planets/{planet_id}/resources":
     get:
       summary: Retrieves all resources
