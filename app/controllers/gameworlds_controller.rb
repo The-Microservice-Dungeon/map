@@ -1,5 +1,4 @@
 class GameworldsController < ApplicationController
-  skip_before_action :verify_authenticity_token
   before_action :set_gameworld, only: %i[show update destroy]
   before_action :validate_params, only: %i[create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found

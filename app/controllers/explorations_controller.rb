@@ -1,5 +1,4 @@
 class ExplorationsController < ApplicationController
-  skip_before_action :verify_authenticity_token
   before_action :set_planet, only: %i[create]
   rescue_from ActionController::ParameterMissing, with: :render_params_missing
   rescue_from ActiveRecord::StatementInvalid, with: :render_unprocessable_entity
