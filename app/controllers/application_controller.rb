@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  after_action :save_last_request_time
+
   def render_not_found(exception)
     render json: {
       'status' => 404,
@@ -24,5 +26,11 @@ class ApplicationController < ActionController::Base
       'exception' => exception
     },
            status: :unprocessable_entity
+  end
+
+  private
+
+  def save_last_request_time
+    MapStatus.map_status.update(last_request_time: Time.now)
   end
 end

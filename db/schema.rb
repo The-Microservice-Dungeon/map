@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_141916) do
+ActiveRecord::Schema.define(version: 2021_12_04_185650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.uuid "transaction_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version", null: false
+    t.serial "version"
     t.index ["planet_id"], name: "index_explorations_on_planet_id"
   end
 
@@ -56,6 +56,12 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
   end
 
+  create_table "map_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "last_request_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "minings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "planet_id", null: false
     t.integer "amount_mined"
@@ -63,7 +69,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
     t.integer "amount_requested"
-    t.serial "version", null: false
+    t.serial "version"
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_minings_on_planet_id"
     t.index ["resource_id"], name: "index_minings_on_resource_id"
@@ -96,7 +102,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
-    t.serial "version", null: false
+    t.serial "version"
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_replenishments_on_planet_id"
     t.index ["resource_id"], name: "index_replenishments_on_resource_id"
@@ -117,7 +123,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version", null: false
+    t.serial "version"
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spacestation_creations_on_planet_id"
   end
@@ -126,7 +132,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_141916) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version", null: false
+    t.serial "version"
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spawn_creations_on_planet_id"
   end

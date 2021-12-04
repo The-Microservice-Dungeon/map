@@ -20,7 +20,7 @@ RSpec.configure do |config|
       info: {
         title: 'Map Service API',
         description: 'This is the REST documentation for the Map Service',
-        version: 'v1.5'
+        version: Rails.application.config.version
       },
       components: {
         schemas: {

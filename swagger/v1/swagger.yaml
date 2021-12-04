@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is the REST documentation for the Map Service
-  version: v1.5
+  version: '1.5'
 components:
   schemas:
     errors_object:
@@ -453,6 +453,28 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/resource"
+  "/status":
+    get:
+      summary: Retrieves the service's status
+      tags:
+      - status
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  online:
+                    type: boolean
+                    example: true
+                  version:
+                    type: string
+                    example: '1.0'
+                  last_requested_at:
+                    type: string
+                    format: date-time
 servers:
 - url: http://{defaultHost}
   variables:
