@@ -33,40 +33,6 @@ RSpec.describe GameworldBuilder, type: :model do
     end
   end
 
-  context 'spawn creation' do
-    let(:gameworld) { create(:gameworld) }
-
-    it 'recharge faster if on spawn' do
-      gwb = GameworldBuilder.new(gameworld, 12, 20)
-      gwb.init_planets
-
-      energy_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' && p.recharge_multiplicator == 2 }
-
-      expect(energy_count).to eq(12)
-    end
-  end
-
-  context 'spawn creation' do
-    it 'creates as many spawns as there are players' do
-      gwb = GameworldBuilder.new(create(:gameworld), 12, 20)
-      gwb.init_planets
-
-      gwb2 = GameworldBuilder.new(create(:gameworld), 35, 10)
-      gwb2.init_planets
-
-      gwb3 = GameworldBuilder.new(create(:gameworld), 3, 20)
-      gwb3.init_planets
-
-      spawn_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spawn' }
-      spawn_count2 = gwb2.gameworld.planets.count { |p| p.planet_type == 'spawn' }
-      spawn_count3 = gwb3.gameworld.planets.count { |p| p.planet_type == 'spawn' }
-
-      expect(spawn_count).to eq(12)
-      expect(spawn_count2).to eq(35)
-      expect(spawn_count3).to eq(3)
-    end
-  end
-
   context 'spacestation creation' do
     let(:gameworld) { create(:gameworld) }
 
@@ -76,7 +42,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
       spacestation_count = gwb.gameworld.planets.count { |p| p.planet_type == 'spacestation' }
 
-      expect(spacestation_count).to eq(10)
+      expect(spacestation_count).to eq(24)
     end
   end
 
@@ -110,13 +76,11 @@ RSpec.describe GameworldBuilder, type: :model do
 
       gwb.gameworld.reload
 
-      spawns = gwb.gameworld.planets.find_all { |p| p.planet_type == 'spawn' }.count
       spacestations = gwb.gameworld.planets.find_all do |p|
         p.planet_type == 'spacestation' && p.resource.nil?
       end.count
 
-      expect(spawns).to eq(12)
-      expect(spacestations).to eq(20)
+      expect(spacestations).to eq(24)
     end
   end
 
@@ -125,6 +89,7 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'enough resources after planet deletion' do
       map_size = 20
       gwb = GameworldBuilder.create_regular_gameworld(gameworld, 12)
+      CreateGameworldResourcesJob.new.perform(gwb.gameworld.id)
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
@@ -147,11 +112,9 @@ RSpec.describe GameworldBuilder, type: :model do
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
-      spawn_count = existing_planets.count { |p| p.planet_type == 'spawn' }
       spacestation_count = existing_planets.count { |p| p.planet_type == 'spacestation' }
 
-      expect(spawn_count).to eq(12)
-      expect(spacestation_count).to eq(20)
+      expect(spacestation_count).to eq(24)
     end
   end
 end

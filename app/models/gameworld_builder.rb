@@ -25,23 +25,9 @@ class GameworldBuilder
       end
     end.flatten
 
-    distance_between_spawns = (@map_size * 4 - 4) / @player_amount
-
-    spawns = planets.select.with_index do |planet, i|
-      ((i + 1) % distance_between_spawns).zero? && possible_spawn?(planet[:x], planet[:y])
-    end.sample(@player_amount).pluck(:x, :y)
-
-    planets = planets.map do |planet|
-      if spawns.include?([planet[:x], planet[:y]])
-        planet[:planet_type] = 'spawn'
-        planet[:recharge_multiplicator] = 2
-      end
-      planet
-    end
-
     spacestations = planets.filter do |planet|
-      possible_spacestation?(planet[:x], planet[:y])
-    end.sample(@map_size).pluck(:x, :y)
+      outer_map?(planet[:x], planet[:y])
+    end.sample(@player_amount * 2).pluck(:x, :y)
 
     planets = planets.map do |planet|
       if spacestations.include?([planet[:x], planet[:y]])
@@ -72,15 +58,6 @@ class GameworldBuilder
     1
   end
 
-  def possible_spawn?(x, y)
-    x.zero? || x == @map_size - 1 || y.zero? || y == @map_size - 1
-  end
-
-  def possible_spacestation?(x, y)
-    border = 2
-    x >= border && y < @map_size - border && x < @map_size - border && y >= border
-  end
-
   def deletable_planet?(x, y, planet_type)
     planet_type == 'default' && !inner_map?(x, y) && x != 1 && y != 1 && x != @map_size - 2 && y != @map_size - 2
   end
@@ -88,7 +65,6 @@ class GameworldBuilder
   def self.create_regular_gameworld(gameworld, player_amount)
     gameworld_builder = new(gameworld, player_amount, map_size(player_amount))
     gameworld_builder.init_planets
-    CreateGameworldResourcesJob.perform_later(gameworld.id)
     gameworld_builder
   end
 
@@ -112,5 +88,9 @@ class GameworldBuilder
     grid_size = @map_size - 1
     mid = grid_size / 3 / 2
     x > mid && x < grid_size - mid && y > mid && y < grid_size - mid
+  end
+
+  def outer_map?(x, y)
+    !inner_map?(x, y) && !mid_map?(x, y)
   end
 end
