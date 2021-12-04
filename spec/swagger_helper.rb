@@ -36,6 +36,7 @@ RSpec.configure do |config|
             type: :object,
             properties: {
               id: { type: :string, format: :uuid },
+              spacestation_ids: { type: :array, items: { type: :string, format: :uuid } },
               status: { type: :string, enum: %w[inactive active] },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' }

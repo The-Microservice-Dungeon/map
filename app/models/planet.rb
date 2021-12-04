@@ -21,7 +21,6 @@ class Planet < ApplicationRecord
   }
 
   after_create do
-    SpawnCreation.create(planet_id: id) if planet_type == 'spawn'
     SpacestationCreation.create(planet_id: id) if planet_type == 'spacestation'
   end
 

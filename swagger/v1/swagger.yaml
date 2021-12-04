@@ -24,6 +24,11 @@ components:
         id:
           type: string
           format: uuid
+        spacestation_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
         status:
           type: string
           enum:
@@ -203,6 +208,9 @@ paths:
                   "$ref": "#/components/schemas/gameworld"
     post:
       summary: Creates a gameworld
+      description: |-
+        Creates a new Gameworld, for the given amount of players and sets it to
+              "active" while setting all other gameworlds to "inactive". Publishes the `gameworld-created` Event.
       tags:
       - gameworlds
       parameters: []

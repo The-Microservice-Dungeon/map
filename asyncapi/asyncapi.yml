@@ -22,10 +22,6 @@ channels:
     publish:
       message:
         $ref: '#/components/messages/gameworld-created'
-  spawn-created:
-    publish:
-      message:
-        $ref: '#/components/messages/spawn-created'
   spacestation-created:
       publish:
         message:
@@ -72,42 +68,19 @@ components:
       payload:
         type: object
         properties:
-          gameworld_id:
+          id:
             type: string
             format: uuid
             description: UUID of the created gameworld
-
-    spawn-created:
-      headers:
-        type: object
-        properties:
-          eventId:
+          spacestaion_ids:
+            type: array
+            items:
+              type: string
+              format: uuid
+              description: UUID of the neighbour on the explored planet.
+          status:
             type: string
-            format: uuid
-            description: UUID of the event.
-          transactionId:
-            type: string
-            format: uuid
-            description: UUID of the transaction.
-          version:
-            type: string
-            example: "1"
-            description: Version number of the event.
-          timestamp:
-            type: string
-            format: date-time
-            description: Timestamp of the event.
-          type:
-            type: string
-            example: spawn-created
-            description: Type of the event.
-      payload:
-        type: object
-        properties:
-          planet_id:
-            type: string
-            format: uuid
-            description: UUID of the created planet
+            example: active
 
     spacestation-created:
       headers:

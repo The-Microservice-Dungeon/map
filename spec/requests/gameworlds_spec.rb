@@ -16,6 +16,8 @@ RSpec.describe 'gameworlds', type: :request, capture_examples: true do
     end
 
     post 'Creates a gameworld' do
+      description 'Creates a new Gameworld, for the given amount of players and sets it to
+      "active" while setting all other gameworlds to "inactive". Publishes the `gameworld-created` Event.'
       tags :gameworlds
       consumes 'application/json'
       produces 'application/json'
