@@ -472,7 +472,7 @@ paths:
                   version:
                     type: string
                     example: '1.0'
-                  last_requested_at:
+                  last_request_time:
                     type: string
                     format: date-time
 servers:

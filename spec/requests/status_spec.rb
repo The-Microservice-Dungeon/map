@@ -11,7 +11,7 @@ RSpec.describe 'status', type: :request, capture_examples: true do
                properties: {
                  online: { type: :boolean, example: true },
                  version: { type: :string, example: '1.0' },
-                 last_requested_at: { type: :string, format: 'date-time' }
+                 last_request_time: { type: :string, format: 'date-time' }
                }
         run_test!
       end
