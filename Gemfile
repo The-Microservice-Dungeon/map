@@ -34,6 +34,7 @@ gem 'waterdrop'
 
 gem 'good_job'
 gem 'jbuilder', '~> 2.7'
+gem 'logs'
 gem 'will_paginate', '~> 3.3'
 
 group :development, :test do
