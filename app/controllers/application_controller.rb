@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
   after_action :save_last_request_time
 
   def render_not_found(exception)
