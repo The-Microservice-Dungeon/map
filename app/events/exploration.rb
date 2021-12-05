@@ -10,9 +10,7 @@ class Exploration < ApplicationRecord
   end
 
   def publish_planet_explored_event
-    $producer.produce_async topic: 'map',
-                            headers: headers,
-                            payload: payload.to_json
+    Kafka::Message.publish(headers, payload)
   end
 
   def headers

@@ -20,9 +20,7 @@ class Mining < ApplicationRecord
   end
 
   def publish_mining_events
-    $producer.produce_async topic: 'map',
-                            headers: resource_mined_headers,
-                            payload: resource_mined_payload.to_json
+    Kafka::Message.publish(resource_mined_headers, resource_mined_payload)
   end
 
   def resource_mined_headers

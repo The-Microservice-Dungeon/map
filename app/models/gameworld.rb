@@ -12,9 +12,7 @@ class Gameworld < ApplicationRecord
   end
 
   def publish_gameworld_created_event
-    $producer.produce_async topic: 'map',
-                            headers: gameworld_created_headers,
-                            payload: to_json
+    Kafka::Message.publish(gameworld_created_headers, self)
   end
 
   def gameworld_created_headers

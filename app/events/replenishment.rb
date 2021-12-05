@@ -16,9 +16,7 @@ class Replenishment < ApplicationRecord
   end
 
   def publish_replenishment_events
-    $producer.produce_async topic: 'map',
-                            headers: resource_replenished_headers,
-                            payload: resource_replenished_payload.to_json
+    Kafka::Message.publish(resource_replenished_headers, resource_replenished_payload)
   end
 
   def resource_replenished_headers

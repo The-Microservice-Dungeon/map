@@ -16,9 +16,7 @@ class SpacestationCreation < ApplicationRecord
   end
 
   def publish_speacestation_creation_events
-    $producer.produce_async topic: 'map',
-                            headers: spacestation_created_headers,
-                            payload: spacestation_created_payload.to_json
+    Kafka::Message.publish(spacestation_created_headers, spacestation_created_payload)
   end
 
   def spacestation_created_headers

@@ -23,7 +23,7 @@ module Map
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
-
+    config.autoload_paths += %w[lib/ app/models/validators]
     config.active_job.queue_adapter = :good_job
     # Configuration for the application, engines, and railties goes here.
     #
