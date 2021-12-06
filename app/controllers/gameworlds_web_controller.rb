@@ -14,6 +14,7 @@ class GameworldsWebController < WebController
   def show_planet
     @planet = Planet.find(params[:planet_id])
     @resource = @planet.resource
+    render layout: false if params[:inline] == 'true'
   end
 
   def create
