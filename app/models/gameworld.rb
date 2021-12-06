@@ -6,15 +6,42 @@ class Gameworld < ApplicationRecord
 
   after_create :publish_gameworld_created_event
 
+  ##
+  # Sets the gameworld's status to `'active'` while setting all other gameworlds
+  # statuses to `'inactive'`.
   def activate
     Gameworld.update_all(status: 'inactive')
     update(status: 'active')
   end
 
-  def publish_gameworld_created_event
-    Kafka::Message.publish(gameworld_created_headers, self)
+  ##
+  # Returns the `spacestaion_ids` for the gameworld.
+  # @return [Array<UUID>]
+  def spacestation_ids
+    Planet.where(gameworld_id: id, planet_type: 'spacestation').pluck(:id)
   end
 
+  ##
+  # Publishes the `'gameworld-created'` event under the `"map"` topic.
+  # @see lib/kafka/message.rb
+  def publish_gameworld_created_event
+    Kafka::Message.publish(gameworld_created_headers, gameworld_created_payload)
+  end
+
+  ##
+  # Returns the payload for the `'gameworld-created'` event.
+  # @return [Hash<Symbol, String>]
+  def gameworld_created_payload
+    {
+      id: id,
+      spacestation_ids: spacestation_ids,
+      status: status
+    }
+  end
+
+  ##
+  # Returns the headers for the `'gameworld-created'` event.
+  # @return [Hash<String, String>]
   def gameworld_created_headers
     {
       'eventId' => SecureRandom.uuid,
@@ -23,9 +50,5 @@ class Gameworld < ApplicationRecord
       'timestamp' => updated_at.iso8601,
       'type' => 'gameworld-created'
     }
-  end
-
-  def spacestation_ids
-    Planet.where(gameworld_id: id, planet_type: 'spacestation').pluck(:id)
   end
 end
