@@ -20,8 +20,8 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
   username: <%= ENV.fetch("DB_USER", 'postgres') %>
   password: <%= ENV.fetch("DB_PASSWORD", 'password') %>
-  host: <%= ENV.fetch("DB_HOST", 'localhost') %>
-  port: <%= ENV.fetch("DB_PORT", 5432) %>
+  host: <%= ENV.fetch("DB_HOST", 'localhost:5432').split(':').first %>
+  port: <%= ENV.fetch("DB_HOST", 'localhost:5432').split(':').last %>
 
 development:
   <<: *default
