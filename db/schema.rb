@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_185650) do
     t.uuid "transaction_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.index ["planet_id"], name: "index_explorations_on_planet_id"
   end
 
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_185650) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
     t.integer "amount_requested"
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_minings_on_planet_id"
     t.index ["resource_id"], name: "index_minings_on_resource_id"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_185650) do
     t.datetime "deleted_at"
     t.index ["gameworld_id", "x", "y"], name: "index_planets_on_gameworld_id_and_x_and_y"
     t.index ["gameworld_id"], name: "index_planets_on_gameworld_id"
+    t.index ["id"], name: "index_planets_on_id"
   end
 
   create_table "planets_neighbours", id: false, force: :cascade do |t|
@@ -102,7 +103,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_185650) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "resource_id", null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_replenishments_on_planet_id"
     t.index ["resource_id"], name: "index_replenishments_on_resource_id"
@@ -123,7 +124,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_185650) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spacestation_creations_on_planet_id"
   end
@@ -132,7 +133,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_185650) do
     t.uuid "planet_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.serial "version"
+    t.serial "version", null: false
     t.uuid "transaction_id"
     t.index ["planet_id"], name: "index_spawn_creations_on_planet_id"
   end
