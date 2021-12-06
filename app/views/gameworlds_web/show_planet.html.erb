@@ -6,20 +6,37 @@
       <th>Type</th>
       <th>Movement Difficulty</th>
       <th>Recharge Multiplicator</th>
-      <% unless @resource.nil? %>
-        <th>Resource Type</th>
-        <th>Amount</th>
-      <% end %>
+      <th>Resource Type</th>
+      <th>Amount</th>
     </tr>
     <tr>
       <td><%= @planet.id %></td>
       <td><%= @planet.planet_type %></td>
       <td><%= @planet.movement_difficulty %></td>
       <td><%= @planet.recharge_multiplicator %></td>
-      <% unless @resource.nil? %>
-        <td><%= @resource.resource_type %></td>
-        <td><%= @resource.max_amount %>/<%= @resource.current_amount %></td>
-      <% end %>
+      <td><%= @resource&.resource_type %></td>
+      <td><%= @resource&.max_amount %>/<%= @resource&.current_amount %></td>
     </tr>
+  </table>
+  <h1>Neighbours</h1>
+  <table>
+    <tr class="table-header">
+      <th>Id</th>
+      <th>Type</th>
+      <th>Movement Difficulty</th>
+      <th>Recharge Multiplicator</th>
+      <th>Resource Type</th>
+      <th>Amount</th>
+    </tr>
+    <% @planet.neighbours.each do |neighbour| %>
+      <tr>
+        <td><%= neighbour.id %></td>
+        <td><%= neighbour.planet_type %></td>
+        <td><%= neighbour.movement_difficulty %></td>
+        <td><%= neighbour.recharge_multiplicator %></td>
+        <td><%= neighbour.resource&.resource_type %></td>
+        <td><%= neighbour.resource&.max_amount %>/<%= neighbour.resource&.current_amount %></td>
+      </tr>
+    <% end %>
   </table>
 </div>
