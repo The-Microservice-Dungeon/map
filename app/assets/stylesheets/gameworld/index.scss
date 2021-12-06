@@ -1,0 +1,56 @@
+.container {
+   width: 950px;
+   margin: auto;
+}
+
+table {
+   width: 100%;
+}
+
+th, td {
+   padding-top: 15px;
+   padding-bottom: 15px;
+   padding-left: 15px;
+}
+
+th {
+   text-align: left;
+   background-color: #F2F2F2;
+   color: #65696B;
+}
+
+tr:nth-child(odd) {
+   background: #F9F9F9;
+   border-top: 1px solid transparent;
+   border-left: 1px solid transparent;
+}
+
+tr:nth-child(even) {
+   background: #FFF;
+   border-top: 1px solid transparent;
+   border-left: 1px solid transparent;
+}
+
+tr:hover {
+   background-color: #EBF5FB;
+   cursor: default;
+   border: 1px solid #67B2E4;
+}
+
+.submit-container {
+    margin: 20px 0px;
+}
+
+.button {
+  padding: 10px 5px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.input {
+  padding: 10px 5px;
+}

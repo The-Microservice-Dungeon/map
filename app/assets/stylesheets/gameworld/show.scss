@@ -1,18 +1,9 @@
-*{
-  padding: 0;
-  margin: 0;
-}
-
-.wrapper_index{
-  background-color: #EBEAE8;
-  height: 100%;
-  width: 100%;
-  position: absolute;
+a {
+  text-decoration: none;
 }
 
 .wrapper_show{
   padding: 10px;
-  background-color: #EBEAE8;
   display: flex;
   flex-direction: row;
 }
@@ -64,7 +55,7 @@
 }
 
 .block {
-  height: 5vh;
+  height: 2rem;
   border: solid black;
   border-width: 0 0 2px 2px;
 }
@@ -77,8 +68,8 @@
 .box {
   padding: 2px;
   border-radius: 10px;
-  width: 5vh;
-  height: 5vh;
+  width: 2rem;
+  height: 2rem;
   border: solid 1px black;
 }
 
@@ -99,6 +90,6 @@
 }
 
 .png{
-  width: 5vh;
-  height: 5vh;
+  width: 2rem;
+  height: 2rem;
 }

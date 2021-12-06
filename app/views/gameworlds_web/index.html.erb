@@ -1,20 +1,36 @@
-<div class="wrapper_index">
-  <div style="padding: 10px;">
-    <h1>test</h1>
-    <div class="worldList">
-      <% @gameworlds.each do |g| %>
-        <div class="block">
-          <!-- <button><%= g.id %></button> -->
-          <%= link_to g.name, controller: "gameworlds_web", action: "show", id: g %>
-        </div>
-      <% end %>
+<div class="container">
+  <h1>Gameworlds</h1>
+  <section class="create">
+    <div class="submit-container">
+      <form action="/gameworlds_web" method="post" accept-charset="UTF-8" >
+        <label for="player_amount">Player amount</label>
+        <input id="player_amount" name="player_amount" type="number" class="input" />
+        <label for="name">Gameworld Name</label>
+        <input id="name" name="name" type="string" class="input" />
+        <input name="create" type="submit" class="button" value="Create and Activate" />
+      </form>
     </div>
-    <form action="/gameworlds_web" method="post" accept-charset="UTF-8" >
-      <label for="player_amount">Player amount</label>
-      <input id="player_amount" name="player_amount" type="number" />
-      <label for="name">Gameworld Name</label>
-      <input id="name" name="name" type="string" />
-      <input name="create" type="submit" class="button" value="CREATE deez nuts"  />
-    </form>
-  </div>
+  </section>
+  <table>
+    <tr class="table-header">
+      <th>Id</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Activate</th>
+      <th>Show</th>
+    </tr>
+    <% @gameworlds.each do |g| %>
+      <tr>
+        <td><%= g.id %></td>
+        <td><%= g.name %></td>
+        <td><%= g.status %></td>
+        <td><%= g.created_at %></td>
+        <td><%= g.updated_at %></td>
+        <td><%= link_to "Activate", controller: "gameworlds_web", action: "show", id: g %></td>
+        <td><%= link_to "Show", controller: "gameworlds_web", action: "show", id: g %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
