@@ -33,6 +33,8 @@ gem 'rswag'
 gem 'waterdrop'
 
 gem 'good_job'
+gem 'hotwire-rails'
+gem 'importmap-rails'
 gem 'jbuilder', '~> 2.7'
 gem 'logs'
 gem 'will_paginate', '~> 3.3'

@@ -5,28 +5,25 @@
     <% @gameworld2d.each do |row| %>
       <div class="row">
         <% row.each do |p| %>
-          <div class="box 
-      <%= 'empty' if p.deleted_at %>
-      <%= 'move_cost_1' if p.movement_difficulty == 1 %>
-      <%= 'move_cost_2' if p.movement_difficulty == 2 %>
-      <%= 'move_cost_3' if p.movement_difficulty == 3 %>">
-            <div>
-              <div style="position: absolute;">
-                <%= image_tag "spawn.png", :class => 'png' if p.planet_type == 'spawn' %>
-                <%= image_tag "space_station.png", :class => 'png' if p.planet_type == 'spacestation' %>
-                <%  unless p.resource.nil?
+          <%= link_to  controller: "gameworlds_web", action: "show_planet", id: @gameworld.id, planet_id: p.id do %>
+            <div class="box <%= 'empty' if p.deleted_at %> <%= "move_cost_#{p.movement_difficulty}" %>">
+              <div>
+                <div style="position: absolute;">
+                  <%= image_tag "space_station.png", :class => 'png' if p.planet_type == 'spacestation' %>
+                  <%  unless p.resource.nil?
               resource_type = p.resource.resource_type
               end %>
-                <%= image_tag "coal.png", :class => 'png' if resource_type == "coal" %>
-                <%= image_tag "iron.png", :class => 'png' if resource_type == "iron" %>
-                <%= image_tag "gem.png", :class => 'png' if resource_type == "gem" %>
-                <%= image_tag "gold.png", :class => 'png' if resource_type == "gold" %>
-                <%= image_tag "platin.png", :class => 'png' if resource_type == "platin" %>
+                  <%= image_tag "coal.png", :class => 'png' if resource_type == "coal" %>
+                  <%= image_tag "iron.png", :class => 'png' if resource_type == "iron" %>
+                  <%= image_tag "gem.png", :class => 'png' if resource_type == "gem" %>
+                  <%= image_tag "gold.png", :class => 'png' if resource_type == "gold" %>
+                  <%= image_tag "platin.png", :class => 'png' if resource_type == "platin" %>
+                </div>
+                <p>x:<%= p.x%></p>
+                <p>y:<%= p.y%></p>
               </div>
-              <p>x:<%= p.x%></p>
-              <p>y:<%= p.y%></p>
             </div>
-          </div>
+          <% end  %>
         <% end %>
       </div>
     <% end %>

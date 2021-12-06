@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Planet</h1>
+  <table>
+    <tr class="table-header">
+      <th>Id</th>
+      <th>Type</th>
+      <th>Movement Difficulty</th>
+      <th>Recharge Multiplicator</th>
+      <% unless @resource.nil? %>
+        <th>Resource Type</th>
+        <th>Amount</th>
+      <% end %>
+    </tr>
+    <tr>
+      <td><%= @planet.id %></td>
+      <td><%= @planet.planet_type %></td>
+      <td><%= @planet.movement_difficulty %></td>
+      <td><%= @planet.recharge_multiplicator %></td>
+      <% unless @resource.nil? %>
+        <td><%= @resource.resource_type %></td>
+        <td><%= @resource.max_amount %>/<%= @resource.current_amount %></td>
+      <% end %>
+    </tr>
+  </table>
+</div>
