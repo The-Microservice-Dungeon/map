@@ -24,7 +24,6 @@
       <th>Status</th>
       <th>Created At</th>
       <th>Updated At</th>
-      <th>Activate</th>
       <th>Show</th>
     </tr>
     <% @gameworlds.each do |g| %>
@@ -34,8 +33,7 @@
         <td><%= g.status %></td>
         <td><%= g.created_at %></td>
         <td><%= g.updated_at %></td>
-        <td><%= link_to "Activate", controller: "gameworlds_web", action: "show", id: g %></td>
-        <td><%= link_to "Show", controller: "gameworlds_web", action: "show", id: g %></td>
+        <td><%= link_to "Show", {controller: "gameworlds_web", action: "show", id: g}, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %></td>
       </tr>
     <% end %>
   </table>
