@@ -40,8 +40,7 @@ class GameworldsController < ApplicationController
   end
 
   def validate_params
-    return if gameworld_params[:player_amount].positive?
-
-    render_unprocessable_entity('player_amount needs to be positive')
+    render_unprocessable_entity('player_amount needs to be positive') unless gameworld_params[:player_amount].positive?
+    render_unprocessable_entity('player_amount needs to be < 100') unless gameworld_params[:player_amount] < 100
   end
 end

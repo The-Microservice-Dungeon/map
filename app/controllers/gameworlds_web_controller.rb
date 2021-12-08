@@ -1,5 +1,6 @@
 class GameworldsWebController < WebController
   skip_before_action :verify_authenticity_token
+  before_action :validate_params, only: %i[create]
 
   def index
     @gameworlds = Gameworld.order(created_at: :desc)
@@ -25,5 +26,11 @@ class GameworldsWebController < WebController
       CreateGameworldResourcesJob.perform_later(@gameworld.id)
       redirect_to action: 'index'
     end
+  end
+
+  def validate_params
+    return if params['player_amount'].to_i.positive? && params['player_amount'].to_i < 100
+
+    redirect_to action: 'index'
   end
 end

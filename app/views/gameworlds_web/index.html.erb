@@ -1,40 +1,44 @@
-<div class="container mx-auto">
-  <h1 class="text-2xl font-bold">Gameworlds</h1>
-  <section class="create">
-    <div class="submit-container">
-      <form action="/gameworlds_web" method="post" class="flex" accept-charset="UTF-8" >
-        <div class="flex flex-col pr-4">
-          <label for="player_amount">Player amount</label>
-          <input class="bg-white shadow-md rounded p-2 mb-4" id="player_amount" name="player_amount" type="number" class="input" />
-        </div>
-        <div class="flex flex-col pr-4">
-          <label for="name">Gameworld Name</label>
-          <input id="name" name="name" type="string" class="bg-white shadow-md rounded p-2 mb-4" />
-        </div>
-        <div class="flex flex-col justify-center">
-          <input name="create" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" value="Create and Activate" />
-        </div>
-      </form>
-    </div>
-  </section>
-  <table>
-    <tr class="table-header">
-      <th>Id</th>
-      <th>Name</th>
-      <th>Status</th>
-      <th>Created At</th>
-      <th>Updated At</th>
-      <th>Show</th>
-    </tr>
-    <% @gameworlds.each do |g| %>
-      <tr>
-        <td><%= g.id %></td>
-        <td><%= g.name %></td>
-        <td><%= g.status %></td>
-        <td><%= g.created_at %></td>
-        <td><%= g.updated_at %></td>
-        <td><%= link_to "Show", {controller: "gameworlds_web", action: "show", id: g}, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %></td>
-      </tr>
+<%   @errors&.each do |error| %>
+  <h1><%= error %>
+    <h1>
     <% end %>
-  </table>
-</div>
+    <div class="container mx-auto">
+      <h1 class="text-2xl font-bold">Gameworlds</h1>
+      <section class="create">
+        <div class="submit-container">
+          <form action="/gameworlds_web" method="post" class="flex" accept-charset="UTF-8" >
+            <div class="flex flex-col pr-4">
+              <label for="player_amount">Player amount</label>
+              <input class="bg-white shadow-md rounded p-2 mb-4" id="player_amount" name="player_amount" type="number" class="input" />
+            </div>
+            <div class="flex flex-col pr-4">
+              <label for="name">Gameworld Name</label>
+              <input id="name" name="name" type="string" class="bg-white shadow-md rounded p-2 mb-4" />
+            </div>
+            <div class="flex flex-col justify-center">
+              <input name="create" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" value="Create and Activate" />
+            </div>
+          </form>
+        </div>
+      </section>
+      <table>
+        <tr class="table-header">
+          <th>Id</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Show</th>
+        </tr>
+        <% @gameworlds.each do |g| %>
+          <tr>
+            <td><%= g.id %></td>
+            <td><%= g.name %></td>
+            <td><%= g.status %></td>
+            <td><%= g.created_at %></td>
+            <td><%= g.updated_at %></td>
+            <td><%= link_to "Show", {controller: "gameworlds_web", action: "show", id: g}, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
