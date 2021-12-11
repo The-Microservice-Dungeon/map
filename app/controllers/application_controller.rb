@@ -31,6 +31,6 @@ class ApplicationController < ActionController::API
   private
 
   def save_last_request_time
-    MapStatus.map_status.update(last_request_time: Time.now)
+    MapStatus.map_status.update(last_request_time: Time.now) unless request.path == '/status'
   end
 end
