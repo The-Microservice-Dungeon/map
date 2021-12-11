@@ -1,4 +1,8 @@
 class GameworldsWebController < WebController
+  if ENV['RAILS_ENV'] == 'production'
+    http_basic_authenticate_with name: 'gamemaster',
+                                 password: Rails.application.credentials.basic_auth_pass
+  end
   skip_before_action :verify_authenticity_token
   before_action :validate_params, only: %i[create]
 
