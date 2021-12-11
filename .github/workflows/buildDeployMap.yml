@@ -69,7 +69,7 @@ jobs:
       - name: Push Final Image
         run: docker push ghcr.io/the-microservice-dungeon/map/mapservice:latest
   deploy:
-    needs: build-test-push
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: stop-pull-run
