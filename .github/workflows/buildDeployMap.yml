@@ -2,9 +2,9 @@ name: Build - Test- Publish - Deploy Map Service
 
 on:
   push:
-    branches: [ devops ]
+    branches: [ main ]
   pull_request:
-    branches: [ devops ]
+    branches: [ main ]
 
 jobs:
   test:
