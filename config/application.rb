@@ -39,5 +39,7 @@ module Map
     config.api_only = false
 
     config.version = '1.5'
+
+    config.hosts << 'cides03.gm.fh-koeln.de'
   end
 end
