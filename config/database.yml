@@ -65,4 +65,4 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV["DB_NAME"] %>
+  database: <%= ENV.fetch('DB_NAME', 'map_production') %>
