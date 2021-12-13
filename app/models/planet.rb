@@ -60,31 +60,43 @@ class Planet < ApplicationRecord
           .where(gameworld_id: gameworld_id, deleted_at: nil)
   end
 
-  ##
-  # Fetches the top neighbour from the database.
-  # @return [Planet]
-  def top_neighbour
-    Planet.find_by(gameworld_id: gameworld_id, x: (x - 1), y: y, deleted_at: nil)
-  end
-
-  ##
-  # Fetches the bottom neighbour from the database.
-  # @return [Planet]
-  def bottom_neighbour
-    Planet.find_by(gameworld_id: gameworld_id, x: (x + 1), y: y, deleted_at: nil)
+  def direction_from_neighbour(neighbour)
+    if neighbour.x == (x - 1) && neighbour.y == y
+      'east'
+    elsif neighbour.x == (x + 1) && neighbour.y == y
+      'west'
+    elsif neighbour.x == x && neighbour.y == (y - 1)
+      'south'
+    else
+      'north'
+    end
   end
 
   ##
   # Fetches the left neighbour from the database.
   # @return [Planet]
   def left_neighbour
-    Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y - 1), deleted_at: nil)
+    Planet.find_by(gameworld_id: gameworld_id, x: (x - 1), y: y, deleted_at: nil)
   end
 
   ##
   # Fetches the right neighbour from the database.
   # @return [Planet]
   def right_neighbour
+    Planet.find_by(gameworld_id: gameworld_id, x: (x + 1), y: y, deleted_at: nil)
+  end
+
+  ##
+  # Fetches the top neighbour from the database.
+  # @return [Planet]
+  def top_neighbour
+    Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y - 1), deleted_at: nil)
+  end
+
+  ##
+  # Fetches the right neighbour from the database.
+  # @return [Planet]
+  def bottom_neighbour
     Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y + 1), deleted_at: nil)
   end
 

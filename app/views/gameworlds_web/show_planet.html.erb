@@ -25,6 +25,7 @@
       <th>Type</th>
       <th>Movement Difficulty</th>
       <th>Recharge Multiplicator</th>
+      <th>Direction</th>
       <th>Resource Type</th>
       <th>Amount</th>
     </tr>
@@ -34,6 +35,7 @@
         <td><%= neighbour.planet_type %></td>
         <td><%= neighbour.movement_difficulty %></td>
         <td><%= neighbour.recharge_multiplicator %></td>
+        <td><%= @planet.direction_from_neighbour(neighbour) %></td>
         <td><%= neighbour.resource&.resource_type %></td>
         <td><%= neighbour.resource&.max_amount %>/<%= neighbour.resource&.current_amount %></td>
       </tr>
