@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+##
+# Mining
+#
+# This code is creating a new mining record for the planet and resource It then executes
+# the mining process which means that it will try to reduce the amount of resources on the
+# planet by amount requested and publish the actual amount mined to kafka.
 class Mining < ApplicationRecord
   belongs_to :planet
   belongs_to :resource

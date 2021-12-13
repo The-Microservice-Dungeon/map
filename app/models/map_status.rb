@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+##
+# MapStatus
+#
+# @see https://the-microservice-dungeon.github.io/docs/openapi/map/#tag/status
 class MapStatus < ApplicationRecord
   def self.map_status
     map_status = create_with(last_request_time: Time.now)
