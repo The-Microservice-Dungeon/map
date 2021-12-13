@@ -38,6 +38,6 @@ module Map
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = false
 
-    config.version = '1.5'
+    config.version = '1.6'
   end
 end

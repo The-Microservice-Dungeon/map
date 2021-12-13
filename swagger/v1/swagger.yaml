@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
   title: Map Service API
   description: This is the REST documentation for the Map Service
-  version: '1.5'
+  version: '1.6'
 components:
   schemas:
     errors_object:
@@ -86,6 +86,13 @@ components:
                 format: uuid
               movement_difficulty:
                 type: integer
+              direction:
+                type: string
+                enum:
+                - north
+                - east
+                - south
+                - west
         created_at:
           type: string
           format: date-time

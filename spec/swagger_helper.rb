@@ -62,7 +62,8 @@ RSpec.configure do |config|
               planet_type: { type: :string, enum: %w[default spacestation] },
               neighbours: { type: :array, items: { type: :object, properties: {
                 planet_id: { type: :string, format: :uuid },
-                movement_difficulty: { type: :integer }
+                movement_difficulty: { type: :integer },
+                direction: { type: :string, enum: %w[north east south west] }
               } } },
               created_at: { type: :string, format: 'date-time' },
               updated_at: { type: :string, format: 'date-time' },
