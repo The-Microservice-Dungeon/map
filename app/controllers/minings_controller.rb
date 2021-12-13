@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MiningsController < ApplicationController
   before_action :set_planet_and_resource, only: %i[create]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found

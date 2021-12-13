@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameworldBuilder
   attr_reader :gameworld, :player_amount, :map_size
 

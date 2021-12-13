@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddResourceTypeEnum < ActiveRecord::Migration[6.1]
   def change
     remove_reference :resources, :resource_type, foreign_key: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateMinings < ActiveRecord::Migration[6.1]
   def change
     remove_reference :minings, :resource_type, foreign_key: true

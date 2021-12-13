@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MapStatus < ApplicationRecord
   def self.map_status
     map_status = create_with(last_request_time: Time.now)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Resource < ApplicationRecord
   enum resource_type: %i[coal iron gem gold platin], _suffix: true
   validates :resource_type, inclusion: { in: resource_types.keys }

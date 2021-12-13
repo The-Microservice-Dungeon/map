@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.call(neighbour, :id, :movement_difficulty, :recharge_multiplicator, :taken_at, :gameworld_id)
 json.call(neighbour, :planet_type, :created_at, :updated_at)
 

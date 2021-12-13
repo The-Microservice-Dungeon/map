@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ResourcesController < ApplicationController
   before_action :set_planet, only: %i[index]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
