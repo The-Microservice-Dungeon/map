@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlanetsController < ApplicationController
   before_action :set_planet, only: %i[show take]
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameworldsController < ApplicationController
   before_action :set_gameworld, only: %i[show update destroy]
   before_action :validate_params, only: %i[create]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.call(planet, :id, :movement_difficulty, :recharge_multiplicator, :gameworld_id)
 json.call(planet, :planet_type, :created_at, :updated_at)
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePlanetsNeighbours < ActiveRecord::Migration[6.1]
   def change
     create_table :planets_neighbours, id: false do |t|

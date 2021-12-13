@@ -1,3 +1,10 @@
+# frozen_string_literal: true
+
+##
+# Gameworld
+#
+# @see https://github.com/The-Microservice-Dungeon/map/wiki/Domain-Model#gameworlds
+# @see https://the-microservice-dungeon.github.io/docs/openapi/map/#tag/gameworlds
 class Gameworld < ApplicationRecord
   enum status: %i[active inactive], _default: :inactive
   validates :status, inclusion: { in: statuses.keys }

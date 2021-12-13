@@ -1,3 +1,9 @@
+# frozen_string_literal: true
+
+##
+# Exploration
+#
+# This code is creating a new Exploration record and publishes the event to Kafka.
 class Exploration < ApplicationRecord
   belongs_to :planet
 

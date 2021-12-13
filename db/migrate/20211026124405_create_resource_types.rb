@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateResourceTypes < ActiveRecord::Migration[6.1]
   def change
     create_table :resource_types, id: :uuid do |t|

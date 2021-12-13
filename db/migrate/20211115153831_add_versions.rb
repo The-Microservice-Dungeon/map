@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddVersions < ActiveRecord::Migration[6.1]
   def self.up
     execute 'CREATE SEQUENCE minings_version_seq START 1'

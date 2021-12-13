@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateReplenishments < ActiveRecord::Migration[6.1]
   def change
     remove_reference :replenishments, :resource_type, foreign_key: true

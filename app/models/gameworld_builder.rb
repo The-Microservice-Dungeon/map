@@ -1,3 +1,19 @@
+# frozen_string_literal: true
+
+##
+# GameworldBuilder
+#
+# This code is creating a gameworld with planets. The movement difficulty of the planets
+# depends on their position in the map. If they are at the edges it's 1 if they are
+# in the middle it's 2 and for the inner map it's 3.
+#
+# Random planets in the outer map are set to the `spacestation` type. Those planets have a
+# recharge_multiplicator of 2.
+#
+# Random planets are also soft deleted by setting the `deleted_at` field. Those planets are not
+# shown in the `neighbours` array of other planets, and don't have resources and can't be spacestations.
+#
+# Resources for all planets are generated in a background worker in the `CreateGameworldResourcesJob`
 class GameworldBuilder
   attr_reader :gameworld, :player_amount, :map_size
 

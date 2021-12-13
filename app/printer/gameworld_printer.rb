@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameworldPrinter
   def self.print_gameworld(gwb, margin_width = 2)
     gameworld = gameworld_to_stringified_2d_array(gwb)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameworldsWebController < WebController
   if ENV['RAILS_ENV'] == 'production'
     http_basic_authenticate_with name: 'gamemaster',

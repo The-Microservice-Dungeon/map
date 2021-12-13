@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ExplorationsController < ApplicationController
   before_action :set_planet, only: %i[create]
   rescue_from ActionController::ParameterMissing, with: :render_params_missing

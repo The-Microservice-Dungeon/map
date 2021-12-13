@@ -1,3 +1,10 @@
+# frozen_string_literal: true
+
+##
+# Planet
+#
+# @see https://github.com/The-Microservice-Dungeon/map/wiki/Domain-Model#planets
+# @see https://the-microservice-dungeon.github.io/docs/openapi/map/#tag/planets
 class Planet < ApplicationRecord
   include Filterable
 
@@ -60,6 +67,10 @@ class Planet < ApplicationRecord
           .where(gameworld_id: gameworld_id, deleted_at: nil)
   end
 
+  ##
+  # Returns the direction as string of the given neighbour.
+  # @param [Planet]
+  # @return ['east' || 'west' || 'south' || 'north']
   def direction_from_neighbour(neighbour)
     if neighbour.x == (x - 1) && neighbour.y == y
       'east'
@@ -73,30 +84,30 @@ class Planet < ApplicationRecord
   end
 
   ##
-  # Fetches the left neighbour from the database.
+  # Fetches the east neighbour from the database.
   # @return [Planet]
-  def left_neighbour
+  def east_neighbour
     Planet.find_by(gameworld_id: gameworld_id, x: (x - 1), y: y, deleted_at: nil)
   end
 
   ##
-  # Fetches the right neighbour from the database.
+  # Fetches the west neighbour from the database.
   # @return [Planet]
-  def right_neighbour
+  def west_neighbour
     Planet.find_by(gameworld_id: gameworld_id, x: (x + 1), y: y, deleted_at: nil)
   end
 
   ##
-  # Fetches the top neighbour from the database.
+  # Fetches the south neighbour from the database.
   # @return [Planet]
-  def top_neighbour
+  def south_neighbour
     Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y - 1), deleted_at: nil)
   end
 
   ##
-  # Fetches the right neighbour from the database.
+  # Fetches the north neighbour from the database.
   # @return [Planet]
-  def bottom_neighbour
+  def north_neighbour
     Planet.find_by(gameworld_id: gameworld_id, x: x, y: (y + 1), deleted_at: nil)
   end
 
