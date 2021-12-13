@@ -5,6 +5,8 @@ require 'swagger_helper'
 RSpec.describe 'explorations', type: :request, capture_examples: true do
   path '/planets/{planet_id}/explorations' do
     post 'Creates an exploration' do
+      description 'Creates a new Exploration on the planet.
+      The planet is then published in the `planet-explored` event.'
       tags :explorations
       consumes 'application/json'
       produces 'application/json'
@@ -29,7 +31,7 @@ RSpec.describe 'explorations', type: :request, capture_examples: true do
       end
 
       response '422', 'Unprocessable Entity' do
-        schema '$ref' => '#/components/schemas/exploration'
+        schema '$ref' => '#/components/schemas/errors_object'
 
         let(:planet_id) { create(:planet).id }
         let(:exploration) { { exploration: { transaction_id: 'NOUUID' } } }

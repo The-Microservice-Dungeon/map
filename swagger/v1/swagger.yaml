@@ -150,6 +150,9 @@ paths:
   "/planets/{planet_id}/explorations":
     post:
       summary: Creates an exploration
+      description: |-
+        Creates a new Exploration on the planet.
+              The planet is then published in the `planet-explored` event.
       tags:
       - explorations
       parameters:
@@ -171,7 +174,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/exploration"
+                "$ref": "#/components/schemas/errors_object"
         '400':
           description: Bad Request
           content:
@@ -299,6 +302,9 @@ paths:
                   "$ref": "#/components/schemas/mining"
     post:
       summary: Creates a mining
+      description: |-
+        Creates a new Mining on the planet's resource.
+              The mining is then additionally published in the `resource-mined` event.
       tags:
       - minings
       parameters:

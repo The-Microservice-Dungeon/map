@@ -19,6 +19,8 @@ RSpec.describe 'minings', type: :request, capture_examples: true do
     end
 
     post 'Creates a mining' do
+      description 'Creates a new Mining on the planet\'s resource.
+      The mining is then additionally published in the `resource-mined` event.'
       tags :minings
       consumes 'application/json'
       produces 'application/json'
