@@ -50,8 +50,10 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+
   build:
     needs: test
+    if: (github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -68,7 +70,9 @@ jobs:
 
       - name: Push Final Image
         run: docker push ghcr.io/the-microservice-dungeon/map/mapservice:latest
+
   deploy:
+    if: (github.ref == 'refs/heads/main')
     needs: build
     runs-on: ubuntu-latest
     steps:
