@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   get '/gameworlds_web', to: 'gameworlds_web#index'
   get '/gameworlds_web/:id', to: 'gameworlds_web#show'
   get '/gameworlds_web/:id/planets/:planet_id', to: 'gameworlds_web#show_planet', as: 'gameworlds_web_planet'
+  post '/gameworlds_web/:id/planets/:planet_id', to: 'gameworlds_web#set_deleted_at', as: 'set_deleted_at'
   post '/gameworlds_web', to: 'gameworlds_web#create'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

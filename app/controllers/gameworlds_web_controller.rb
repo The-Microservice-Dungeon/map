@@ -24,6 +24,13 @@ class GameworldsWebController < WebController
     render layout: false if params[:inline] == 'true'
   end
 
+  def set_deleted_at
+    @planet = Planet.find(params[:planet_id])
+    @planet.deleted_at = @planet.deleted_at ? nil : Time.now
+    @planet.save!
+    redirect_to action: 'show', id: @planet.gameworld_id
+  end
+
   def create
     @gameworld = Gameworld.new(name: params[:name])
     GameworldBuilder.create_regular_gameworld(@gameworld, params['player_amount'].to_i)
