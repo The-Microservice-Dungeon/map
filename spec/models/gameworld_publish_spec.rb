@@ -8,5 +8,6 @@ RSpec.describe Gameworld, type: :model do
 
     gameworld = Gameworld.new
     gameworld.save
+    gameworld.publish_gameworld_created_event
   end
 end
