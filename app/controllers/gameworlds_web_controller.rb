@@ -35,7 +35,10 @@ class GameworldsWebController < WebController
     @gameworld = Gameworld.new(name: params[:name])
     GameworldBuilder.create_regular_gameworld(@gameworld, params['player_amount'].to_i)
 
-    redirect_to action: 'index' if @gameworld.activate
+    if @gameworld.activate
+      @gameworld.publish_gameworld_created_event
+      redirect_to action: 'index'
+    end
   end
 
   def validate_params
