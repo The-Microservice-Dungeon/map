@@ -14,8 +14,7 @@ module Kafka
       WaterDrop::Producer.new do |config|
         config.deliver = ENV['RAILS_ENV'] != 'test'
         config.kafka = {
-          'bootstrap.servers': ENV.fetch('KAFKA_BOOTSTRAP_ADDRESS', 'localhost:29092'),
-          'queue.buffering.max.ms' => 10_000
+          'bootstrap.servers': ENV.fetch('KAFKA_BOOTSTRAP_ADDRESS', 'localhost:29092')
         }
       end
     end
