@@ -35,10 +35,7 @@ class GameworldsWebController < WebController
     @gameworld = Gameworld.new(name: params[:name])
     GameworldBuilder.create_regular_gameworld(@gameworld, params['player_amount'].to_i)
 
-    if @gameworld.activate
-      CreateGameworldResourcesJob.perform_later(@gameworld.id)
-      redirect_to action: 'index'
-    end
+    redirect_to action: 'index' if @gameworld.activate
   end
 
   def validate_params

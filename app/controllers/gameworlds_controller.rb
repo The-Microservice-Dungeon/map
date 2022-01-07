@@ -22,7 +22,6 @@ class GameworldsController < ApplicationController
     GameworldBuilder.create_regular_gameworld(@gameworld, gameworld_params[:player_amount].to_i)
 
     if @gameworld.activate
-      CreateGameworldResourcesJob.perform_later(@gameworld.id)
       render :show, status: :created, formats: :json
     else
       render json: @gameworld.errors, status: :unprocessable_entity

@@ -56,7 +56,6 @@ RSpec.describe GameworldBuilder, type: :model do
 
       gwb = GameworldBuilder.new(gameworld, 12, map_size)
       gwb.init_planets
-      CreateGameworldResourcesJob.new.perform(gameworld.id)
 
       coal_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'coal' }
       iron_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'iron' }
@@ -74,7 +73,6 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'doesn´t place resources on Spawns or Space Stations' do
       gwb = GameworldBuilder.new(gameworld, 12, 20)
       gwb.init_planets
-      CreateGameworldResourcesJob.new.perform(gameworld.id)
 
       gwb.gameworld.reload
 
@@ -91,7 +89,6 @@ RSpec.describe GameworldBuilder, type: :model do
     it 'enough resources after planet deletion' do
       map_size = 20
       gwb = GameworldBuilder.create_regular_gameworld(gameworld, 12)
-      CreateGameworldResourcesJob.new.perform(gwb.gameworld.id)
 
       existing_planets = gwb.gameworld.planets.find_all { |p| p.deleted_at.nil? }
 
