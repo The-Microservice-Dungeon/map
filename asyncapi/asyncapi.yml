@@ -1,15 +1,15 @@
-asyncapi: '2.2.0'
+asyncapi: "2.2.0"
 
 info:
   title: Map Service
   version: 1.0.0
-  contact: 
+  contact:
     name: "The Microservice Dungeon"
     url: "https://github.com/The-Microservice-Dungeon"
   description: |
-                This service is in charge of the gameworld for The Microservice Dungeon
+    This service is in charge of the gameworld for The Microservice Dungeon
 
-                You can use the "map" topic to subcribe to our events
+    You can use the "map" topic to subcribe to our events
 
 servers:
   local_development:
@@ -21,23 +21,23 @@ channels:
   gameworld-created:
     publish:
       message:
-        $ref: '#/components/messages/gameworld-created'
+        $ref: "#/components/messages/gameworld-created"
   spacestation-created:
-      publish:
-        message:
-          $ref: '#/components/messages/spacestation-created'
+    publish:
+      message:
+        $ref: "#/components/messages/spacestation-created"
   planet-explored:
-      publish:
-        message:
-          $ref: '#/components/messages/planet-explored'
+    publish:
+      message:
+        $ref: "#/components/messages/planet-explored"
   resource-mined:
     publish:
       message:
-        $ref: '#/components/messages/resource-mined'
+        $ref: "#/components/messages/resource-mined"
   resource-replenished:
     publish:
       message:
-        $ref: '#/components/messages/resource-replenished'
+        $ref: "#/components/messages/resource-replenished"
 
 components:
   messages:
@@ -113,7 +113,7 @@ components:
             type: string
             format: uuid
             description: UUID of the created planet
-  
+
     planet-explored:
       headers:
         type: object
@@ -144,6 +144,9 @@ components:
           planet:
             type: object
             properties:
+              resource_type:
+                type: string
+                description: Resource type of the resource on the explored planet.
               resource_id:
                 type: string
                 format: uuid
@@ -203,7 +206,7 @@ components:
             type: string
             example: coal
             description: Type of resource.
-  
+
     resource-mined:
       headers:
         type: object
