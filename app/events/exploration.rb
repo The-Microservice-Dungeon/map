@@ -32,7 +32,7 @@ class Exploration < ApplicationRecord
   def payload
     {
       planet: {
-        resource_type: planet.resource_type,
+        resource_type: planet.resource&.resource_type,
         resource_id: planet.resource&.id,
         neighbour_ids: planet.neighbours.pluck(:id),
         recharge_multiplicator: planet.recharge_multiplicator,
