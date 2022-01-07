@@ -11,8 +11,6 @@ class Gameworld < ApplicationRecord
 
   has_many :planets, dependent: :destroy
 
-  after_create :publish_gameworld_created_event
-
   ##
   # Sets the gameworld's status to `'active'` while setting all other gameworlds
   # statuses to `'inactive'`.
