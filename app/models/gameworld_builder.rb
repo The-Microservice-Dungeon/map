@@ -64,7 +64,6 @@ class GameworldBuilder
     end
 
     Planet.insert_all(planets)
-    create_resources
   end
 
   def movement_difficulty(x, y)
@@ -81,6 +80,7 @@ class GameworldBuilder
   def self.create_regular_gameworld(gameworld, player_amount)
     gameworld_builder = new(gameworld, player_amount, map_size(player_amount))
     gameworld_builder.init_planets
+    gameworld_builder.create_resources
     gameworld_builder
   end
 
@@ -111,6 +111,8 @@ class GameworldBuilder
   end
 
   def create_resources
+    return unless @gameworld.planets.any?
+
     resources = [
       { patch_amount: @gameworld.planets.size / 20, name: 'coal', part_of_map: :outer_map? },
       { patch_amount: @gameworld.planets.size / 30, name: 'iron', part_of_map: :mid_map? },

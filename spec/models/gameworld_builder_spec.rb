@@ -56,6 +56,7 @@ RSpec.describe GameworldBuilder, type: :model do
 
       gwb = GameworldBuilder.new(gameworld, 12, map_size)
       gwb.init_planets
+      gwb.create_resources
 
       coal_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'coal' }
       iron_count = gwb.gameworld.planets.count { |p| p.resource&.resource_type == 'iron' }
