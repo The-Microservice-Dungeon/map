@@ -26,10 +26,6 @@ channels:
     publish:
       message:
         $ref: "#/components/messages/spacestation-created"
-  planet-explored:
-    publish:
-      message:
-        $ref: "#/components/messages/planet-explored"
   resource-mined:
     publish:
       message:
@@ -113,59 +109,6 @@ components:
             type: string
             format: uuid
             description: UUID of the created planet
-
-    planet-explored:
-      headers:
-        type: object
-        properties:
-          eventId:
-            type: string
-            format: uuid
-            description: UUID of the event.
-          transactionId:
-            type: string
-            format: uuid
-            description: UUID of the transaction.
-          version:
-            type: string
-            example: "1"
-            description: Version number of the event.
-          timestamp:
-            type: string
-            format: date-time
-            description: Timestamp of the event.
-          type:
-            type: string
-            example: planet-explored
-            description: Type of the event.
-      payload:
-        type: object
-        properties:
-          planet:
-            type: object
-            properties:
-              resource_type:
-                type: string
-                description: Resource type of the resource on the explored planet.
-              resource_id:
-                type: string
-                format: uuid
-                description: UUID of the resource on the explored planet.
-              neighbour_ids:
-                type: array
-                items:
-                  type: string
-                  format: uuid
-                  description: UUID of the neighbour on the explored planet.
-              recharge_multiplicator:
-                type: integer
-                description: Recharge multiplicator of the planet explored.
-              movement_difficulty:
-                type: integer
-                description: Movemenet difficulty of the planet explored.
-              planet_type:
-                type: string
-                description: Planet type (`default`, `spawn` or `spacestation`) of the planet explored.
 
     resource-replenished:
       headers:

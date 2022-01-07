@@ -21,8 +21,6 @@ Rails.application.routes.draw do
 
     get '/planets/:id/minings', to: 'minings#index', as: 'minings'
     post '/planets/:id/minings', to: 'minings#create'
-
-    post '/planets/:planet_id/explorations', to: 'explorations#create'
   end
 
   # TODO: Basic auth admin

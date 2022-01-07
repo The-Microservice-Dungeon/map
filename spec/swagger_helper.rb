@@ -42,16 +42,6 @@ RSpec.configure do |config|
               updated_at: { type: :string, format: 'date-time' }
             }
           },
-          exploration: {
-            type: :object,
-            properties: {
-              id: { type: :string, format: :uuid },
-              transcation_id: { type: :string, format: :uuid },
-              planet_id: { type: :string, format: :uuid },
-              created_at: { type: :string, format: 'date-time' },
-              updated_at: { type: :string, format: 'date-time' }
-            }
-          },
           planet: {
             type: :object,
             properties: {

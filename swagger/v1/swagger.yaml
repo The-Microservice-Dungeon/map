@@ -40,24 +40,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    exploration:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        transcation_id:
-          type: string
-          format: uuid
-        planet_id:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
     planet:
       type: object
       properties:
@@ -147,56 +129,6 @@ components:
           type: string
           format: date-time
 paths:
-  "/planets/{planet_id}/explorations":
-    post:
-      summary: Creates an exploration
-      description: |-
-        Creates a new Exploration on the planet.
-              The planet is then published in the `planet-explored` event.
-      tags:
-      - explorations
-      parameters:
-      - name: planet_id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        required: true
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/exploration"
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errors_object"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/errors_object"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                exploration:
-                  type: object
-                  properties:
-                    transaction_id:
-                      type: string
-                      format: uuid
-                  required:
-                  - transaction_id
-              required:
-              - exploration
   "/gameworlds":
     get:
       summary: Retrieves all gameworlds
