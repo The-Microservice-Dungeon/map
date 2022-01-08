@@ -64,6 +64,12 @@ class GameworldBuilder
     end
 
     Planet.insert_all(planets)
+
+    Thread.new do
+      @gameworld.planets.filter_by_planet_type('spacestation').each do |planet|
+        SpacestationCreation.create(planet_id: planet.id)
+      end
+    end
   end
 
   def movement_difficulty(x, y)
