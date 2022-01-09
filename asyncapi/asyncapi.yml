@@ -9,7 +9,7 @@ info:
   description: |
     This service is in charge of the gameworld for The Microservice Dungeon
 
-    You can use the "map" topic to subcribe to our events
+    You can use the Channels as Topics to subscribe to our events
 
 servers:
   local_development:

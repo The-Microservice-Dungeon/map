@@ -30,7 +30,7 @@ class Gameworld < ApplicationRecord
   # Publishes the `'gameworld-created'` event under the `"map"` topic.
   # @see lib/kafka/message.rb
   def publish_gameworld_created_event
-    Kafka::Message.publish(gameworld_created_headers, gameworld_created_payload)
+    Kafka::Message.publish('gameworld-created', gameworld_created_headers, gameworld_created_payload)
   end
 
   ##

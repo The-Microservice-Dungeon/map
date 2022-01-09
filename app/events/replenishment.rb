@@ -18,7 +18,7 @@ class Replenishment < ApplicationRecord
   end
 
   def publish_replenishment_events
-    Kafka::Message.publish(resource_replenished_headers, resource_replenished_payload)
+    Kafka::Message.publish('resource-replenished', resource_replenished_headers, resource_replenished_payload)
   end
 
   def resource_replenished_headers

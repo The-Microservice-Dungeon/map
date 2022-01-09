@@ -18,7 +18,7 @@ class SpacestationCreation < ApplicationRecord
   end
 
   def publish_speacestation_creation_events
-    Kafka::Message.publish(spacestation_created_headers, spacestation_created_payload)
+    Kafka::Message.publish('spacestation-created', spacestation_created_headers, spacestation_created_payload)
   end
 
   def spacestation_created_headers

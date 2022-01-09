@@ -2,8 +2,8 @@
 
 module Kafka
   class Message
-    def self.publish(headers, payload)
-      producer.produce_async topic: 'map',
+    def self.publish(topic, headers, payload)
+      producer.produce_async topic: topic,
                              headers: headers,
                              payload: payload.to_json
 
@@ -14,8 +14,7 @@ module Kafka
       WaterDrop::Producer.new do |config|
         config.deliver = ENV['RAILS_ENV'] != 'test'
         config.kafka = {
-          'bootstrap.servers': ENV.fetch('KAFKA_BOOTSTRAP_ADDRESS', 'localhost:29092'),
-          'queue.buffering.max.ms' => 10_000
+          'bootstrap.servers': ENV.fetch('KAFKA_BOOTSTRAP_ADDRESS', 'localhost:29092')
         }
       end
     end

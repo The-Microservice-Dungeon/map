@@ -28,7 +28,7 @@ class Mining < ApplicationRecord
   end
 
   def publish_mining_events
-    Kafka::Message.publish(resource_mined_headers, resource_mined_payload)
+    Kafka::Message.publish('resource-mined', resource_mined_headers, resource_mined_payload)
   end
 
   def resource_mined_headers
