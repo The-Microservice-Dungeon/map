@@ -10,6 +10,7 @@
       <th>Amount</th>
       <th>Deleted At</th>
       <th>Delete</th>
+      <th>Replenish</th>
     </tr>
     <tr>
       <td><%= @planet.id %></td>
@@ -20,6 +21,7 @@
       <td><%= @resource&.max_amount %>/<%= @resource&.current_amount %></td>
       <td><%= @planet.deleted_at %></td>
       <td> <%= button_to "Delete Planet", set_deleted_at_path(@planet), method: :post, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"  %></td>
+      <td> <%= button_to "Replenish", replenish_resource_path(@planet), method: :post, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"  %></td>
     </tr>
   </table>
   <h1 class="text-2xl font-bold">Neighbours</h1>

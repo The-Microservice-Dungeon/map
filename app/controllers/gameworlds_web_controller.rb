@@ -46,4 +46,11 @@ class GameworldsWebController < WebController
 
     redirect_to action: 'index'
   end
+
+  def replenish_resource
+    @planet = Planet.find(params[:planet_id])
+    replenishment = Replenishment.new(planet_id: @planet.id, resource_id: @planet.resource.id)
+    replenishment.execute_replenishment
+    redirect_to action: 'show', id: @planet.gameworld_id
+  end
 end
