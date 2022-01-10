@@ -15,6 +15,8 @@ class Replenishment < ApplicationRecord
   def execute_replenishment
     self.amount_replenished = resource.max_amount - resource.current_amount
     resource.current_amount = resource.max_amount
+    resource.save!
+    save!
   end
 
   def publish_replenishment_events
