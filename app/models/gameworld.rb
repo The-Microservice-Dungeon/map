@@ -20,7 +20,7 @@ class Gameworld < ApplicationRecord
   end
 
   ##
-  # Returns the `spacestaion_ids` for the gameworld.
+  # Returns the `spacestation_ids` for the gameworld.
   # @return [Array<UUID>]
   def spacestation_ids
     Planet.where(gameworld_id: id, planet_type: 'spacestation').pluck(:id)

@@ -68,7 +68,7 @@ components:
             type: string
             format: uuid
             description: UUID of the created gameworld
-          spacestaion_ids:
+          spacestation_ids:
             type: array
             items:
               type: string
