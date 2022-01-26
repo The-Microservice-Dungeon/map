@@ -6,7 +6,7 @@ class ResourcesController < ApplicationController
 
   # GET /planets/1/resources
   def index
-    @planets = [@planet.resource]
+    @resources = [@planet.resource]
   end
 
   private
