@@ -32,10 +32,17 @@ class GameworldsWebController < WebController
   end
 
   def create
+    Replenishment.delete_all
+    Mining.delete_all
+    Resource.delete_all
+    SpacestationCreation.delete_all
+    Planet.delete_all
+    Gameworld.delete_all
+
     @gameworld = Gameworld.new(name: params[:name])
     GameworldBuilder.create_regular_gameworld(@gameworld, params['player_amount'].to_i)
 
-    if @gameworld.activate
+    if @gameworld.save
       @gameworld.publish_gameworld_created_event
       redirect_to action: 'index'
     end

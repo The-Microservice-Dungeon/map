@@ -6,18 +6,10 @@
 # @see https://github.com/The-Microservice-Dungeon/map/wiki/Domain-Model#gameworlds
 # @see https://the-microservice-dungeon.github.io/docs/openapi/map/#tag/gameworlds
 class Gameworld < ApplicationRecord
-  enum status: %i[active inactive], _default: :inactive
+  enum status: %i[active inactive], _default: :active
   validates :status, inclusion: { in: statuses.keys }
 
   has_many :planets, dependent: :destroy
-
-  ##
-  # Sets the gameworld's status to `'active'` while setting all other gameworlds
-  # statuses to `'inactive'`.
-  def activate
-    Gameworld.update_all(status: 'inactive')
-    update(status: 'active')
-  end
 
   ##
   # Returns the `spacestation_ids` for the gameworld.

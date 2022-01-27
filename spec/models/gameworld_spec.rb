@@ -7,6 +7,6 @@ RSpec.describe Gameworld, type: :model do
     gameworld = Gameworld.new
     gameworld.save
 
-    expect(gameworld.status).to eq('inactive')
+    expect(gameworld.status).to eq('active')
   end
 end
