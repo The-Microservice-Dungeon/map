@@ -1,20 +1,33 @@
-FROM ruby:3.0.2
+FROM ruby:3.0.2-alpine as builder
 
-RUN apt-get update -qq && apt-get install -y postgresql-client
-WORKDIR /map
+RUN apk update && apk upgrade
+RUN apk add --update alpine-sdk tzdata && rm -rf /var/cache/apk/*
 
-# Set up the dependencies ( Gems )
-COPY Gemfile /map/Gemfile
-COPY Gemfile.lock /map/Gemfile.lock
-RUN bundle install
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
 
-COPY . /map
+COPY Gemfile* $APP_HOME/
+ENV RAILS_ENV=production
+ENV SECRET_KEY_BASE mykey
+RUN bundle install --deployment --jobs=4 --without development test
+COPY . $APP_HOME
+RUN rm -rf $APP_HOME/tmp/*
 
-# # Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["bash","entrypoint.sh"]
+FROM ruby:3.0.2-alpine
+RUN apk update && apk add --update tzdata && rm -rf /var/cache/apk/*
 
-# Configure the main process to run when running the image
-EXPOSE 3000
-CMD ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+COPY --from=builder /app $APP_HOME
+ENV RAILS_ENV=production
+ENV SECRET_KEY_BASE mykey
+RUN bundle config --local path vendor/bundle
+RUN bundle config --local without development:test:assets
+
+EXPOSE 3000:3000
+CMD rm -f tmp/pids/server.pid \
+  && bundle exec rails db:migrate \
+  && bundle exec rails s -b 0.0.0.0 -p 3000
