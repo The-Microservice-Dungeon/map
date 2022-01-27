@@ -1,7 +1,7 @@
 FROM ruby:3.0.2-alpine as builder
 
 RUN apk update && apk upgrade
-RUN apk add --update alpine-sdk tzdata && rm -rf /var/cache/apk/*
+RUN apk add --update alpine-sdk tzdata postgresql-client && rm -rf /var/cache/apk/*
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
