@@ -1,7 +1,7 @@
 FROM ruby:3.0.2-alpine as builder
 
 RUN apk update && apk upgrade
-RUN apk add --update alpine-sdk tzdata postgresql-client && rm -rf /var/cache/apk/*
+RUN apk add --update alpine-sdk tzdata postgresql-dev postgresql-client librdkafka-dev bash && rm -rf /var/cache/apk/*
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
@@ -15,7 +15,7 @@ COPY . $APP_HOME
 RUN rm -rf $APP_HOME/tmp/*
 
 FROM ruby:3.0.2-alpine
-RUN apk update && apk add --update tzdata && rm -rf /var/cache/apk/*
+RUN apk update && apk add --update tzdata postgresql-dev postgresql-client librdkafka-dev && rm -rf /var/cache/apk/*
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
